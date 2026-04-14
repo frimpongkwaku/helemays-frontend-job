@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helmeys Foods</title>
+
+  <!-- Bootstrap CSS -->
+ <!--add cdn for icons later-->
+ <link rel="stylesheet" href="./Assests/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="./Assests/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/style.css">
+ </head>
+
+<body>
+  <!--update add loading page after entering the data to wait for another data using await function in execution of ta-->
+
+<!-- Loading page for the first page before the ui opens-->
+
+<!-- Top loader (for modal opening) -->
+<div id="loader" class="loader-overlay" style="background-color: rgba(15, 15, 15, 0.034);">
+  <div class="loader-content text-center">
+    <img src="./images/food1.png" alt="Loading..." class="loader-logo mb-3">
+    <div class="spinner-border text-success" style="width: 3rem; height: 3rem;color: rgb(108, 10, 138);" role="status">
+      <span class="visually-hidden"></span>
+    </div>
+    <p class="mt-3 text-muted" style="color: rgb(241, 236, 246);"><strong>Helemays Foods</strong><br>
+      We making with care...
+    </p>
+
+  </div>
+</div>
+
+<!-- Modal loader (for content loading) -->
+<!-- Modal loader with dot counting -->
+<div id="modalLoader" class="modal-loader" style="background-color: rgba(10, 10, 10, 0.199);">
+  <div class="dot-loader">
+    Please Wait
+    <span>.</span><span>.</span><span>.</span>
+  </div>
+</div> 
+
+
+
+
+<!-- Banner to show promo or new products listed-->
+<div class=" bg-warning text-dark text-center py-2" id="head-banner">
+  <strong>Free Delivery + 10% Off Today! | Limited Time Offer| Pastries Available</strong>
+</div>
+
+<!-- Navbar  section with off canvas side-->
+ <nav class="navbar navbar-dark  shadow-sm px-3"id="nav-style">
+  <a href="#" class="navbar-brand fw-bold text-light" >Helemays Foods</a>
+  <button class="navbar-toggler d-lg-none" style="color: whitesmoke;" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
+    <span class="navbar-toggler-icon color white" style="color: whitesmoke;"></span>
+  </button>
+  <ul class="navbar-nav flex-row gap-4 d-none d-lg-flex" id="navul">
+    <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-home"></i>Home</a></li>
+    <li class="nav-item" id="cartIcon"><a class="nav-link" href="#"><i class="fa-solid fa-cart-shopping"></i>Cart</a></li>
+    <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-phone"></i>support</a></li>
+  </ul>
+ </nav>
+<!--off canva menu for mobile view-->
+<div class="offcanvas offcanvas-start"tabindex="-1" id="mobileMenu">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Helemays Foods</h5>
+    <button type="button" class="btn-close"data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="navbar-nav gap-3">
+    <li class="nav-item"><a href="#"class="mobilenav-link"><i class="fa-solid fa-home"></i>Home</a></li>
+    <li class="nav-item"><a href="#"class="mobilenav-link"><i class="fa-solid fa-cart-shopping"></i>Cart</a></li>
+    <li class="nav-item"><a href="#"class="mobilenav-link"><i class="fa-solid fa-phone"></i>Support</a></li>
+   </ul>
+  </div>
+</div>
+
+<!-- Greeting section -->
+<div class="container">
+  <div class="chat-bubble" id="greeting">
+    <p><strong>Hi, Guest!</strong><br>AKWAABA/OBAAKE to Helemays foods</p>
+  </div>
+</div>
+<!--search section-->
+<div class ="container text-muted  "    data-bs-toggle="modal" data-bs-target="#searchModal" id="search" style="border-color: #670680; border-width: 2px;border-radius: 20px; box-shadow: #670680;" >
+<input class="form me-2 " type="readonly" placeholder="Craving for..." aria-label="Search" style="border: 2px;border-color: #270230;">
+</div>
+
+
+
+
+<!-- Header Carousel // slinding header carousel-->
+<div class="container my-5" id="cauroselContainer">
+  <div id="heroCarousel" class="carousel slide rounded shadow-lg " data-bs-ride="carousel" data-bs-interval="6000" style="overflow:hidden;box-shadow: color(rgb(118, 7, 170)); background: rgb(255, 255, 255);">
+    <div class="carousel-inner">
+
+      <div class="carousel-item active">
+        <div class="d-flex align-items-center" style="height: 300px;background: white;">
+          <!-- Header Text Side -->
+          <div class="w-50 p-4" style="background-color: #f6f4f7de; color:rgb(30, 7, 58); border-radius: 10px 0 0 10px;">
+            <h2 class="fw-bold">Welcome to the Home of best Dinning in the city </h2>
+            <p style="background-color: white;">Discover comfort with the best culinary in the City.</p>
+          </div>
+     
+          <!-- Image Side -->
+          <div class="w-50">
+            <img src="./images/food1.png" class="img-fluid rounded-end" alt="Hero Image 1">
+          </div>
+        </div>
+      </div>
+      
+
+      <div class="carousel-item">
+        <div class="d-flex align-items-center" style="height: 300px;">
+          <div class="w-50 p-4">
+            <h2 class="fw-bold" style="color:rgb(59, 2, 98)">The Best Culinary Service in the city</h2>
+            <p style="color:rgb(46, 3, 77)">We serve the best in city</p>
+          </div>
+          <div class="w-50">
+            <img src="./images/food2.png" class="img-fluid rounded" alt="Hero Image 2">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- container to display item cards-->
+
+  <!--my section-->
+  <div class="container" id="MainDisheContainer">
+ <div class=" text-start ps-3 py-2 d-flex align-items-center mb-4" 
+       style="color: #080808; border-radius: 8px;font-weight: bold; font-size:larger;">
+    <img src="./images/food1.png" style="width:50px;height:50px;"> <!-- Icon -->
+       Helemays Foods ||     Starters <i class="fa fa-mug-hot"></i> 
+  </div>
+  <!--scroll indicator icon-->
+  
+  <!--first div row-->
+  
+  <div class="d-flex justify-content-end gap-2 mb-2 ">
+
+<button class="scroll-btn" onclick="scrollRow('localFoodsRow', -300)">
+<i class="fa fa-chevron-left"></i>
+</button>
+
+<button class="scroll-btn"   onclick="scrollRow('localFoodsRow', 300)">
+<i class="fa fa-chevron-right"></i>
+</button>
+</div>
+<div class="d-flex overflow-auto g-3 pb-3"  id="localFoodsRow"></div> 
+<!-- scroll arrow for foods row2-->
+ <div class="d-flex justify-content-end gap-2 mb-2">
+
+<button class="scroll-btn" onclick="scrollRow('localFoodsRow2', -300)" style="margin-top: 5px;">
+<i class="fa fa-chevron-left"></i>
+</button>
+
+<button class="scroll-btn"  onclick="scrollRow('localFoodsRow2', 300)" style="margin-top: 5px;">
+<i class="fa fa-chevron-right"></i>
+</button>
+</div>
+<div class="d-flex overflow-auto g-3 pb-3 " style="margin-top:10px" id="localFoodsRow2"></div>
+   
+<div class=" text-start ps-3 py-2 d-flex align-items-center mb-4" 
+       style="border-radius: 8px; color: #020202; font-weight: bold; margin-top: 60px;font-size:larger; margin-bottom:0px;padding:0px;">
+   <img src="./images/food1.png" style="width:30px;height:50px;"> Helemays Foods || Main<i class="fa-solid fa-utensils"></i></div>
+  <!--second row for breakfast categories-->
+
+<!--scroll arrow-->
+  <div class="d-flex justify-content-end gap-2 mb-2" style="margin-top: 0px;">
+
+<button class="scroll-btn" onclick="scrollRow('breakFastRow', -300)" style="margin-top: 0px;">
+<i class="fa fa-chevron-left"></i>
+</button>
+
+<button class="scroll-btn" onclick="scrollRow('breakFastRow', 300)" style="margin-top: 0px;">
+<i class="fa fa-chevron-right"></i>
+</button>
+</div>
+
+   <div class="d-flex overflow-auto g-3 pb-3" style="margin:0px" id="breakFastRow"></div>
+    
+    <!--advert screens this shouldnt hard coded// all the advert shouldnt be hard coded-->
+    
+    <div class="row g-3" style="margin-bottom: 10px;margin-top:30px;">
+           <div  class="advert">ADVERT SCREENS</div>
+      <div class="d-flex overflow-auto" style="margin-bottom: 10px;margin-top:30px;">
+    <div class="col-3">
+      <div class="card shadow-sm border-0"style="border-radius 15px; overflow: hidden;">
+        <video src="./videos/J Hus - Outside (Official Visualiser) ft. Skepta.mp4" autoplay muted loop playsinline style="border-radius: 15px;object-fit: cover;height: 100px;"></video>
+      </div>
+      <div  class="card shadow-sm border-0" id="span">
+             <span><small style="color: #670680; font-weight: bold;"  >New Pastries</small><br><small style="font-weight: bold;">Check our new Pastries</small></span>
+      </div>
+            </div>
+    <div class="col-3">
+<div class="card shadow-sm border-0"style="border-radius 15px; overflow: hidden;">
+          <video src="./videos/Llona - Homeless (Album).mp4"autoplay muted loop playsinline style="border-radius: 15px;object-fit: cover;height: 100px;"></video>
+      </div>
+      <div  class="card shadow-sm border-0" id="span">
+           <span><small style="color: #670680; font-weight: bold;"  >New Pastries</small><br><small style="font-weight: bold;">Check our new Pastries</small></span>
+      </div>
+    </div>
+    <div class="col-3">
+     <div class="card shadow-sm border-0"style="border-radius 15px; overflow: hidden;">
+        <video src="./videos/ZAYN - Dusk Till Dawn (Official Video) ft. Sia.mp4" autoplay muted loop playsinline style="border-radius: 15px;object-fit: cover;height: 100px;"></video>
+      </div>
+      <div  class="card shadow-sm border-0" id="span">
+             <span ><small style="color: #670680; font-weight: bold;" >New Pastries</small><br><small style="font-weight: bold;" >Check our new Pastries</small></span>
+
+      </div>
+    </div>
+    <div class="col-3">
+      
+      <div class="card shadow-sm border-0"style="border-radius 15px; overflow: hidden;">
+        <video src="./videos/ZAYN - Dusk Till Dawn (Official Video) ft. Sia.mp4" autoplay muted loop playsinline style="border-radius: 15px;object-fit: cover;height: 100px;"></video>
+      </div>
+      <div  class="card shadow-sm border-0" id="span" >
+      <span><small style="color: #670680; font-weight: bold;">New Pastries</small><br><small style="font-weight: bold;" >Check our new Pastries</small></span>
+      </div>
+    </div>
+    </div>
+
+    <div class=" text-start ps-3 py-2 d-flex align-items-center mb-4" 
+       style="color: #0f0f0f; border-radius: 8px;font-weight: bolder; margin-top:70px; font-size:larger;margin-bottom: 0px;">
+   <img src="./images/food1.png" style="width:50px;height:50px;"> Helemays Foods ||    Main Dish<i class="fa-solid fa-utensils"></i>
+  </div>
+   
+    <div class="d-flex justify-content-end gap-2 mb-2">
+
+<button class="scroll-btn" onclick="scrollRow('mainDishRow', -300)" style="margin-top: 0px;">
+<i class="fa fa-chevron-left"></i>
+</button>
+
+<button class="scroll-btn" onclick="scrollRow('mainDishRow', 300)" style="margin-top: 0px;">
+<i class="fa fa-chevron-right"></i>
+</button>
+</div>
+
+  <div class="d-flex overflow-auto g-3 pb-3" id="mainDishRow"></div>
+
+<div class=" text-start ps-3 py-2 d-flex align-items-center mb-4" 
+       style="color: #0f0f0f; border-radius: 8px;font-weight: bolder; margin-top:70px; font-size:larger;">
+   <img src="./images/food1.png" style="width:50px;height:50px;"> Helemays Foods ||    Sides<i class="fa-solid fa-glass-water"></i>
+  </div>  
+  <!-- arrow scroll-->
+     <div class="d-flex justify-content-end gap-2 mb-2">
+
+<button class="scroll-btn" onclick="scrollRow('sidesRow', -300)" style="margin-top: 0px;" >
+<i class="fa fa-chevron-left"></i>
+</button>
+
+<button class="scroll-btn" onclick="scrollRow('sidesRow', 300)" style="margin-top: 0px;">
+<i class="fa fa-chevron-right"></i>
+</button>
+</div>
+  <!--fourth listing row -->
+  <div class="d-flex overflow-auto gap-3 pb-3" id="sidesRow">
+    </div>
+  </div>
+  <!--End of food listing cards-->
+
+ 
+<!-- About & Contact Section -->
+<div class="container my-5" style="margin-top: 80px;">
+  <div class="row justify-content-center g-4">
+    <!-- About Us -->
+   <div class="col-md-6">
+  <div class="card about-card p-4 h-100" 
+       style="cursor: pointer;">
+
+    <div class="d-flex align-items-start">
+      <i class="bi bi-headset fs-1 text-primary me-3"></i>
+
+      <div class="contact-content w-100">
+        <span><h5 style="color:#670680;font-weight:bolder; font-size:25px;">About Us</h5><i class="fa-solid fa-customer-support"></i></span>
+
+        <!-- SCROLL WRAPPER -->
+        <div class="about-scroll-wrapper">
+          <div class="about-scroll-content" >
+            <p class="mb-2 fw-semibold">Helemays Foods Limited</p>
+            <p class="mb-2">Helemays Foods is the best in town.</p>
+            <p class="mb-2">We deliver fresh, premium quality meals daily.</p>
+            <p class="mb-0">Your satisfaction is our top priority.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Contact Us -->
+    <div class="col-md-6">
+      <div class="card  p-4  h-100" style="cursor: pointer; background:#670680;" style="cursor: pointer;"
+       data-bs-toggle="modal" 
+       data-bs-target="#contactModal">
+        <div class="d-flex align-items-center">
+          <i class="bi bi-headset fs-1 text-primary me-3"></i>
+          <div class="contact-content">
+            
+            <h5 class="card-title mb-2" id="support" style="font-size:25px;font-weight:bold;">Support</h5>
+            <p  class="  card-text mb-1"style="color: #ffffff;" ><strong><span><i class="fa-solid fa-location-dot"  ></i></span></strong> Helemays Foods, Accra, East Legon</p>
+            <p class="card-text mb-1"style="color: #ffffff;" ><strong><span><i class="fa-solid fa-phone" ></i></span></strong> +233 59 3189155</p>
+            <p class="card-text" style="color: #ffffff;" ><strong><span><i class="fa-solid fa-message"  ></i></span></strong> support@helemaysFoods.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="location"><span><i class="fa-solid fa-location-dot"style="cursor: pointer;" onclick="openMap()" ></i><br>LIVE LOCATION TO OUR RESTAURANT</span>
+   </div>
+
+<!--image slides for show room or lobby-->
+<div class="container my-5">
+  <div id="heroCarousel" class="carousel slide rounded shadow-lg" data-bs-ride="carousel" data-bs-interval="6000" style="overflow:hidden; background: rgb(255, 255, 255);">
+    <div class="carousel-inner">
+
+      <div class="carousel-item active">
+        <div class="d-flex align-items-center" style="height: 300px;">
+          <!-- Header Text Side -->
+          <div class="w-50 p-4" style="background-color: #ffffff; color:rgb(17, 16, 16); border-radius: 10px 0 0 10px;">
+            <h2 class="fw-bold">We host the best culinary experience</h2>
+            <p>Beautiful serene Dinning Area</p>
+          </div>
+      <!-- Image Side -->
+          <div class="w-50">
+            <img src="./images/food1.png" class="img-fluid rounded-end" alt="Hero Image 1">
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="d-flex align-items-center" style="height: 300px;">
+          <div class="w-50 p-4">
+            <h2 class="fw-bold">Step into Excellence</h2>
+            <p>Premium shoes crafted for every occasion.</p>
+          </div>
+          <div class="w-50">
+            <img src="./images/food1.png" class="img-fluid rounded" alt="Hero Image 2">
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-item">
+        <div class="d-flex align-items-center" style="height: 300px;">
+          <div class="w-50 p-4">
+            <h2 class="fw-bold">Step into Excellence</h2>
+            <p>Premium shoes crafted for every occasion.</p>
+          </div>
+          <div class="w-50">
+            <img src="./images/food2.png" class="img-fluid rounded" alt="Hero Image 2">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- WhatsApp Sticky Button -->
+<a 
+  href="https://wa.me/233593189155?text=Hello%20Helemays%2C%20I%20need%20help%20with%20your%20website."
+  class="whatsapp-button" 
+  target="_blank"
+>
+  <i class="fa-brands fa-whatsapp"></i> Helemays
+</a>
+<!--sticky cart on the screen-->
+<div id="cartBadgeContainer" class=" position-fixed bottom-0 end-0 m-3 p-3  d-flex align-items-center d-none " style="cursor:pointer; z-index:9999; ">
+  <i class="fas fa-shopping-cart fa-2x me-2"></i>
+  <div class="d-flex flex-column" id="stickyCart">
+    <span id="cartItemCount" class="fw-bold">0 items</span>
+    <span class="cartTotal"  id="stickyCartTotal" class="text-muted">GHS 0</span>
+    <span class="cart-add-animation" id="cartAddAnimation">Added!</span>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer  text-light pt-5" style="width: auto;">
+  <div class="container" style="width: 100%;">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <h5 class="fw-bold">HELEMAYS FOODS</h5>
+        <p class=" small text-white">The Culinary services in the city</p>
+      </div>
+      <!--link-->
+      <div class="col-md-2 col-6">
+        <h6 class="fw-semibold">HELEMAYS FOODS</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="footer-link">Careers</a></li>
+          <li><a href="#" class="footer-link">Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-md-2 col-6">
+        <h6 class="fw-semibold">Support</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="footer-link">Privacy Policy</a></li>
+          <li><a href="#" class="footer-link">Help Center</a></li>
+          <li><a href="#" class="footer-link">Terms</a></li>
+        </ul>
+      </div>
+      <!--contact-->
+      <div class="col-md-4">
+        <h6 class="fw-semibold">Contact</h6>
+        <p class="small text-white mb-2"><i class="fa-solid fa-envelope"></i>frimpongdizzle@gmail.com</p>
+        <div class="d-flex gap-3" style="justify-content: center;">
+          <a href="#" class="social-icon"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" class="social-icon"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#" class="social-icon"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" class="social-icon"><i class="fa-brands fa-snapchat"></i></a>
+
+        </div>
+      </div>
+    </div>
+    <hr class="border-secondary my-4">
+    <div class="text-center small text-white pb-3">2026 Helemays Foods. All rights reserved.</div>
+        <div class="text-center small text-white pb-3">Developed by Kwaku Frimpong</div>
+    </div>
+</footer>
+
+<!--mobile view sticky menu -->
+<div class=" bg-warning text-dark text-center py-2" id="mobileview-sticky">
+  <strong><span> <i class="fa-solid  fa-shopping-cart"></i> </span><span><i class="fa-solid fa-search"></i></span><span><i class="fa-solid fa-phone"></i></span>
+  <span><i class="fa-solid fa-home"></i></span></strong>
+</div>
+
+<!-- User modal at the beginning of the page-->
+<div class="modal fade" style="margin-top: 140px;" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userModalLabel" style="color: #670680;font-weight: bold; font-size: large; font-style: italic;justify-content: center;align-items: center;">HELEMAYS FOODS LTD</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="userForm">
+                    <div class="mb-3" id ="input-group-modern">
+                      <input type="text" class="form-control" id="userName" required>
+                        <label for="userName" >Enter Your Name</label>
+                        
+                    </div>
+                    <div class="mb-3" id="input-group-modern">
+                      <input type="email" class="form-control" id="userEmail" required>
+                        <label for="userEmail" class="form-label">Enter Your Email</label>
+                        
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100" id="userdetails">Submit</button><!--google sheet on how to make more attraction on tthe internet -->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--search modal // update modal to hold in three cards per line-->
+<div class="modal fade" id="searchModal">
+  <div class="modal-dialog modal-fullscreen-lg-down"style="background:#ffffff;border-radius:5px;">
+    
+    
+
+
+    <div class="modal-content search-modal">
+<!-- Sticky header -->
+      <div class="modal-header">
+        <input type="text" id="searchInput" class="search" placeholder="Craving for...." style="height: 40px;width: 120px;">
+        <button class="btn-close ms-2" data-bs-dismiss="modal"></button>
+      </div>
+<!-- Sticky categories row -->
+      <div class="px-3 py-2 d-flex gap-2 overflow-auto category-row">
+        <div class="category text-center">
+          <button class="btn category-btn active" data-category="all"><i class="fa-solid fa-bars"></i></button>
+          <br><small>All category</small>
+        </div>
+        <div class="category text-center">
+          <button class="btn category-btn " data-category="local"><i class="fa-solid fa-mug-hot"></i></button>
+          <br><small>Breakfast</small>
+        </div>
+        <div class="category text-center">
+          <button class="btn category-btn " data-category="breakfast"><i class="fa-solid fa-bowl-food"></i></button>
+          <br><small style="color: #9c04c2;">Starters</small>
+        </div>
+        <div class="category text-center">
+          <button class="btn category-btn " data-category="maindish"><i class="fa-solid fa-utensils"></i></button>
+          <br><small>Main course</small>
+        </div>
+        <div class="category text-center">
+          <button class="btn category-btn" data-category="side"><i class="fa-solid fa-bowl-food"></i></button>
+          <br><small>Sides</small>
+        </div>
+        <div class="category text-center">
+          <button class="btn category-btn" data-category="wings"><i class="fa-solid fa-mug-hot"></i></button>
+          <br><small>Drinks</small>
+        </div>
+      </div>
+<!-- Scrollable modal body -->
+      <div class="modal-body search-modal-body">
+        <div class="row" id="searchFoodRow"></div>
+      </div>
+<!-- Optional sticky footer -->
+      <div class="modal-footer sticky-footer">
+        <!-- Footer content here -->
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--checkout modal-->
+<div class="modal fade" id="checkoutModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content p-3">
+
+      <!-- HEADER -->
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold">Checkout</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+
+        <!-- ✅ HIDDEN INPUTS// toggle mode to select like the pull or move on the selection no the just the own  -->
+        <input type="hidden" id="deliveryType" value="Pickup">
+        <input type="hidden" id="paymentMethod" value="Cash on Delivery">
+
+        <!-- NAME + PHONE -->
+        <div class="row g-2 mb-3">
+          <div class="col-12 col-md-6">
+            <div class="form-floating">
+              <input type="text" id="custName" class="form-control" placeholder="Full Name">
+              <label for="custName" style="color:green;">Full Name</label>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <div class="form-floating">
+              <input type="text" id="custPhone" class="form-control" placeholder="Phone Number">
+              <label for="custPhone" style="color:green;">Phone Number</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- delivery type-->
+        <label class="fw-semibold mb-1 small " style="color: green;">Delivery Type</label>
+        <div class="d-flex gap-2 mb-3">
+          <button type="button" class="btn btn-outline-dark flex-fill active" id="pickupBtn">Pickup</button>
+          <button type="button" class="btn btn-outline-dark flex-fill" id="deliveryBtn">Delivery</button>
+        </div>
+        
+
+       <!-- PAYMENT METHOD// make payment method sync with real payment option -->
+        <!--how to make the toggle more intuitive by selecting the driving the toggle-->
+        <!--how to make the toggle look more attractive and modern structure-->
+        <label class="fw-semibold mb-1 small " style="color: green;">Payment Method</label>
+        <div class="d-flex gap-2 mb-3">
+          <button type="button" class="btn btn-outline-dark flex-fill active" id="codBtn">Cash</button>
+          <button type="button" class="btn btn-outline-dark flex-fill" id="momoBtn">MoMo</button>
+        </div>
+         <!--delivery address-->
+        <div class="form-floating mb-3">
+          <textarea id="custAddress" class="form-control" placeholder="Delivery Address" style="height: 80px"></textarea>
+          <label for="custAddress" style="color:green;">Delivery Address</label>
+        </div>
+
+        <!-- NOTE -->
+        <div class="form-floating">
+          <textarea id="orderNote" class="form-control" placeholder="Order note" style="height: 70px"></textarea>
+          <label for="orderNote" style="color:green ;">Order note (optional)</label>
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer border-0 pt-0">
+        <button type="button" class="btn btn-dark w-100 py-2 fw-bold" id="checkoutWhatsApp">
+          Place Order →
+        </button>
+      </div>
+
+    </div>
+  </div> 
+</div>
+
+
+
+<!-- Order Confirmation Modal -->
+<!-- Order Confirmation Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content confirm-modern">
+
+      <!-- HEADER -->
+      <div class="modal-header border-0">
+        <div>
+          <h5 class="fw-bold mb-0" id="confirmationHeader" style="justify-content: center; color: #680481;text-align: center; margin-left: 150px; font-size: xx-large;font-weight: bolder;">Helemays Order Confirmation</h5>
+          <small class="text-muted" style="color:green; font-weight: bolder;font-size: larger; margin-top: 0px;">
+            Invoice: <span style="color: rgb(156, 2, 2);" id="confirmInvoice"></span>
+          </small>
+        </div>
+        <button class="btn-close" style="color: red;" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+
+        <!-- Order Meta -->
+        <div class="confirm-meta mb-4">
+          <div class="meta-item">
+            <span class="meta-label" style="color:rgb(8, 8, 8); margin-top: 0px;">Order Time</span>
+            <span id="confirmTime" style="color:rgb(10, 10, 10);"></span>
+          </div>
+        </div>
+
+        <!-- Customer Details -->
+        <div class="confirm-section">
+          <h6 class="section-title" style="color: black;font-size: large;font-weight: bold; justify-content: center;text-align: center;margin-left: 40px;">Customer Details</h6>
+
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <div class="confirm-card">
+                <span class="card-label">Name</span>
+                <span class="label-value" id="confirmName"></span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="confirm-card">
+                <span class="card-label">Phone</span>
+                <span class="label-value" id="confirmPhone"></span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="confirm-card">
+                <span class="card-label">Delivery</span>
+                <span class="label-value" id="confirmDelivery"></span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="confirm-card">
+                <span class="card-label">Payment</span>
+                <span class="label-value" id="confirmPayment"></span>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="confirm-card">
+                <span class="card-label">Address</span>
+                <span class="label-value" id="confirmAddress"></span>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="confirm-card">
+                <span class="card-label">Note</span>
+                <span class="label-value" id="confirmNote"></span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ORDER ITEMS -->
+        <div class="confirm-section mt-4">
+          <h6 class="section-title" style="color:black;font-weight: bolder;justify-content: center;text-align: center;font-size: large;">Order Items</h6>
+
+          <div class="confirm-items" style="color: #270230; font-weight: bold;" id="confirmItems"></div>
+        </div>
+
+      </div>
+
+      <!-- FOOTER//-->
+      <div class="modal-footer confirm-footer">
+
+        <div class="confirm-total">
+          Total: GHS
+          <span style="color: rgb(2, 83, 2);" id="confirmTotal"></span>
+        </div>
+
+        <button class="btn btn-success confirm-buy-btn" id="buyBtn">
+          Place Order
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- cart modal -->
+<div class="modal fade" id="cartModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content cart-modal">
+
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold">
+          🛒 Your Cart
+          <span class="cart-count badge bg-danger ms-2" id="cartHeaderCount">0</span>
+        </h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div id="cartItems" class="cart-items"></div>
+
+        <!-- Empty state -->
+        <p id="emptyCartText" class="text-center text-muted d-none">
+          Your cart is empty
+        </p>
+      </div>
+
+      <div class="modal-footer flex-column border-0">
+        <div class="w-100 d-flex justify-content-between align-items-center mb-3">
+          <span class="fw-bold" >Total</span>
+          <span class="fw-bold fs-5"> <span id="modalCartTotal">0</span></span>
+        </div>
+
+        <div class="w-100 d-flex gap-2">
+          <button class="btn btn-outline-danger w-50" onclick="clearCart()"><!--give it an id and later add eventlistener in js-->
+            <i class="fas fa-trash"></i> Clear Cart
+          </button>
+
+          <button class="btn btn-success w-50" id="checkoutBtn">
+  Checkout
+</button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- Contact Modal -->
+<div class="modal fade " id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="contactModalLabel">Helemays Customer services</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="contactForm">
+          <div class="mb-3">
+            <label for="contactName" class="form-label">Your Name</label>
+            <input type="text" class="form-control" id="contactName" required>
+          </div>
+          <div class="mb-3">
+            <label for="contactEmail" class="form-label">Your Email</label>
+            <input type="email" class="form-control" id="contactEmail" required>
+          </div>
+           <div class="mb-3">
+            <label for="contactEmail" class="form-label">Your Contact</label>
+            <input type="text" class="form-control" id="contactNumber" required>
+          </div>
+          <div class="mb-3">
+            <label for="contactMessage" class="form-label">Your Message</label>
+            <textarea class="form-control" id="contactMessage" rows="4" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Talk to helemay</button><!--send details to google sheet for references later -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--product modal-->
+
+
+<!-- Bootstrap JS and Dependencies -->
+<script src="./Assests/js/bootstrap.bundle.min.js"></script>
+<script src="./js/js1.js"></script>
+
+
+</body>
+</html>
