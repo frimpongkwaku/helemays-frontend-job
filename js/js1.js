@@ -8,11 +8,11 @@ function isValidEmail(email) {
 }
 
 const products =[// item arrays// this product is for admin backend
-{id:"local1", name:"Waakye",price:90,description:"the best waakye in the city",category:"local1",},
-{id:"local2", name:"jollof",price:876,description:" The best jollof in the city",category:"local2"},
-{id:"local3", name:"Ampesie",price:457,description:"The best in the city",category:"local1"},
-{id:"local4", name:"fufu",price:345,description:"hello this is best food in the city",category:"local2"},
-{id:"local5", name:"Banku",price:45,description:"hello this is best food in the city",category:"breakfast"},
+{id:"local1", name:"Waakye",price:1,description:"the best waakye in the city",category:"local1",},
+{id:"local2", name:"jollof",price:1,description:" The best jollof in the city",category:"local2"},
+{id:"local3", name:"Ampesie",price:1,description:"The best in the city",category:"local1"},
+{id:"local4", name:"fufu",price:1,description:"hello this is best food in the city",category:"local2"},
+{id:"local5", name:"Banku",price:1,description:"hello this is best food in the city",category:"breakfast"},
 {id:"local6", name:"Rice with beans",price:67,description:"this is best food in the city",category:"local1"},
 {id:"local7", name:"plain rice",price:87,description:"this is best food in the city",category:"local2"},
 {id:"local8", name:"brown rice",price:100,description:"YO this is best food in the city",category:"local1"},
@@ -438,7 +438,11 @@ buyBtn.onclick = async () => {
     }
 
     // auto-generate email for Paystack
-    let email = phone + "@helemays.com";
+    let email = document.getElementById("custEmail").value.trim();
+    if (!email || !email.includes("@")) {
+  alert("Please enter a valid email");
+  return;
+}
 
     // map cart to backend structure: items array with name, price, qty
     const items = cart.map(item => ({

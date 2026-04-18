@@ -130,8 +130,7 @@
 
   <!--my section-->
   <div class="container" id="MainDisheContainer">
- <div class=" text-start ps-3 py-2 d-flex align-items-center mb-4" 
-       style="color: #080808; border-radius: 8px;font-weight: bold; font-size:larger;">
+ <div class=" text-start ps-3 py-2 d-flex align-items-center mb-4" style="color: #080808; border-radius: 8px;font-weight: bold; font-size:larger;">
     <img src="./images/food1.png" style="width:50px;height:50px;"> <!-- Icon -->
        Helemays Foods ||     Starters <i class="fa fa-mug-hot"></i> 
   </div>
@@ -182,7 +181,7 @@
 
    <div class="d-flex overflow-auto g-3 pb-3" style="margin:0px" id="breakFastRow"></div>
     
-    <!--advert screens this shouldnt hard coded// all the advert shouldnt be hard coded-->
+    <!--Advert should be dynamic with admin cruud system// advert screens to display in each sub categories in th-->
     
     <div class="row g-3" style="margin-bottom: 10px;margin-top:30px;">
            <div  class="advert">ADVERT SCREENS</div>
@@ -212,6 +211,7 @@
 
       </div>
     </div>
+
     <div class="col-3">
       
       <div class="card shadow-sm border-0"style="border-radius 15px; overflow: hidden;">
@@ -543,6 +543,15 @@
             </div>
           </div>
         </div>
+
+        <!--email address-->
+
+        <div class="col-12 col-md-6">
+            <div class="form-floating">
+              <input type="email" id="custEmail" class="form-control" placeholder="Enter your email" required>
+              <label for="custPhone" style="color:green;">email Address</label>
+            </div>
+          </div>
 
         <!-- delivery type-->
         <label class="fw-semibold mb-1 small " style="color: green;">Delivery Type</label>
