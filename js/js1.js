@@ -1,4 +1,29 @@
 // the first apperearing user modal and greeting handler
+// connecting socket to my front end server
+// ==========================
+// 🔌 SOCKET CONNECTION
+// ==========================
+const socket = io("https://storebackend-production-f58c.up.railway.app");
+socket.on("connect", () => {
+  console.log("🟢 User connected:", socket.id);
+
+  // ✅ REJOIN ROOM AFTER REFRESH / PAYMENT RETURN
+  const orderId = localStorage.getItem("currentOrderId");
+
+  if (orderId) {
+    socket.emit("join-order", orderId);
+    console.log("✅ Rejoined order:", orderId);
+    loadMessages();
+  }
+});
+
+
+socket.on("receive-message", (data) => {
+  console.log("📩 New message:", data);
+
+  addMessageToUI(data);
+});
+
 
 let userModal; 
 let greeting;
@@ -7,7 +32,7 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-const products =[// item arrays// this product is for admin backend
+const products =[// item arrays// this product is for admin backend// use create data through admin to post this data
 {id:"local1", name:"Waakye",price:1,description:"the best waakye in the city",category:"local1",},
 {id:"local2", name:"jollof",price:1,description:" The best jollof in the city",category:"local2"},
 {id:"local3", name:"Ampesie",price:1,description:"The best in the city",category:"local1"},
@@ -216,15 +241,7 @@ function renderCart() {
   cartheaderCount.textContent=itemCount;
 
   console.log("Cart updated:", itemCount, "items | Total:", total);
-
-
 }
-
-
-
-
-  
-
 
 //helpers
 
@@ -461,10 +478,18 @@ buyBtn.onclick = async () => {
     const response = await fetch("https://storebackend-production-f58c.up.railway.app/api/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload)//payloads
     });
 
     const data = await response.json();
+
+    const orderId = data.orderId; // make sure backend returns this
+
+// join chat room for this order
+socket.emit("join-order", orderId);
+
+// store for later messaging
+localStorage.setItem("currentOrderId", orderId);
 
     if (!data.authorization_url) {
       alert("Payment initialization failed");
@@ -697,7 +722,7 @@ render("sides","sidesRow");
     e.preventDefault();
     const name = userNameInput.value.trim();
     const email = userEmailInput.value.trim();
-
+// if statement to  check the validation of the email 
     if (name && email && isValidEmail(email)) {
       localStorage.setItem('userName', name);
       localStorage.setItem('userEmail', email);
@@ -733,7 +758,7 @@ function greetUser() {
 }
 
 
-// hiding sticky on a page using scroll top and down 
+// scroll function 
 let lastScrollTop = 0;
 const whatsappButton = document.querySelector('.whatsapp-button');
 
@@ -757,7 +782,7 @@ function openMap(){ // how to design a beautiful online front end and also make 
   const destination ="5.6037,-0.1870";// why this numbers 
   if(navigator.geolocation){// 
         navigator.geolocation.getCurrentPosition(pos=>{
-      const lat= pos.coords.latitude;
+      const lat= pos.coords.latitude;// connecting map to the backend to access google maps using extension 
       const lng = pos.coords.longitude;
       const url=`https://www.google.com/maps/dir/${lat},${lng}/${destination}`;
       window.open(url,"blank");
@@ -846,3 +871,69 @@ function stopScroll() {
 row.addEventListener("mouseenter", stopScroll);
 row.addEventListener("mouseleave", startScroll);
 startScroll();
+
+// ==========================
+// 💬 CHAT FUNCTIONS
+// ==========================
+
+function sendMessage(message) {
+  const orderId = localStorage.getItem("currentOrderId");
+
+  if (!orderId) {
+    console.error("No orderId found");
+    return;
+  }
+
+  // show instantly in UI
+  addMessageToUI({ message, sender: "user" });
+
+  socket.emit("send-message", {
+    orderId,
+    message,
+    sender: "user"
+  });
+}
+
+async function loadMessages() {
+  const orderId = localStorage.getItem("currentOrderId");
+  if (!orderId) return;
+
+  const chatBox = document.getElementById("userChatBox");
+  if (chatBox) chatBox.innerHTML = "";
+
+  try {
+    const res = await fetch(`https://storebackend-production-f58c.up.railway.app/api/messages/${orderId}`);
+    const messages = await res.json();
+
+    messages.forEach(msg => addMessageToUI(msg));
+  } catch (err) {
+    console.error("Failed to load messages:", err);
+  }
+}
+
+document.getElementById("userSendBtn").addEventListener("click", () => {
+  const input = document.getElementById("userChatInput");
+
+  if (!input.value) return;
+
+  sendMessage(input.value);
+  input.value = "";
+});
+
+function addMessageToUI({ message, sender }) {
+  const chatBox = document.getElementById("userChatBox");
+
+  const div = document.createElement("div");
+  div.className = sender === "user" ? "msg user" : "msg admin";
+
+  div.innerText = message;
+
+  chatBox.appendChild(div);
+
+  // 🔥 auto scroll
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// refactor this code to make more moduler form 
+// refactor to react front end 
+// refactor to react native and to android and ios mobile version
