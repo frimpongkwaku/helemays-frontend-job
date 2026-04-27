@@ -3,7 +3,7 @@
 // ==========================
 // 🔌 SOCKET CONNECTION
 // ==========================
-const socket = io("https://storebackend-production-f58c.up.railway.app");
+/*const socket = io("https://storebackend-production-f58c.up.railway.app");
 socket.on("connect", () => {
   console.log("🟢 User connected:", socket.id);
 
@@ -22,7 +22,7 @@ socket.on("receive-message", (data) => {
   console.log("📩 New message:", data);
 
   addMessageToUI(data);
-});
+});*/
 
 
 let userModal; 
