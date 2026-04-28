@@ -3,26 +3,35 @@
 // ==========================
 // 🔌 SOCKET CONNECTION
 // ==========================
-/*const socket = io("https://storebackend-production-f58c.up.railway.app");
-socket.on("connect", () => {
-  console.log("🟢 User connected:", socket.id);
+// 🔌 SOCKET CONNECTION (ONLY ONCE)
+const socket = io("https://storebackend-production-f58c.up.railway.app", {
+  transports: ["websocket"],
+  reconnection: true,
+  reconnectionAttempts: 10,
+  reconnectionDelay: 1000
+});
 
-  // ✅ REJOIN ROOM AFTER REFRESH / PAYMENT RETURN
+// 🧠 GLOBAL STATE
+socket.on("connect", () => {
+  console.log("🟢 connected:", socket.id);
+
   const orderId = localStorage.getItem("currentOrderId");
 
   if (orderId) {
     socket.emit("join-order", orderId);
-    console.log("✅ Rejoined order:", orderId);
-    loadMessages();
+    loadMessages(); // load old chat
   }
 });
-
-
 socket.on("receive-message", (data) => {
-  console.log("📩 New message:", data);
+  console.log("📩 message received:", data);
 
   addMessageToUI(data);
-});*/
+});
+socket.on("disconnect", () => {
+  console.log("🔴 disconnected");
+});
+
+const seenMessages = new Set();
 
 
 let userModal; 
@@ -134,8 +143,46 @@ modal.show();
   },500);
 }
 
+// message ui 
+function addMessageToUI({ message, sender }) {
+  const chatBox = document.getElementById("userChatBox");
+  if (!chatBox) return;
 
+  const div = document.createElement("div");
+  div.className = sender === "user" ? "msg user" : "msg admin";
 
+  div.innerText = message;
+
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function sendMessage(message) {
+  const orderId = localStorage.getItem("currentOrderId");
+
+  if (!orderId) return;
+
+  addMessageToUI({ message, sender: "user" });
+
+  socket.emit("send-message", {
+    orderId,
+    message,
+    sender: "user"
+  });
+}
+
+async function loadMessages() {
+  const orderId = localStorage.getItem("currentOrderId");
+  if (!orderId) return;
+
+  const chatBox = document.getElementById("userChatBox");
+  if (chatBox) chatBox.innerHTML = "";
+
+  const res = await fetch(`/api/messages/${orderId}`);
+  const messages = await res.json();
+
+  messages.forEach(addMessageToUI);
+}
 
 const scrollBox = document.querySelector(".about-scroll-wrapper");
 const scrollContent = document.querySelector(".about-scroll-content");
@@ -341,6 +388,22 @@ const userForm = document.getElementById('userForm');
 const searchInput = document.getElementById("searchInput");
 const searchRow = document.getElementById("searchFoodRow");
 let activeCategory ="all";// breaking down from the all elements// debugging the entire search block of codes
+
+// socket message ui 
+function addMessageToUI(data) {
+  const chatBox = document.getElementById("chatBox");
+
+  const div = document.createElement("div");
+  div.classList.add("message");
+
+  div.innerHTML = `
+    <div class="bubble">${data.message}</div>
+  `;
+
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
 //render search modal results
 function renderSearch(){
   const search = searchInput.value.toLowerCase();
@@ -379,7 +442,6 @@ function renderSearch(){
     searchRow.innerHTML= `<p class="text-center text-muted">no food found</p>`;
   }
 };
-// scroll page when arrow is clicked
 
 
 // checkout function for cart confirmation
@@ -473,7 +535,7 @@ buyBtn.onclick = async () => {
       customer: { name, email, phone }
     };
 
-    console.log("Payload to backend:", payload); // debug
+    console.log("Payload to backend:", payload); // debug the payload with console
 
     const response = await fetch("https://storebackend-production-f58c.up.railway.app/api/orders", {
       method: "POST",
@@ -578,8 +640,8 @@ confirmModal= confirmModalEl? new bootstrap.Modal(confirmModalEl) : null;
 const checkoutBtn = document.getElementById("checkoutBtn");
 
 if (checkoutBtn) {
-  checkoutBtn.addEventListener("click", () => {
-    if (cart.length === 0) {
+  checkoutBtn.addEventListener("click", () => {     
+    if (cart.length === 0) {  
       alert("Your cart is empty");
       return;
     }
@@ -736,13 +798,13 @@ render("sides","sidesRow");
     }
   });
   greetUser();
-});
+}); 
 // greeting function 
 function greetUser() {
   const storedName = localStorage.getItem('userName');
 
   let hour = new Date().getHours();
-  let greet;
+  let greet;    
 
   if (hour < 11) greet = "Good morning";
   else if (hour < 18) greet = "Good afternoon";
@@ -876,40 +938,9 @@ startScroll();
 // 💬 CHAT FUNCTIONS
 // ==========================
 
-function sendMessage(message) {
-  const orderId = localStorage.getItem("currentOrderId");
 
-  if (!orderId) {
-    console.error("No orderId found");
-    return;
-  }
 
-  // show instantly in UI
-  addMessageToUI({ message, sender: "user" });
 
-  socket.emit("send-message", {
-    orderId,
-    message,
-    sender: "user"
-  });
-}
-
-async function loadMessages() {
-  const orderId = localStorage.getItem("currentOrderId");
-  if (!orderId) return;
-
-  const chatBox = document.getElementById("userChatBox");
-  if (chatBox) chatBox.innerHTML = "";
-
-  try {
-    const res = await fetch(`https://storebackend-production-f58c.up.railway.app/api/messages/${orderId}`);
-    const messages = await res.json();
-
-    messages.forEach(msg => addMessageToUI(msg));
-  } catch (err) {
-    console.error("Failed to load messages:", err);
-  }
-}
 
 document.getElementById("userSendBtn").addEventListener("click", () => {
   const input = document.getElementById("userChatInput");
@@ -920,19 +951,7 @@ document.getElementById("userSendBtn").addEventListener("click", () => {
   input.value = "";
 });
 
-function addMessageToUI({ message, sender }) {
-  const chatBox = document.getElementById("userChatBox");
 
-  const div = document.createElement("div");
-  div.className = sender === "user" ? "msg user" : "msg admin";
-
-  div.innerText = message;
-
-  chatBox.appendChild(div);
-
-  // 🔥 auto scroll
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
 
 // refactor this code to make more moduler form 
 // refactor to react front end 

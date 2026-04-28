@@ -1380,3 +1380,231 @@ font-weight:600;
 .confirm-met{
   margin-top: 0px;
 }
+
+/* =========================
+   🔥 UI CLEANUP + CARD SYSTEM
+   ========================= */
+
+/* 1. Reset heavy global card shadow */
+.card {
+  border-radius: 14px !important;
+  border: none !important;
+  box-shadow: none !important;
+  transition: all 0.25s ease;
+}
+
+/* 2. Parent section cards (for your rows container) */
+.section-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 20px;
+
+  /* soft floating shadow */
+  box-shadow: 0 15px 20px rgba(0, 0, 0, 0.06);
+
+  /* smooth transitions */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  /* initial animation */
+  animation: fadeUp 0.5s ease-in-out;
+}
+
+/* hover floating effect */
+.section-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* entrance animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* subtle light overlay (premium feel) */
+.section-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  
+  pointer-events: none;
+}
+
+/* fix positioning */
+.section-card {
+  position: relative;
+}
+
+/* 3. Product cards (inside rows) */
+.product-card {
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: 0.25s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+}
+
+/* 4. Advert cards (lighter) */
+.advert .card {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04) !important;
+  border-radius: 12px;
+}
+
+/* 5. Scroll rows (replace all your repeated scrollbar rules) */
+.scroll-row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+}
+
+/* hide scrollbar cleanly */
+.scroll-row::-webkit-scrollbar {
+  display: none;
+}
+.scroll-row {
+  scrollbar-width: none;
+}
+
+/* 6. Scroll buttons (clean modern look) */
+.scroll-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #333;
+  border: none;
+
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  transition: all 0.2s ease;
+}
+
+.scroll-btn:hover {
+  background: #f5f5f5;
+  transform: translateY(-2px);
+}
+
+/* 7. Improve spacing inside rows */
+#localFoodsRow,
+#localFoodsRow2,
+#breakFastRow,
+#mainDishRow,
+#sidesRow {
+  gap: 12px !important;
+}
+
+/* 8. Make cards feel lighter on mobile */
+@media (max-width: 576px) {
+  .section-card {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .product-card {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+}
+
+/* 9. OPTIONAL: subtle hover for all cards */
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.section-divider-animated {
+  height: 3px;
+  width: 120px;
+  border-radius: 10px;
+
+  background: linear-gradient(90deg, #670680, #ff6a00, #ffd000, #670680);
+  background-size: 300% 100%;
+
+  animation: moveGradient 3s linear infinite;
+  margin-top: 6px;
+}
+
+@keyframes moveGradient {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}   
+.d-flex.overflow-auto {
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE/Edge */
+}
+
+.d-flex.overflow-auto::-webkit-scrollbar {
+  display: none;               /* Chrome/Safari */
+} 
+
+.right-mini-sidebar {
+  position: fixed;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  z-index: 9999;
+}
+
+/* each small box */
+.side-box {
+  width: 55px;
+  height: 55px;
+
+  background: linear-gradient(145deg, #5a189a, #9d4edd);
+  color: white;
+
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+/* hover floating effect */
+.side-box:hover {
+  transform: translateX(-6px) scale(1.05);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+}
+
+/* icon style */
+.side-box i {
+  font-size: 18px;
+}
+
+/* text under icon */
+.side-box span {
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+/* small badge */
+.side-box small {
+  font-size: 9px;
+  background: white;
+  color: #5a189a;
+  padding: 1px 5px;
+  border-radius: 10px;
+  margin-top: 2px;
+}
