@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Order</title>
+
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      display: flex;
+      height: 100vh;
+    }
+
+    /* LEFT PANEL - ORDER DETAILS */
+    .order-panel {
+      width: 35%;
+      background: white;
+      padding: 20px;
+      border-right: 1px solid #e6e6e6;
+      overflow-y: auto;
+    }
+
+    .order-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .status {
+      padding: 6px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      font-size: 12px;
+      margin-bottom: 20px;
+    }
+
+    .status.pending { background: #fff3cd; color: #856404; }
+    .status.completed { background: #d4edda; color: #155724; }
+
+    .order-card {
+      background: #fafafa;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    /* RIGHT PANEL - CHAT */
+    .chat-panel {
+      width: 65%;
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+    }
+
+    .chat-header {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      font-weight: bold;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .msg {
+      max-width: 60%;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .user {
+      background: #007bff;
+      color: white;
+      align-self: flex-end;
+    }
+
+    .admin {
+      background: #e9ecef;
+      align-self: flex-start;
+    }
+
+    .chat-input {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #eee;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .chat-input button {
+      margin-left: 10px;
+      padding: 10px 15px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ORDER DETAILS -->
+  <div class="order-panel">
+    <div class="order-title">My Order</div>
+
+    <div id="orderStatus" class="status pending">Pending</div>
+
+    <div class="order-card">
+      <strong>Order ID:</strong>
+      <div id="orderId">Loading...</div>
+    </div>
+
+    <div class="order-card">
+      <strong>Total:</strong>
+      <div>₵ 0.00</div>
+    </div>
+  </div>
+
+  <!-- CHAT PANEL -->
+  <div class="chat-panel">
+
+    <div class="chat-header">
+      Order Chat Support
+    </div>
+
+    <div id="messages" class="messages"></div>
+
+    <div class="chat-input">
+      <input id="messageInput" placeholder="Type message..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+
+  </div>
+
+<script>
+  // =========================
+  // SOCKET CONNECTION
+  // =========================
+  const socket = io("http://localhost:5000");
+
+  // =========================
+  // GET ORDER ID FROM URL
+  // =========================
+  const params = new URLSearchParams(window.location.search);
+  const orderId = params.get("orderId");
+
+  document.getElementById("orderId").innerText = orderId;
+
+  // =========================
+  // JOIN ORDER ROOM
+  // =========================
+  socket.emit("join-order", orderId);
+
+  // =========================
+  // LOAD OLD MESSAGES
+  // =========================
+  fetch(`http://localhost:5000/api/messages/${orderId}`)
+    .then(res => res.json())
+    .then(data => {
+      data.forEach(addMessage);
+    });
+
+  // =========================
+  // RECEIVE LIVE MESSAGES
+  // =========================
+  socket.on("receive-message", (msg) => {
+    addMessage(msg);
+  });
+
+  // =========================
+  // SEND MESSAGE
+  // =========================
+  function sendMessage() {
+    const input = document.getElementById("messageInput");
+
+    if (!input.value.trim()) return;
+
+    socket.emit("send-message", {
+      orderId,
+      message: input.value,
+      sender: "user"
+    });
+
+    input.value = "";
+  }
+
+  // =========================
+  // RENDER MESSAGE
+  // =========================
+  function addMessage(msg) {
+    const div = document.createElement("div");
+
+    div.classList.add("msg");
+    div.classList.add(msg.sender);
+
+    div.innerText = msg.message;
+
+    document.getElementById("messages").appendChild(div);
+
+    document.getElementById("messages").scrollTop =
+      document.getElementById("messages").scrollHeight;
+  }
+</script>
+
+</body>
+</html>
