@@ -1,9 +1,24 @@
 // the first apperearing user modal and greeting handler
 // connecting socket to my front end server
 // ==========================
-// 🔌 SOCKET CONNECTION
+// 🚀 SOCKET CONNECTION
 // ==========================
-// 🔌 SOCKET CONNECTION (ONLY ONCE)
+// ==========================
+// 🚀 SOCKET CONNECTIONg
+// ==========================
+// ==========================
+// 💬 CHAT STATE
+// ==========================
+const seenMessages = new Set();
+const USER_ROLE = "user";
+
+const getOrderId = () =>
+  localStorage.getItem("currentOrderId") ||
+  new URLSearchParams(window.location.search).get("orderId");
+
+// ==========================
+// 🚀 SOCKET CONNECTION
+// ==========================
 const socket = io("https://storebackend-production-f58c.up.railway.app", {
   transports: ["websocket"],
   reconnection: true,
@@ -11,27 +26,103 @@ const socket = io("https://storebackend-production-f58c.up.railway.app", {
   reconnectionDelay: 1000
 });
 
-// 🧠 GLOBAL STATE
+// ==========================
+// 🔌 CONNECT
+// ==========================
 socket.on("connect", () => {
   console.log("🟢 connected:", socket.id);
 
-  const orderId = localStorage.getItem("currentOrderId");
+  const orderId = getOrderId();
+  if (!orderId) return;
 
-  if (orderId) {
-    socket.emit("join-order", orderId);
-    loadMessages(); // load old chat
-  }
+  socket.emit("join-order", { orderId });
+  loadMessages();
 });
+
+// ==========================
+// 📩 RECEIVE MESSAGE
+// ==========================
 socket.on("receive-message", (data) => {
-  console.log("📩 message received:", data);
+  const key = data._id || `${data.sender}-${data.message}`;
 
-  addMessageToUI(data);
-});
-socket.on("disconnect", () => {
-  console.log("🔴 disconnected");
+  if (seenMessages.has(key)) return;
+  seenMessages.add(key);
+
+  renderMessage(data);
 });
 
-const seenMessages = new Set();
+// ==========================
+// 💬 RENDER MESSAGE
+// ==========================
+function renderMessage(data) {
+  const chatBox = document.getElementById("userChatBox");
+  if (!chatBox) return;
+
+  const div = document.createElement("div");
+
+  const sender = data.senderRole || data.sender || "system";
+
+  if (sender === "admin") div.className = "msg admin";
+  else if (sender === "user") div.className = "msg user";
+  else div.className = "msg system";
+
+  div.textContent = data.message;
+
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// ==========================
+// 📤 SEND MESSAGE
+// ==========================
+function sendMessage(message) {
+  const orderId = getOrderId();
+  if (!orderId || !message) return;
+
+  const payload = {
+    orderId,
+    message,
+    sender: USER_ROLE,
+    senderRole: USER_ROLE,
+    senderName: localStorage.getItem("userName") || "Guest",
+    createdAt: new Date().toISOString()
+  };
+
+  // ✅ show instantly (optimistic UI)
+  renderMessage(payload);
+
+  socket.emit("send-message", payload);
+}
+
+// ==========================
+// 📥 LOAD HISTORY
+// ==========================
+async function loadMessages() {
+  const orderId = getOrderId();
+  if (!orderId) return;
+
+  const chatBox = document.getElementById("userChatBox");
+  if (chatBox) chatBox.innerHTML = "";
+
+  try {
+    const res = await fetch(
+      `https://storebackend-production-f58c.up.railway.app/api/messages/${orderId}`
+    );
+
+    const result = await res.json();
+    if (!result.success) return;
+
+    result.data.forEach((msg) => {
+      const key = msg._id || `${msg.sender}-${msg.message}`;
+      if (seenMessages.has(key)) return;
+
+      seenMessages.add(key);
+      renderMessage(msg);
+    });
+  } catch (err) {
+    console.error("Failed to load messages:", err);
+  }
+}
 
 
 let userModal; 
@@ -143,46 +234,6 @@ modal.show();
   },500);
 }
 
-// message ui 
-function addMessageToUI({ message, sender }) {
-  const chatBox = document.getElementById("userChatBox");
-  if (!chatBox) return;
-
-  const div = document.createElement("div");
-  div.className = sender === "user" ? "msg user" : "msg admin";
-
-  div.innerText = message;
-
-  chatBox.appendChild(div);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-function sendMessage(message) {
-  const orderId = localStorage.getItem("currentOrderId");
-
-  if (!orderId) return;
-
-  addMessageToUI({ message, sender: "user" });
-
-  socket.emit("send-message", {
-    orderId,
-    message,
-    sender: "user"
-  });
-}
-
-async function loadMessages() {
-  const orderId = localStorage.getItem("currentOrderId");
-  if (!orderId) return;
-
-  const chatBox = document.getElementById("userChatBox");
-  if (chatBox) chatBox.innerHTML = "";
-
-  const res = await fetch(`/api/messages/${orderId}`);
-  const messages = await res.json();
-
-  messages.forEach(addMessageToUI);
-}
 
 const scrollBox = document.querySelector(".about-scroll-wrapper");
 const scrollContent = document.querySelector(".about-scroll-content");
@@ -390,7 +441,7 @@ const searchRow = document.getElementById("searchFoodRow");
 let activeCategory ="all";// breaking down from the all elements// debugging the entire search block of codes
 
 // socket message ui 
-function addMessageToUI(data) {
+/*function addMessageToUI(data) {
   const chatBox = document.getElementById("chatBox");
 
   const div = document.createElement("div");
@@ -402,7 +453,7 @@ function addMessageToUI(data) {
 
   chatBox.appendChild(div);
   chatBox.scrollTop = chatBox.scrollHeight;
-}
+}*/  
 
 //render search modal results
 function renderSearch(){
@@ -548,7 +599,7 @@ buyBtn.onclick = async () => {
     const orderId = data.orderId; // make sure backend returns this
 
 // join chat room for this order
-socket.emit("join-order", orderId);
+socket.emit("join-order", { orderId }); 
 
 // store for later messaging
 localStorage.setItem("currentOrderId", orderId);
