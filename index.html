@@ -9,7 +9,7 @@
  <!--add cdn for icons later-->
  <link rel="stylesheet" href="./Assests/fontawesome/css/all.min.css">
   <link rel="stylesheet" href="./Assests/css/bootstrap.min.css">
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/style-cleaned.css">
  </head>
 
 <body>
@@ -20,7 +20,7 @@
 <!-- Top loader (for modal opening) -->
 <div id="loader" class="loader-overlay" style="background-color: rgba(15, 15, 15, 0.034);">
   <div class="loader-content text-center">
-    <img src="./images/food1.png" alt="Loading..." class="loader-logo mb-3">
+    <img src="./images/shoes.png" alt="Loading..." class="loader-logo mb-3">
     <div class="spinner-border text-success" style="width: 3rem; height: 3rem;color: rgb(108, 10, 138);" role="status">
       <span class="visually-hidden"></span>
     </div>
@@ -75,34 +75,28 @@
   </div>
 </div>
 
-<!-- Greeting section -->
+<!-- Greeting section
 <div class="container">
   <div class="chat-bubble" id="greeting">
     <p><strong>Hi, Guest!</strong><br>AKWAABA/OBAAKE to Helemays foods</p>
   </div>
-</div>
-<!--search section-->
-<div class ="container text-muted  "    data-bs-toggle="modal" data-bs-target="#searchModal" id="search" style="border-color: #670680; border-width: 2px;border-radius: 20px; box-shadow: #670680;" >
-<input class="form me-2 " type="readonly" placeholder="Craving for..." aria-label="Search" >
-</div>
+</div>-->
 
 
-
-
-<!-- Header Carousel // slinding header carousel-->
+<!-- Header Carousel
 <div class="container my-5" id="cauroselContainer">
   <div id="heroCarousel" class="carousel slide rounded shadow-lg " data-bs-ride="carousel" data-bs-interval="6000" style="overflow:hidden;box-shadow: color(rgb(118, 7, 170)); background: rgb(255, 255, 255);">
     <div class="carousel-inner">
 
       <div class="carousel-item active">
         <div class="d-flex align-items-center" style="height: 300px;background: white;">
-          <!-- Header Text Side -->
+          
           <div class="w-50 p-4" style="background-color: #f6f4f7de; color:rgb(30, 7, 58); border-radius: 10px 0 0 10px;">
             <h2 class="fw-bold">Welcome to the Home of best Dinning in the city </h2>
             <p style="background-color: white;">Discover comfort with the best culinary.</p>
           </div>
      
-          <!-- Image Side -->
+          
           <div class="w-50">
             <img src="./images/food1.png" class="img-fluid rounded-end" alt="Hero Image 1">
           </div>
@@ -125,149 +119,439 @@
     </div>
   </div>
 </div>
+-->
+
+<section class="shoe-hero">
+    <div class="shoe-hero-content">
+        <p class="hero-eyebrow">HANDCRAFTED IN GHANA</p>
+
+        <h1>
+            Crafted for
+            <span>every step.</span>
+        </h1>
+
+        <p class="hero-description">
+            Locally crafted leather footwear made with quality,
+            character and timeless style.
+        </p>
+
+        <a href="#featured-shoes" class="hero-btn">
+            Shop Collection
+            <span>→</span>
+        </a>
+    </div>
+
+    <div class="shoe-hero-image">
+        <img src="./images/sandals2.png" alt="Handcrafted leather shoe">
+    </div>
+</section>
+
+
+<div
+    class="premium-search"
+    data-bs-toggle="modal"
+    data-bs-target="#searchModal"
+    id="search"
+>
+    <div class="premium-search-left">
+        <div class="premium-search-icon">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+
+        <div class="premium-search-text">
+            <span>Find your perfect pair</span>
+            <small>Search shoes, loafers, sandals and more</small>
+        </div>
+    </div>
+
+    <div class="premium-search-action">
+        <span>Search</span>
+        <i class="fa-solid fa-arrow-right"></i>
+    </div>
+</div>
+<section class="shoe-categories">
+
+    <div class="categories-header">
+        <h5>Categories</h5>
+    </div>
+
+    <div class="categories-row">
+
+        <!-- Category -->
+        <div class="shoe-category" data-category="Formal">
+          <h3>All</h3>
+        </div>
+
+        <div class="shoe-category" data-category="Formal">
+            <div class="category-image">
+                <img src="./images/hero.png" alt="Formal Shoes">
+            </div>
+            <h3>Formal</h3>
+            <p>Classic & elegant</p>
+        </div>
+
+        <!-- Category -->
+        <div class="shoe-category" data-category="Loafers">
+            <div class="category-image">
+                <img src="./images/hero.png" alt="Loafers">
+            </div>
+            <h3>Loafers</h3>
+            <p>Effortless style</p>
+        </div>
+
+        <!-- Category -->
+        <div class="shoe-category" data-category="Casual">
+            <div class="category-image">
+                <img src="./images/hero.png" alt="Casual Shoes">
+            </div>
+            <h3>Casual</h3>
+            <p>Everyday comfort</p>
+        </div>
+
+        <!-- Category -->
+        <div class="shoe-category" data-category="Sandals">
+            <div class="category-image">
+                <img src="./images/hero.png" alt="Leather Sandals">
+            </div>
+            <h3>Sandals</h3>
+            <p>Relaxed leather</p>
+        </div>
+
+        <!-- Category -->
+        <div class="shoe-category" data-category="Boots">
+            <div class="category-image">
+                <img src="./images/hero.png" alt="Leather Boots">
+            </div>
+            <h3>Boots</h3>
+            <p>Built to last</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="featured-shoes">
+
+    <div class="featured-header">
+        <div>
+            <span class="featured-label">OUR COLLECTION</span>
+            <h2>Featured Shoes</h2>
+            <p>Discover our most loved handcrafted styles.</p>
+        </div>
+
+        <div class="featured-controls">
+            <button class="featured-prev" aria-label="Previous">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+
+            <button class="featured-next" aria-label="Next">
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+
+    <div class="featured-wrapper">
+
+        <div class="featured-track" id="featuredTrack">
+
+            <!-- Shoe 1 -->
+            <div class="featured-item">
+
+                <div class="featured-image">
+                    <span class="featured-badge">FEATURED</span>
+
+                    <button class="featured-wishlist">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+
+                    <img
+                        src="./images/ChatGPT_Image_Sep_8__2026__10_43_58_PM-removebg-preview.png"
+                        alt="Classic Leather Derby"
+                    >
+                </div>
+
+                <div class="featured-info">
+                    <span>FORMAL</span>
+
+                    <h3>Classic Leather Derby</h3>
+
+                    <div class="featured-bottom">
+                        <strong>GH₵450</strong>
+
+                        <button class="featured-view">
+                            View Product
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Shoe 2 -->
+            <div class="featured-item">
+
+                <div class="featured-image">
+
+                    <button class="featured-wishlist">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+
+                    <img
+                        src="./images/loaffers.png"
+                        alt="Premium Leather Loafer"
+                    >
+                </div>
+
+                <div class="featured-info">
+                    <span>LOAFERS</span>
+
+                    <h3>Premium Leather Loafer</h3>
+
+                    <div class="featured-bottom">
+                        <strong>GH₵380</strong>
+
+                        <button class="featured-view">
+                            View Product
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Shoe 3 -->
+            <div class="featured-item">
+
+                <div class="featured-image">
+                    <span class="featured-badge">NEW</span>
+
+                    <button class="featured-wishlist">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+
+                    <img
+                        src="./images/shoes.png"
+                        alt="Leather Monk Strap"
+                    >
+                </div>
+
+                <div class="featured-info">
+                    <span>FORMAL</span>
+
+                    <h3>Leather Monk Strap</h3>
+
+                    <div class="featured-bottom">
+                        <strong>GH₵490</strong>
+
+                        <button class="featured-view">
+                            View Product
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Shoe 4 -->
+            <div class="featured-item">
+
+                <div class="featured-image">
+
+                    <button class="featured-wishlist">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+
+                    <img
+                        src="./images/sandals.png"
+                        alt="Handcrafted Leather Sandal"
+                    >
+                </div>
+
+                <div class="featured-info">
+                    <span>SANDALS</span>
+
+                    <h3>Handcrafted Leather Sandal</h3>
+
+                    <div class="featured-bottom">
+                        <strong>GH₵250</strong>
+
+                        <button class="featured-view">
+                            View Product
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Shoe 5 -->
+            <div class="featured-item">
+
+                <div class="featured-image">
+                    <span class="featured-badge">BEST SELLER</span>
+
+                    <button class="featured-wishlist">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+
+                    <img
+                        src="./images/boots.png"
+                        alt="Premium Leather Boots"
+                    >
+                </div>
+
+                <div class="featured-info">
+                    <span>BOOTS</span>
+
+                    <h3>Premium Leather Boots</h3>
+
+                    <div class="featured-bottom">
+                        <strong>GH₵520</strong>
+
+                        <button class="featured-view">
+                            View Product
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
 <!-- container to display item cards-->
 
   <!--my section-->
-  <div class="container" id="MainDisheContainer">
- <div class=" text-start ps-3 py-2 d-flex align-items-center mb-4" style="color: #080808; border-radius: 8px;font-weight: bold; font-size:larger;">
-    <img src="./images/food1.png" style="width:50px;height:50px;"> <!-- Icon -->
-       Helemays Foods ||     Starters <i class="fa fa-mug-hot"></i> 
-  </div>
-  <!--scroll indicator icon-->
-  
-  <!--first div row-->
-  
-  <div class="d-flex justify-content-end gap-2 mb-2 ">
+<!-- ================= SHOP COLLECTION ================= -->
 
-<button class="scroll-btn" onclick="scrollRow('localFoodsRow', -300)">
-<i class="fa fa-chevron-left"></i>
-</button>
+<!-- =========================
+     SHOP COLLECTION
+========================= -->
+<section class="shoe-collection" id="MainDisheContainer">
 
-<button class="scroll-btn"   onclick="scrollRow('localFoodsRow', 300)">
-<i class="fa fa-chevron-right"></i>
-</button>
-</div>
-<div class="section-card">
-<div class="d-flex overflow-auto g-3 pb-3"  id="localFoodsRow"></div> 
-</div>
-<!-- scroll arrow for foods row2-->
- <div class="d-flex justify-content-end gap-2 mb-2">
+    <div class="shoe-collection-inner">
 
-<button class="scroll-btn" onclick="scrollRow('localFoodsRow2', -300)" style="margin-top: 5px;">
-<i class="fa fa-chevron-left"></i>
-</button>
+        <!-- Collection Header -->
+        <div class="collection-header">
 
-<button class="scroll-btn"  onclick="scrollRow('localFoodsRow2', 300)" style="margin-top: 5px;">
-<i class="fa fa-chevron-right"></i>
-</button>
-</div>
-<div class="section-card">
-<div class="d-flex overflow-auto g-3 pb-3 section-card " style="margin-top:10px"; id="localFoodsRow2"> </div>
-</div>
-   
-<div class=" text-start ps-3 py-2 d-flex align-items-center mb-4" 
-       style="border-radius: 8px; color: #020202; font-weight: bold; margin-top: 60px;font-size:larger; margin-bottom:0px;padding:0px;">
-   <img src="./images/food1.png" style="width:30px;height:50px;"> Helemays Foods || Main<i class="fa-solid fa-utensils"></i></div>
-  <!--second row for breakfast categories-->
+            <div class="collection-heading">
 
-<!--scroll arrow-->
-  <div class="d-flex justify-content-end gap-2 mb-2" style="margin-top: 0px;">
+                <span class="collection-eyebrow">
+                    SHOP THE COLLECTION
+                </span>
 
-<button class="scroll-btn" onclick="scrollRow('breakFastRow', -300)" style="margin-top: 0px;">
-<i class="fa fa-chevron-left"></i>
-</button>
+                <h2>
+                    Find your perfect pair.
+                </h2>
 
-<button class="scroll-btn" onclick="scrollRow('breakFastRow', 300)" style="margin-top: 0px;">
-<i class="fa fa-chevron-right"></i>
-</button>
-</div>
-<div class="section-card">
-   <div class="d-flex overflow-auto g-3 pb-3" style="margin:0px" id="breakFastRow"></div>
-</div>
-    
-    <!--Advert should be dynamic with admin cruud system// advert screens to display in each sub categories in th-->
-    
-    <div class="row g-3" style="margin-bottom: 10px;margin-top:30px;">
-           <div  class="advert">ADVERT SCREENS</div>
-      <div class="d-flex overflow-auto" style="margin-bottom: 10px;margin-top:30px;">
-    <div class="col-3">
-      <div class="card shadow-sm border-0"style="border-radius 15px; overflow: hidden;">
-        <video src="./videos/J Hus - Outside (Official Visualiser) ft. Skepta.mp4" autoplay muted loop playsinline style="border-radius: 15px;object-fit: cover;height: 100px;"></video>
-      </div>
-      <div  class="card shadow-sm border-0" id="span">
-             <span><small style="color: #670680; font-weight: bold;"  >New Pastries</small><br><small style="font-weight: bold;">Check our new Pastries</small></span>
-      </div>
+                <p>
+                    Explore handcrafted leather footwear designed
+                    for every occasion, every style and every step.
+                </p>
+
             </div>
-    <div class="col-3">
-<div class="card shadow-sm border-0"style="border-radius 15px; overflow: hidden;">
-          <video src="./videos/Llona - Homeless (Album).mp4"autoplay muted loop playsinline style="border-radius: 15px;object-fit: cover;height: 100px;"></video>
-      </div>
-      <div  class="card shadow-sm border-0" id="span">
-           <span><small style="color: #670680; font-weight: bold;"  >New Pastries</small><br><small style="font-weight: bold;">Check our new Pastries</small></span>
-      </div>
+
+            <button
+                class="collection-view-all"
+                type="button"
+            >
+                View All
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+
+        </div>
+
+
+        <!-- Category Navigation -->
+        <div class="collection-toolbar">
+
+            <div class="collection-filters">
+
+                <button
+                    class="collection-filter active"
+                    data-category="All"
+                    type="button"
+                >
+                    All
+                </button>
+
+                <button
+                    class="collection-filter"
+                    data-category="Formal"
+                    type="button"
+                >
+                    Formal
+                </button>
+
+                <button
+                    class="collection-filter"
+                    data-category="Loafers"
+                    type="button"
+                >
+                    Loafers
+                </button>
+
+                <button
+                    class="collection-filter"
+                    data-category="Casual"
+                    type="button"
+                >
+                    Casual
+                </button>
+
+                <button
+                    class="collection-filter"
+                    data-category="Boots"
+                    type="button"
+                >
+                    Boots
+                </button>
+
+                <button
+                    class="collection-filter"
+                    data-category="Sandals"
+                    type="button"
+                >
+                    Sandals
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Product Information -->
+        <div class="collection-products-header">
+
+            <span class="collection-product-count">
+                Our footwear
+            </span>
+
+            <span class="collection-product-line"></span>
+
+        </div>
+
+
+        <!-- Product Grid -->
+        <div class="shoe-products-grid" id="shoeProductsRow">
+
+            <!-- JavaScript will render shoes here -->
+
+        </div>
+
     </div>
-    <div class="col-3">
-     <div class="card shadow-sm border-0"style="border-radius 15px; overflow: hidden;">
-        <video src="./videos/ZAYN - Dusk Till Dawn (Official Video) ft. Sia.mp4" autoplay muted loop playsinline style="border-radius: 15px;object-fit: cover;height: 100px;"></video>
-      </div>
-      <div  class="card shadow-sm border-0" id="span">
-             <span ><small style="color: #670680; font-weight: bold;" >New Pastries</small><br><small style="font-weight: bold;" >Check our new Pastries</small></span>
 
-      </div>
-    </div>
-
-    <div class="col-3">
-      
-      <div class="card shadow-sm border-0"style="border-radius 15px; overflow: hidden;">
-        <video src="./videos/ZAYN - Dusk Till Dawn (Official Video) ft. Sia.mp4" autoplay muted loop playsinline style="border-radius: 15px;object-fit: cover;height: 100px;"></video>
-      </div>
-      <div  class="card shadow-sm border-0" id="span" >
-      <span><small style="color: #670680; font-weight: bold;">New Pastries</small><br><small style="font-weight: bold;" >Check our new Pastries</small></span>
-      </div>
-    </div>
-    </div>
-
-    <div class=" text-start ps-3 py-2 d-flex align-items-center mb-4" 
-       style="color: #0f0f0f; border-radius: 8px;font-weight: bolder; margin-top:70px; font-size:larger;margin-bottom: 0px;">
-   <img src="./images/food1.png" style="width:50px;height:50px;"> Helemays Foods ||    Main Dish<i class="fa-solid fa-utensils"></i>
-  </div>
-   
-    <div class="d-flex justify-content-end gap-2 mb-2">
-
-<button class="scroll-btn" onclick="scrollRow('mainDishRow', -300)" style="margin-top: 0px;">
-<i class="fa fa-chevron-left"></i>
-</button>
-
-<button class="scroll-btn" onclick="scrollRow('mainDishRow', 300)" style="margin-top: 0px;">
-<i class="fa fa-chevron-right"></i>
-</button>
-</div>
-<div class="section-card">
-  <div class="d-flex overflow-auto g-3 pb-3" id="mainDishRow"></div>
-</div>
-
-<div class=" text-start ps-3 py-2 d-flex align-items-center mb-4" 
-       style="color: #0f0f0f; border-radius: 8px;font-weight: bolder; margin-top:70px; font-size:larger;">
-   <img src="./images/food1.png" style="width:50px;height:50px;"> Helemays Foods ||    Sides<i class="fa-solid fa-glass-water"></i>
-  </div>  
-  <div class="section-divider-animated"></div>
-  <!-- arrow scroll-->
-     <div class="d-flex justify-content-end gap-2 mb-2">
-
-<button class="scroll-btn" onclick="scrollRow('sidesRow', -300)" style="margin-top: 0px;" >
-<i class="fa fa-chevron-left"></i>
-</button>
-
-<button class="scroll-btn" onclick="scrollRow('sidesRow', 300)" style="margin-top: 0px;">
-<i class="fa fa-chevron-right"></i>
-</button>
-</div>
-  <!--fourth listing row -->
-  <div class="section-card">
-  <div class="d-flex overflow-auto gap-3 pb-3" id="sidesRow"></div>
-  </div>
-  </div>
+</section>
   <!--End of food listing cards-->
 
  
@@ -796,6 +1080,222 @@
 </div>
 
 <!--product modal-->
+<!-- =========================
+     PRODUCT DETAILS MODAL
+========================= -->
+<div
+    class="product-details-modal"
+    id="productDetailsModal"
+    aria-hidden="true"
+>
+    <div class="product-details-overlay" data-close-product-modal></div>
+
+    <div
+        class="product-details-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="productDetailsTitle"
+    >
+
+        <!-- Close Button -->
+        <button
+            type="button"
+            class="product-details-close"
+            id="closeProductDetails"
+            aria-label="Close product details"
+        >
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+
+        <div class="product-details-content">
+
+            <!-- =========================
+                 PRODUCT GALLERY
+            ========================== -->
+            <div class="product-gallery">
+
+                <!-- Main Image -->
+                <div class="product-main-image">
+                    <img
+                        id="productMainImage"
+                        src="./images/shoe-placeholder.png"
+                        alt="Product"
+                    >
+                </div>
+
+                <!-- Thumbnails -->
+                <div
+                    class="product-thumbnails"
+                    id="productThumbnails"
+                >
+                    <!-- JavaScript will insert thumbnails here -->
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 PRODUCT INFORMATION
+            ========================== -->
+            <div class="product-details-info">
+
+                <!-- Category -->
+                <span
+                    class="product-details-category"
+                    id="productDetailsCategory"
+                >
+                    Formal
+                </span>
+
+                <!-- Product Name -->
+                <h2
+                    class="product-details-title"
+                    id="productDetailsTitle"
+                >
+                    Classic Leather Derby
+                </h2>
+
+                <!-- Price -->
+                <div
+                    class="product-details-price"
+                    id="productDetailsPrice"
+                >
+                    GH₵ 450
+                </div>
+
+
+                <!-- Description -->
+                <p
+                    class="product-details-description"
+                    id="productDetailsDescription"
+                >
+                    Handcrafted leather footwear made for timeless
+                    everyday elegance.
+                </p>
+
+
+                <!-- Divider -->
+                <div class="product-details-divider"></div>
+
+
+                <!-- =========================
+                     COLOR SELECTION
+                ========================== -->
+                <div class="product-option">
+
+                    <div class="product-option-header">
+                        <span>Color</span>
+
+                        <strong id="selectedColorText">
+                            Select a color
+                        </strong>
+                    </div>
+
+                    <div
+                        class="product-color-options"
+                        id="productColorOptions"
+                    >
+                        <!-- JavaScript will insert colors -->
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     SIZE SELECTION
+                ========================== -->
+                <div class="product-option">
+
+                    <div class="product-option-header">
+                        <span>Size</span>
+
+                        <strong id="selectedSizeText">
+                            Select a size
+                        </strong>
+                    </div>
+
+                    <div
+                        class="product-size-options"
+                        id="productSizeOptions"
+                    >
+                        <!-- JavaScript will insert sizes -->
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     QUANTITY
+                ========================== -->
+                <div class="product-option product-quantity-option">
+
+                    <div class="product-option-header">
+                        <span>Quantity</span>
+                    </div>
+
+                    <div class="product-quantity">
+
+                        <button
+                            type="button"
+                            id="productQtyMinus"
+                            aria-label="Decrease quantity"
+                        >
+                            <i class="fa-solid fa-minus"></i>
+                        </button>
+
+                        <span id="productQty">
+                            1
+                        </span>
+
+                        <button
+                            type="button"
+                            id="productQtyPlus"
+                            aria-label="Increase quantity"
+                        >
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     ADD TO CART
+                ========================== -->
+                <button
+                    type="button"
+                    class="product-add-to-cart"
+                    id="productAddToCart"
+                >
+                    <span>Add to Cart</span>
+
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </button>
+
+
+                <!-- Small information -->
+                <div class="product-details-note">
+
+                    <div>
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>Quality handcrafted footwear</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-truck"></i>
+                        <span>Delivery available</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
 
 // how to protect my route from attackers
 <!-- Bootstrap JS and Dependencies -->

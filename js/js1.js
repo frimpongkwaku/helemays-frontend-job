@@ -132,6 +132,78 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+const products = [{
+    id: "shoe001",
+
+    name: "Classic Leather Derby",
+
+    category: "Formal",
+
+    price: 450,
+
+    description: "Handcrafted leather derby shoe made for timeless everyday elegance.",
+
+    images: [
+        "./images/loaffers.png",
+        "./images/derby-side.png",
+        "./images/derby-top.png",
+        "./images/derby-back.png"
+    ],
+
+    colors: [
+        "Black",
+        "Brown"
+    ],
+
+    sizes: [
+        { size: 40, stock: 5 },
+        { size: 41, stock: 7 },
+        { size: 42, stock: 0 },
+        { size: 43, stock: 3 },
+        { size: 44, stock: 2 }
+    ],
+
+    featured: true,
+
+    active: true
+},
+{
+    id: "shoe002",
+
+    name: "Classic Leather Derby",
+
+    category: "Loafers",
+
+    price: 450,
+
+    description: "Handcrafted leather derby shoe made for timeless everyday elegance.",
+
+    images: [
+        "./images/loaffers.png",
+        "./images/derby-side.png",
+        "./images/derby-top.png",
+        "./images/derby-back.png"
+    ],
+
+    colors: [
+        "Black",
+        "Brown"
+    ],
+
+    sizes: [
+        { size: 40, stock: 5 },
+        { size: 41, stock: 7 },
+        { size: 42, stock: 0 },
+        { size: 43, stock: 3 },
+        { size: 44, stock: 2 }
+    ],
+
+    featured: true,
+
+    active: true
+}
+]
+/*
 const products =[// item arrays// this product is for admin backend// use create data through admin to post this data
 {id:"local1", name:"Waakye",price:1,description:"the best waakye in the city",category:"local1",},
 {id:"local2", name:"jollof",price:1,description:" The best jollof in the city",category:"local2"},
@@ -193,7 +265,7 @@ const products =[// item arrays// this product is for admin backend// use create
 {id:"local37",name:"ice cream",price:464,description:"The best ice cream in town",category:"sides"},
 {id:"local37",name:"ice cream",price:464,description:"The best ice cream in town",category:"sides"},
 ];
-
+*/
 //loading effect 
 const modalLoader= document.getElementById("modalLoader");
 const pageLoader= document.getElementById("loader");
@@ -759,76 +831,502 @@ function showSkeleton(containerId, count = 6){// what if i want to use show skel
     );
   }
 }
+// product rendering function to render the products in the front end
+function render(category = "All") {
 
-function render(category, containerId) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = "";
+    const container = document.getElementById("shoeProductsRow");
 
-  products.filter(item => item.category === category).forEach(item => {
-      container.insertAdjacentHTML(
-        "beforeend",`
-<div class="col d-flex">
-  <div class="card shadow-md border-0.2 product-card h-70 d-flex flex-column"
-       style="min-width:10rem; max-width:7rem; cursor:pointer; gap-5"
-       >
+    if (!container) return;
 
-    <div class="position-relative">
-      <img src="./images/food1.png"
-           class="card-img-top rounded-top product-img"
-           alt="item-img"
-           id="searchImage">
+    container.innerHTML = "";
 
-      <span class="badge bg-danger position-absolute top-0 end-0 m-2 shadow-sm">
-        GH ${item.price}
-      </span>
-    </div>
+    const filteredProducts =
+        category === "All"
+            ? products.filter(item => item.active !== false)
+            : products.filter(
+                item =>
+                    item.category === category &&
+                    item.active !== false
+            );
 
-    <div class="card-body d-flex flex-column">
+    if (!filteredProducts.length) {
 
-      <h6 class="fw-bold">${item.name}</h6>
+        container.innerHTML = `
+            <div class="empty-products">
+            <div class="empty-products-icon">
+                <i class="fa-solid fa-shoe-prints"></i>
+            </div>
 
-      <p class="text-muted small product-description">
-        ${item.description}
-      </p>
+            <h3>No shoes in this collection</h3>
 
-      <!-- Bottom Right Add to Cart -->
-      <div class="mt-auto d-flex justify-content-center border-0.2 "  id="cartdesign" onclick="addToCart('${item.id}')">
-        <span class="add-cart-corner" >
-          Add <i class="fa-solid fa-cart-shopping me-1"></i>
-        </span>
-      </div>
-      
+            <p>
+                We don't have any shoes available in this category yet.
+                Check another collection or browse all shoes.
+            </p>
 
-    </div>
+            <button
+                type="button"
+                class="empty-products-btn"
+                onclick="render('All')"
+            >
+                View All Shoes
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+        `;
 
-  </div>
-</div>`
-      );
+        return;
+    }
+
+    filteredProducts.forEach(item => {
+
+        const mainImage =
+            item.images?.[0] ||
+            "./images/shoe-placeholder.png";
+
+        const badge =
+            item.featured
+                ? "FEATURED"
+                : "";
+
+        container.insertAdjacentHTML(
+            "beforeend",
+            `
+            <article
+                class="shoe-product-card"
+                data-product-id="${item.id}"
+            >
+
+                <div class="shoe-product-image">
+
+                    ${badge ? `
+                        <span class="shoe-product-badge">
+                            ${badge}
+                        </span>
+                    ` : ""}
+
+                    <button
+                        class="shoe-wishlist"
+                        type="button"
+                        aria-label="Add ${item.name} to wishlist"
+                    >
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+
+                    <img
+                        src="${mainImage}"
+                        alt="${item.name}"
+                        loading="lazy"
+                    />
+
+                    <button
+                        class="shoe-image-view"
+                        type="button"
+                        onclick="openProductDetails('${item.id}')"
+                    >
+                        View Details
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                </div>
+
+                <div class="shoe-product-info">
+
+                    <span class="shoe-product-category">
+                        ${item.category}
+                    </span>
+
+                    <h3 class="shoe-product-name">
+                        ${item.name}
+                    </h3>
+
+                    <div class="shoe-product-bottom">
+
+                        <div class="shoe-product-price">
+
+                            <span>Price</span>
+
+                            <strong>
+                                GH₵ ${item.price}
+                            </strong>
+
+                        </div>
+
+                        <button
+                            class="shoe-product-arrow"
+                            type="button"
+                            onclick="openProductDetails('${item.id}')"
+                            aria-label="View ${item.name}"
+                        >
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+            `
+        );
+
     });
 }
 
 
+function openProductDetails(productId) {
 
+  // 1. Find the selected product
+  const product = products.find(
+    item => item.id === productId
+  );
+
+  if (!product) {
+    console.error("Product not found:", productId);
+    return;
+  }
+
+  console.log("Opening product:", product);
+
+  // 2. Get modal elements
+  const modal = document.getElementById("productDetailsModal");
+  const mainImage = document.getElementById("productMainImage");
+  const thumbnails = document.getElementById("productThumbnails");
+
+  const title = document.getElementById("productDetailsTitle");
+  const category = document.getElementById("productDetailsCategory");
+  const price = document.getElementById("productDetailsPrice");
+  const description = document.getElementById("productDetailsDescription");
+
+  // 3. Fill product information
+  title.textContent = product.name;
+  category.textContent = product.category;
+  price.textContent = `GH₵ ${product.price}`;
+  description.textContent = product.description;
+
+  // 4. Get product images
+  const productImages =
+    product.images?.length
+      ? product.images
+      : ["./images/shoe-placeholder.png"];
+
+  // 5. Set the first image as the main image
+  mainImage.src = productImages[0];
+  mainImage.alt = product.name;
+
+  // 6. Clear old thumbnails
+  thumbnails.innerHTML = "";
+
+  // 7. Create thumbnails
+  productImages.forEach((image, index) => {
+
+    const thumbnail = document.createElement("button");
+
+    thumbnail.type = "button";
+    thumbnail.className = "product-thumbnail";
+
+    // First image is selected
+    if (index === 0) {
+      thumbnail.classList.add("active");
+    }
+
+    thumbnail.innerHTML = `
+      <img
+        src="${image}"
+        alt="${product.name} image ${index + 1}"
+      >
+    `;
+
+    // 8. Change main image when thumbnail is clicked
+    thumbnail.addEventListener("click", () => {
+
+      mainImage.src = image;
+
+      // Remove active from all thumbnails
+      thumbnails
+        .querySelectorAll(".product-thumbnail")
+        .forEach(item => {
+          item.classList.remove("active");
+        });
+
+      // Make clicked thumbnail active
+      thumbnail.classList.add("active");
+    });
+
+    thumbnails.appendChild(thumbnail);
+  });
+
+  // 9. Open modal
+  modal.classList.add("active");
+  modal.setAttribute("aria-hidden", "false");
+  // ========================================
+// 10. PRODUCT COLOR SELECTION
+// ========================================
+
+const colorOptions = document.getElementById("productColorOptions");
+const selectedColorText = document.getElementById("selectedColorText");
+
+// Clear colors from previous product
+colorOptions.innerHTML = "";
+
+// Reset selected color text
+selectedColorText.textContent = "Select a color";
+
+// Check if this product has colors
+if (product.colors && product.colors.length > 0) {
+
+  product.colors.forEach((color, index) => {
+
+    const colorButton = document.createElement("button");
+
+    colorButton.type = "button";
+    colorButton.className = "product-color-option";
+
+    colorButton.textContent = color;
+
+    // Select first color automatically
+    if (index === 0) {
+      colorButton.classList.add("active");
+      selectedColorText.textContent = color;
+    }
+
+    // When customer selects a color
+    colorButton.addEventListener("click", () => {
+
+      // Remove active state from all colors
+      colorOptions
+        .querySelectorAll(".product-color-option")
+        .forEach(button => {
+          button.classList.remove("active");
+        });
+
+      // Activate selected color
+      colorButton.classList.add("active");
+
+      // Update selected color text
+      selectedColorText.textContent = color;
+
+      console.log("Selected color:", color);
+    });
+
+    colorOptions.appendChild(colorButton);
+  });
+
+} else {
+
+  // Product has no color options
+  selectedColorText.textContent = "Default";
+
+  const defaultColor = document.createElement("span");
+
+  defaultColor.className = "product-color-unavailable";
+
+  defaultColor.textContent = "Standard";
+
+  colorOptions.appendChild(defaultColor);
+}
+// ========================================
+// 11. PRODUCT SIZE SELECTION
+// ========================================
+
+const sizeOptions = document.getElementById("productSizeOptions");
+const selectedSizeText = document.getElementById("selectedSizeText");
+
+// Clear sizes from previous product
+sizeOptions.innerHTML = "";
+
+// Reset selected size text
+selectedSizeText.textContent = "Select a size";
+
+// Check if this product has sizes
+if (product.sizes && product.sizes.length > 0) {
+
+  product.sizes.forEach((sizeItem) => {
+
+    const sizeButton = document.createElement("button");
+
+    sizeButton.type = "button";
+    sizeButton.className = "product-size-option";
+
+    sizeButton.textContent = sizeItem.size;
+
+    // Check stock
+    if (sizeItem.stock <= 0) {
+
+      sizeButton.disabled = true;
+      sizeButton.classList.add("out-of-stock");
+
+      sizeButton.textContent = `${sizeItem.size} — Out of stock`;
+
+    }
+
+    // When customer selects an available size
+    if (sizeItem.stock > 0) {
+
+      sizeButton.addEventListener("click", () => {
+
+        // Remove active state from all sizes
+        sizeOptions
+          .querySelectorAll(".product-size-option")
+          .forEach(button => {
+            button.classList.remove("active");
+          });
+
+        // Activate selected size
+        sizeButton.classList.add("active");
+
+        // Update selected size text
+        selectedSizeText.textContent = sizeItem.size;
+
+        console.log("Selected size:", sizeItem.size);
+        console.log("Available stock:", sizeItem.stock);
+
+      });
+
+    }
+
+    sizeOptions.appendChild(sizeButton);
+
+  });
+
+} else {
+
+  selectedSizeText.textContent = "One size";
+
+  const defaultSize = document.createElement("span");
+
+  defaultSize.className = "product-size-unavailable";
+
+  defaultSize.textContent = "Standard";
+
+  sizeOptions.appendChild(defaultSize);
+}
+// ========================================
+// 12. PRODUCT QUANTITY
+// ========================================
+
+const productQtyMinus = document.getElementById("productQtyMinus");
+const productQtyPlus = document.getElementById("productQtyPlus");
+const productQtyText = document.getElementById("productQty");
+
+let productQuantity = 1;
+
+// Reset quantity when product opens
+productQtyText.textContent = productQuantity;
+
+// Decrease quantity
+productQtyMinus.addEventListener("click", () => {
+
+  if (productQuantity <= 1) {
+    return;
+  }
+
+  productQuantity--;
+
+  productQtyText.textContent = productQuantity;
+
+  console.log("Selected quantity:", productQuantity);
+});
+
+// Increase quantity
+productQtyPlus.addEventListener("click", () => {
+
+  // Find currently selected size
+  const activeSize = sizeOptions.querySelector(
+    ".product-size-option.active"
+  );
+
+  // If no size has been selected
+  if (!activeSize) {
+    console.log("Please select a size first.");
+    return;
+  }
+
+  // Get selected size
+  const selectedSize = product.sizes.find(
+    sizeItem => String(sizeItem.size) === activeSize.textContent
+  );
+
+  if (!selectedSize) {
+    return;
+  }
+
+  // Prevent quantity from exceeding stock
+  if (productQuantity >= selectedSize.stock) {
+    console.log("Maximum available stock reached:", selectedSize.stock);
+    return;
+  }
+
+  productQuantity++;
+
+  productQtyText.textContent = productQuantity;
+
+  console.log("Selected quantity:", productQuantity);
+});
+}
+
+
+// Allow inline onclick="openProductDetails(...)"
+window.openProductDetails = openProductDetails;
+
+
+
+// ==========================
+// 👟 CATEGORY SWITCHING
+// ==========================
+
+document.querySelectorAll(".collection-filter").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        // Get the category from the clicked button
+        const category = button.dataset.category;
+
+        // Render products for that category
+        render(category);
+
+        // Remove active state from all buttons
+        document
+            .querySelectorAll(".collection-filter")
+            .forEach(btn => {
+                btn.classList.remove("active");
+            });
+
+        // Make the clicked button active
+        button.classList.add("active");
+    });
+
+});
+
+
+// ==========================
+// 👟 RENDER SHOE COLLECTION
+// ==========================
+
+setTimeout(() => {
+    render("All");
+}, 1200);
 
 
 //render by category
 // show skeleton loaders first
+/*
 showSkeleton("localFoodsRow");
 showSkeleton("localFoodsRow2");
 showSkeleton("breakFastRow");
 showSkeleton("mainDishRow");
 showSkeleton("sidesRow");
 
-// simulate loading (like API call)
+
 setTimeout(()=>{
 
-render("local1","localFoodsRow");
-render("local2","localFoodsRow2");
+render("Formal","localFoodsRow");
+render("Formal2","localFoodsRow2");
 render("breakfast","breakFastRow");
 render("mainDish","mainDishRow");
 render("sides","sidesRow");
 
 },1200);
+*/
 
 // function submit user data// need to work on this one to act as a login
     userForm.addEventListener('submit', function (e) {

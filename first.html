@@ -140,6 +140,223 @@
     </div>
   </div>
 </div>
+<!-- =========================
+     PRODUCT DETAILS MODAL
+========================= -->
+<div
+    class="product-details-modal"
+    id="productDetailsModal"
+    aria-hidden="true"
+>
+    <div class="product-details-overlay" data-close-product-modal></div>
+
+    <div
+        class="product-details-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="productDetailsTitle"
+    >
+
+        <!-- Close Button -->
+        <button
+            type="button"
+            class="product-details-close"
+            id="closeProductDetails"
+            aria-label="Close product details"
+        >
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+
+        <div class="product-details-content">
+
+            <!-- =========================
+                 PRODUCT GALLERY
+            ========================== -->
+            <div class="product-gallery">
+
+                <!-- Main Image -->
+                <div class="product-main-image">
+                    <img
+                        id="productMainImage"
+                        src="./images/shoe-placeholder.png"
+                        alt="Product"
+                    >
+                </div>
+
+                <!-- Thumbnails -->
+                <div
+                    class="product-thumbnails"
+                    id="productThumbnails"
+                >
+                    <!-- JavaScript will insert thumbnails here -->
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 PRODUCT INFORMATION
+            ========================== -->
+            <div class="product-details-info">
+
+                <!-- Category -->
+                <span
+                    class="product-details-category"
+                    id="productDetailsCategory"
+                >
+                    Formal
+                </span>
+
+                <!-- Product Name -->
+                <h2
+                    class="product-details-title"
+                    id="productDetailsTitle"
+                >
+                    Classic Leather Derby
+                </h2>
+
+                <!-- Price -->
+                <div
+                    class="product-details-price"
+                    id="productDetailsPrice"
+                >
+                    GH₵ 450
+                </div>
+
+
+                <!-- Description -->
+                <p
+                    class="product-details-description"
+                    id="productDetailsDescription"
+                >
+                    Handcrafted leather footwear made for timeless
+                    everyday elegance.
+                </p>
+
+
+                <!-- Divider -->
+                <div class="product-details-divider"></div>
+
+
+                <!-- =========================
+                     COLOR SELECTION
+                ========================== -->
+                <div class="product-option">
+
+                    <div class="product-option-header">
+                        <span>Color</span>
+
+                        <strong id="selectedColorText">
+                            Select a color
+                        </strong>
+                    </div>
+
+                    <div
+                        class="product-color-options"
+                        id="productColorOptions"
+                    >
+                        <!-- JavaScript will insert colors -->
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     SIZE SELECTION
+                ========================== -->
+                <div class="product-option">
+
+                    <div class="product-option-header">
+                        <span>Size</span>
+
+                        <strong id="selectedSizeText">
+                            Select a size
+                        </strong>
+                    </div>
+
+                    <div
+                        class="product-size-options"
+                        id="productSizeOptions"
+                    >
+                        <!-- JavaScript will insert sizes -->
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     QUANTITY
+                ========================== -->
+                <div class="product-option product-quantity-option">
+
+                    <div class="product-option-header">
+                        <span>Quantity</span>
+                    </div>
+
+                    <div class="product-quantity">
+
+                        <button
+                            type="button"
+                            id="productQtyMinus"
+                            aria-label="Decrease quantity"
+                        >
+                            <i class="fa-solid fa-minus"></i>
+                        </button>
+
+                        <span id="productQty">
+                            1
+                        </span>
+
+                        <button
+                            type="button"
+                            id="productQtyPlus"
+                            aria-label="Increase quantity"
+                        >
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     ADD TO CART
+                ========================== -->
+                <button
+                    type="button"
+                    class="product-add-to-cart"
+                    id="productAddToCart"
+                >
+                    <span>Add to Cart</span>
+
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </button>
+
+
+                <!-- Small information -->
+                <div class="product-details-note">
+
+                    <div>
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>Quality handcrafted footwear</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-truck"></i>
+                        <span>Delivery available</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
 
 <!-- WhatsApp Button -->
 <a href="https://wa.me/233593189155" class="btn btn-success position-fixed bottom-0 end-0 m-3" target="_blank">
