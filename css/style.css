@@ -4531,3 +4531,1244 @@ position: relative;
         gap: 30px;
     }
 }
+
+
+/* ========================================
+   PRODUCT DETAILS MODAL
+   DESKTOP SCROLL + STICKY CART BUTTON
+======================================== */
+
+.product-details-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    overflow-y: auto;
+}
+
+.product-details-modal.active {
+    display: flex;
+}
+
+
+/* Modal box */
+
+.product-details-dialog {
+    position: relative;
+    z-index: 2;
+
+    width: min(1100px, 95vw);
+    height: 90vh;
+    max-height: 90vh;
+
+    background: #ffffff;
+
+    border-radius: 24px;
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Main content */
+
+.product-details-content {
+    display: grid;
+
+    grid-template-columns: 1.15fr 0.85fr;
+
+    height: 100%;
+    min-height: 0;
+
+    overflow: hidden;
+}
+
+
+/* ========================================
+   LEFT — PRODUCT GALLERY
+======================================== */
+
+.product-gallery {
+    min-height: 0;
+    overflow-y: auto;
+}
+
+
+/* ========================================
+   RIGHT — PRODUCT INFORMATION
+======================================== */
+
+.product-details-info {
+    min-height: 0;
+
+    padding: 55px 48px 0;
+
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ========================================
+   STICKY ADD TO CART
+======================================== */
+
+.product-add-to-cart {
+    position: sticky;
+
+    bottom: 0;
+
+    z-index: 20;
+
+    width: 100%;
+
+    margin-top: auto;
+
+    flex-shrink: 0;
+
+    padding: 16px 20px;
+
+    border: none;
+
+    border-radius: 12px 12px 0 0;
+
+    background: #181512;
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.08);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.product-add-to-cart:hover {
+    background: #2a2520;
+}
+
+.product-add-to-cart:active {
+    transform: scale(0.98);
+}
+
+
+/* ========================================
+   NOTE BELOW BUTTON
+======================================== */
+
+.product-details-note {
+    padding: 16px 0 25px;
+}
+
+
+/* ========================================
+   DESKTOP SCROLLBAR
+======================================== */
+
+.product-details-info::-webkit-scrollbar,
+.product-gallery::-webkit-scrollbar,
+.product-details-modal::-webkit-scrollbar {
+    width: 6px;
+}
+
+.product-details-info::-webkit-scrollbar-thumb,
+.product-gallery::-webkit-scrollbar-thumb,
+.product-details-modal::-webkit-scrollbar-thumb {
+    background: #d8d2cc;
+    border-radius: 20px;
+}
+
+.product-details-info::-webkit-scrollbar-track,
+.product-gallery::-webkit-scrollbar-track,
+.product-details-modal::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+
+/* =========================================
+   PRODUCT DETAILS MODAL
+   FINAL SCROLL + STICKY CART VERSION
+========================================= */
+
+.product-details-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    overflow-y: auto;
+}
+
+.product-details-modal.active {
+    display: flex;
+}
+
+
+/* OVERLAY */
+
+.product-details-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(20, 17, 14, 0.68);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+
+/* MODAL */
+
+.product-details-dialog {
+    position: relative;
+    z-index: 2;
+
+    width: min(1100px, 95vw);
+    height: 90vh;
+    max-height: 90vh;
+
+    background: #ffffff;
+
+    border-radius: 24px;
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    box-shadow:
+        0 35px 90px rgba(0, 0, 0, 0.25),
+        0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+/* MAIN CONTENT */
+
+.product-details-content {
+    display: grid;
+
+    grid-template-columns: 1.15fr 0.85fr;
+
+    height: 100%;
+    min-height: 0;
+
+    overflow: hidden;
+}
+
+
+/* GALLERY */
+
+.product-gallery {
+    min-width: 0;
+    min-height: 0;
+
+    overflow-y: auto;
+}
+
+
+/* PRODUCT INFO */
+
+.product-details-info {
+    min-width: 0;
+    min-height: 0;
+
+    padding: 55px 48px 0;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+}
+
+
+/* SCROLLABLE INFORMATION */
+
+.product-details-info-body {
+    flex: 1;
+
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding-right: 8px;
+}
+
+
+/* STICKY FOOTER */
+
+.product-details-footer {
+    position: sticky;
+
+    bottom: 0;
+
+    flex-shrink: 0;
+
+    width: 100%;
+
+    padding: 12px 0 18px;
+
+    background: #ffffff;
+
+    z-index: 20;
+}
+
+
+/* ADD TO CART */
+
+.product-add-to-cart {
+    width: 100%;
+
+    min-height: 56px;
+
+    margin: 0;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #181512;
+
+    color: #ffffff;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 15px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+
+    box-shadow:
+        0 -5px 15px rgba(0, 0, 0, 0.06);
+}
+
+.product-add-to-cart:hover {
+    background: #6e4028;
+
+    transform: translateY(-2px);
+}
+
+.product-add-to-cart:active {
+    transform: translateY(0);
+}
+
+
+/* SCROLLBARS */
+
+.product-details-info-body::-webkit-scrollbar,
+.product-gallery::-webkit-scrollbar {
+    width: 5px;
+}
+
+.product-details-info-body::-webkit-scrollbar-thumb,
+.product-gallery::-webkit-scrollbar-thumb {
+    background: #d8d2cc;
+
+    border-radius: 20px;
+}
+
+.product-details-info-body::-webkit-scrollbar-track,
+.product-gallery::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+
+    .product-details-modal {
+        padding: 0;
+
+        align-items: flex-end;
+
+        overflow: hidden;
+    }
+
+
+    .product-details-dialog {
+        width: 100%;
+        max-width: 100%;
+
+        height: 94vh;
+        max-height: 94vh;
+
+        border-radius: 24px 24px 0 0;
+
+        overflow: hidden;
+    }
+
+
+    .product-details-content {
+        display: block;
+
+        height: 100%;
+
+        overflow-y: auto;
+    }
+
+
+    .product-details-info {
+        padding: 28px 20px 0;
+
+        overflow: visible;
+    }
+
+
+    .product-details-info-body {
+        overflow: visible;
+
+        padding-right: 0;
+    }
+
+
+    .product-details-footer {
+        position: sticky;
+
+        bottom: 0;
+
+        margin-left: -20px;
+
+        width: calc(100% + 40px);
+
+        padding: 10px 20px 15px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 -8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+
+    .product-add-to-cart {
+        min-height: 58px;
+
+        border-radius: 9px;
+
+        font-size: 11px;
+    }
+}
+/* =========================================
+   DESKTOP PRODUCT MODAL
+========================================= */
+
+.product-details-dialog {
+    position: relative;
+    z-index: 2;
+
+    width: min(1100px, 95vw);
+    height: 90vh;
+    max-height: 90vh;
+
+    background: #ffffff;
+    border-radius: 24px;
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    box-shadow:
+        0 35px 90px rgba(0, 0, 0, 0.25),
+        0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+/* MAIN CONTENT */
+
+.product-details-content {
+    display: grid;
+
+    grid-template-columns: 1.15fr 0.85fr;
+
+    height: 100%;
+    min-height: 0;
+
+    overflow: hidden;
+}
+
+
+/* =========================================
+   LEFT — GALLERY
+========================================= */
+
+.product-gallery {
+    min-width: 0;
+    min-height: 0;
+
+    overflow-y: auto;
+}
+
+
+/* =========================================
+   RIGHT — PRODUCT INFORMATION
+========================================= */
+
+.product-details-info {
+    min-width: 0;
+    min-height: 0;
+
+    padding: 55px 48px 0;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+}
+
+
+/* =========================================
+   SCROLLABLE PRODUCT INFORMATION
+========================================= */
+
+.product-details-info-body {
+    flex: 1;
+
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding-right: 8px;
+}
+
+
+/* =========================================
+   PRODUCT TITLE
+========================================= */
+
+.product-details-title {
+    display: block;
+
+    margin: 0 0 12px;
+
+    color: #181512;
+
+    font-size: clamp(28px, 3vw, 40px);
+
+    line-height: 1.1;
+
+    font-weight: 700;
+
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/* =========================================
+   STICKY CART FOOTER
+========================================= */
+
+.product-details-footer {
+    flex-shrink: 0;
+
+    width: 100%;
+
+    padding: 12px 0 18px;
+
+    background: #ffffff;
+
+    z-index: 20;
+
+    box-shadow:
+        0 -8px 20px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================================
+   ADD TO CART
+========================================= */
+
+.product-add-to-cart {
+    width: 100%;
+
+    min-height: 56px;
+
+    margin: 0;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #181512;
+
+    color: #ffffff;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 15px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+}
+
+
+/* =========================================
+   INFO SCROLLBAR
+========================================= */
+
+.product-details-info-body::-webkit-scrollbar,
+.product-gallery::-webkit-scrollbar {
+    width: 5px;
+}
+
+.product-details-info-body::-webkit-scrollbar-thumb,
+.product-gallery::-webkit-scrollbar-thumb {
+    background: #d8d2cc;
+
+    border-radius: 20px;
+}
+
+.product-details-info-body::-webkit-scrollbar-track,
+.product-gallery::-webkit-scrollbar-track {
+    background: transparent;
+}
+/* =========================================
+   COMPACT DESKTOP PRODUCT MODAL
+========================================= */
+
+@media (min-width: 992px) {
+
+    .product-details-dialog {
+        width: min(1000px, 94vw);
+        height: 82vh;
+        max-height: 760px;
+
+        background: #ffffff;
+        border-radius: 20px;
+        overflow: hidden;
+
+        display: flex;
+        flex-direction: column;
+
+        box-shadow:
+            0 25px 70px rgba(0, 0, 0, 0.22);
+    }
+
+    .product-details-content {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+
+        height: 100%;
+        min-height: 0;
+
+        overflow: hidden;
+    }
+
+    /* =========================
+       LEFT — PRODUCT GALLERY
+    ========================= */
+
+    .product-gallery {
+        min-width: 0;
+        min-height: 0;
+
+        padding: 25px 30px;
+
+        display: flex;
+        flex-direction: column;
+
+        overflow: hidden;
+    }
+
+    .product-main-image {
+        flex: 1;
+        min-height: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        overflow: hidden;
+    }
+
+    .product-main-image img {
+        width: 100%;
+        height: 100%;
+
+        max-height: 430px;
+
+        object-fit: contain;
+        display: block;
+    }
+
+    /* =========================
+       THUMBNAILS
+    ========================= */
+
+    .product-thumbnails {
+        flex-shrink: 0;
+
+        display: flex;
+        gap: 10px;
+
+        margin-top: 15px;
+
+        height: 68px;
+
+        overflow: hidden;
+    }
+
+    .product-thumbnail {
+        width: 64px;
+        height: 64px;
+
+        flex-shrink: 0;
+
+        border-radius: 8px;
+        overflow: hidden;
+
+        cursor: pointer;
+
+        border: 1px solid #e5e0db;
+        background: #f8f7f5;
+    }
+
+    .product-thumbnail img {
+        width: 100%;
+        height: 100%;
+
+        object-fit: cover;
+        display: block;
+    }
+
+
+    /* =========================
+       RIGHT — PRODUCT INFO
+    ========================= */
+
+    .product-details-info {
+        min-width: 0;
+        min-height: 0;
+
+        padding: 30px 35px 22px;
+
+        display: flex;
+        flex-direction: column;
+
+        overflow: hidden;
+    }
+
+    .product-details-info-body {
+        flex: 1;
+        min-height: 0;
+
+        overflow: hidden;
+
+        padding-right: 0;
+    }
+
+
+    /* =========================
+       CATEGORY
+    ========================= */
+
+    .product-details-category {
+        display: block;
+
+        margin-bottom: 7px;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+
+        color: #8b8178;
+    }
+
+
+    /* =========================
+       TITLE
+    ========================= */
+
+    .product-details-title {
+        display: block;
+
+        margin: 0 0 8px;
+
+        color: #181512;
+
+        font-size: 30px;
+        line-height: 1.1;
+        font-weight: 700;
+
+        visibility: visible;
+        opacity: 1;
+    }
+
+
+    /* =========================
+       PRICE
+    ========================= */
+
+    .product-details-price {
+        margin-bottom: 10px;
+
+        font-size: 21px;
+        font-weight: 700;
+
+        color: #181512;
+    }
+
+
+    /* =========================
+       DESCRIPTION
+    ========================= */
+
+    .product-details-description {
+        margin: 0;
+
+        max-width: 460px;
+
+        font-size: 13px;
+        line-height: 1.5;
+
+        color: #77706a;
+    }
+
+
+    /* =========================
+       DIVIDER
+    ========================= */
+
+    .product-details-divider {
+        margin: 16px 0;
+
+        height: 1px;
+
+        background: #eee9e4;
+    }
+
+
+    /* =========================
+       OPTIONS
+    ========================= */
+
+    .product-option {
+        margin-bottom: 16px;
+    }
+
+    .product-option-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-bottom: 9px;
+    }
+
+    .product-option-header span {
+        font-size: 12px;
+        font-weight: 600;
+
+        color: #514a45;
+    }
+
+    .product-option-header strong {
+        font-size: 11px;
+        font-weight: 600;
+
+        color: #181512;
+    }
+
+
+    /* =========================
+       COLORS
+    ========================= */
+
+    .product-color-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+
+    /* =========================
+       SIZES
+    ========================= */
+
+    .product-size-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+    }
+
+    .product-size-option {
+        min-width: 42px;
+        height: 36px;
+
+        padding: 0 10px;
+
+        border-radius: 7px;
+    }
+
+
+    /* =========================
+       QUANTITY
+    ========================= */
+
+    .product-quantity-option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-bottom: 12px;
+    }
+
+    .product-quantity-option .product-option-header {
+        margin-bottom: 0;
+    }
+
+    .product-quantity {
+        display: flex;
+        align-items: center;
+
+        height: 36px;
+
+        border: 1px solid #e4dfda;
+        border-radius: 7px;
+
+        overflow: hidden;
+    }
+
+    .product-quantity button {
+        width: 34px;
+        height: 36px;
+
+        border: none;
+        background: #f8f6f4;
+
+        cursor: pointer;
+    }
+
+    .product-quantity span {
+        min-width: 32px;
+
+        text-align: center;
+
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+
+    /* =========================
+       NOTES
+    ========================= */
+
+    .product-details-note {
+        display: flex;
+        gap: 18px;
+
+        margin-top: 5px;
+
+        padding-top: 12px;
+
+        border-top: 1px solid #eee9e4;
+    }
+
+    .product-details-note div {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        font-size: 10px;
+
+        color: #77706a;
+    }
+
+    .product-details-note i {
+        font-size: 11px;
+    }
+
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .product-details-footer {
+        flex-shrink: 0;
+
+        width: 100%;
+
+        padding: 12px 0 0;
+
+        background: #ffffff;
+
+        box-shadow: none;
+    }
+
+    .product-add-to-cart {
+        width: 100%;
+
+        min-height: 48px;
+
+        margin: 0;
+
+        border: none;
+        border-radius: 9px;
+
+        background: #181512;
+        color: #ffffff;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 12px;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        letter-spacing: 1.1px;
+        text-transform: uppercase;
+
+        cursor: pointer;
+    }
+
+    .product-add-to-cart i {
+        font-size: 13px;
+    }
+}
+/* =========================================================
+   PREMIUM SHOE SEARCH BAR
+========================================================= */
+
+.premium-search {
+    width: min(1180px, 92%);
+    height: 68px;
+
+    margin: 28px auto 42px;
+    padding: 0 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: #ffffff;
+    border: 1px solid #eeeae5;
+    border-radius: 14px;
+
+    box-shadow: 0 6px 20px rgba(35, 27, 20, 0.06);
+
+    cursor: pointer;
+
+    transition:
+        box-shadow 0.3s ease,
+        transform 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.premium-search:hover {
+    transform: translateY(-2px);
+
+    border-color: #e4d8cc;
+
+    box-shadow: 0 10px 28px rgba(35, 27, 20, 0.09);
+}
+
+
+/* LEFT SIDE */
+
+.premium-search-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    min-width: 0;
+}
+
+
+/* SEARCH ICON */
+
+.premium-search-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    background: #f5f1ec;
+    color: #79563f;
+
+    border-radius: 50%;
+
+    font-size: 15px;
+}
+
+
+/* SEARCH TEXT */
+
+.premium-search-text {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+
+    min-width: 0;
+}
+
+.premium-search-text span {
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #25211e;
+}
+
+.premium-search-text small {
+    font-size: 11px;
+
+    color: #9a938c;
+
+    white-space: nowrap;
+}
+
+
+/* RIGHT ACTION */
+
+.premium-search-action {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding-left: 25px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #79563f;
+
+    flex-shrink: 0;
+}
+
+.premium-search-action i {
+    font-size: 13px;
+
+    transition: transform 0.3s ease;
+}
+
+.premium-search:hover .premium-search-action i {
+    transform: translateX(4px);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .premium-search {
+        width: calc(100% - 32px);
+        height: 62px;
+
+        margin: 20px auto 32px;
+
+        padding: 0 15px;
+
+        border-radius: 13px;
+
+        box-shadow: 0 5px 16px rgba(35, 27, 20, 0.06);
+    }
+
+    .premium-search-left {
+        gap: 11px;
+    }
+
+    .premium-search-icon {
+        width: 36px;
+        height: 36px;
+
+        font-size: 14px;
+    }
+
+    .premium-search-text span {
+        font-size: 13px;
+    }
+
+    .premium-search-text small {
+        font-size: 10px;
+    }
+
+    .premium-search-action {
+        padding-left: 10px;
+
+        font-size: 12px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .premium-search {
+        height: 58px;
+        width: calc(100% - 24px);
+    }
+
+    .premium-search-text small {
+        display: none;
+    }
+
+    .premium-search-action span {
+        display: none;
+    }
+
+    .premium-search-action {
+        padding-left: 8px;
+    }
+
+}
