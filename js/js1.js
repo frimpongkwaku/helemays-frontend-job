@@ -9,98 +9,6 @@
 // ==========================
 // 💬 CHAT STATE
 // ==========================
-const shoeHero = document.getElementById("shoeHero");
-
-if (shoeHero) {
-
-    const heroSlides = shoeHero.querySelectorAll(".shoe-hero-slide");
-    const heroDots = shoeHero.querySelectorAll(".shoe-hero-dot");
-    const heroPrev = shoeHero.querySelector(".shoe-hero-prev");
-    const heroNext = shoeHero.querySelector(".shoe-hero-next");
-
-    let currentHeroSlide = 0;
-    let heroAutoSlide;
-
-    function showHeroSlide(index) {
-
-        // Wrap around
-        if (index >= heroSlides.length) {
-            currentHeroSlide = 0;
-        } else if (index < 0) {
-            currentHeroSlide = heroSlides.length - 1;
-        } else {
-            currentHeroSlide = index;
-        }
-
-        // Remove active state
-        heroSlides.forEach((slide) => {
-            slide.classList.remove("active");
-        });
-
-        heroDots.forEach((dot) => {
-            dot.classList.remove("active");
-        });
-
-        // Activate current slide
-        heroSlides[currentHeroSlide].classList.add("active");
-
-        if (heroDots[currentHeroSlide]) {
-            heroDots[currentHeroSlide].classList.add("active");
-        }
-    }
-
-    function nextHeroSlide() {
-        showHeroSlide(currentHeroSlide + 1);
-    }
-
-    function previousHeroSlide() {
-        showHeroSlide(currentHeroSlide - 1);
-    }
-
-    function startHeroAutoSlide() {
-
-        clearInterval(heroAutoSlide);
-
-        heroAutoSlide = setInterval(() => {
-            nextHeroSlide();
-        }, 6000);
-    }
-
-    // NEXT BUTTON
-    if (heroNext) {
-        heroNext.addEventListener("click", () => {
-            nextHeroSlide();
-            startHeroAutoSlide();
-        });
-    }
-
-    // PREVIOUS BUTTON
-    if (heroPrev) {
-        heroPrev.addEventListener("click", () => {
-            previousHeroSlide();
-            startHeroAutoSlide();
-        });
-    }
-
-    // DOTS
-    heroDots.forEach((dot) => {
-
-        dot.addEventListener("click", () => {
-
-            const slideIndex = Number(dot.dataset.slide);
-
-            showHeroSlide(slideIndex);
-
-            startHeroAutoSlide();
-        });
-
-    });
-
-    // Start carousel
-    showHeroSlide(0);
-    startHeroAutoSlide();
-}
-
 const seenMessages = new Set();
 const USER_ROLE = "user";
 
@@ -387,26 +295,18 @@ modal.show();
 
   },500);
 }
-/* =========================================================
-   SHOE HERO CAROUSEL
-========================================================= */
-
 
 
 const scrollBox = document.querySelector(".about-scroll-wrapper");
 const scrollContent = document.querySelector(".about-scroll-content");
 
-if (scrollBox && scrollContent) {
+scrollBox.addEventListener("touchstart", () => {
+  scrollContent.style.animationPlayState = "paused";
+});
 
-  scrollBox.addEventListener("touchstart", () => {
-    scrollContent.style.animationPlayState = "paused";
-  });
-
-  scrollBox.addEventListener("touchend", () => {
-    scrollContent.style.animationPlayState = "running";
-  });
-
-}
+scrollBox.addEventListener("touchend", () => {
+  scrollContent.style.animationPlayState = "running";
+});
 
 
 // cart function 
@@ -2111,21 +2011,16 @@ const sendWhatsAppBtn = document.getElementById("sendWhatsAppBtn");
 const stickyCart = document.getElementById("cartBadgeContainer");
 
 
- const CartIcon = document.getElementById("cartIcon");
+ const CartIcon= document.getElementById("cartIcon");
+ CartIcon.addEventListener("click",function(){
+  openModalWithLoader(cartModal);
+ }) 
 
-if (CartIcon) {
-  CartIcon.addEventListener("click", function(){
-    openModalWithLoader(cartModal);
-  });
-}
-
- if (stickyCart) {
   stickyCart.addEventListener("click", () => {
     if (cartModal) {
       openModalWithLoader(cartModal);
     }
   });
-}
 
 const cartModalEl = document.getElementById("cartModal");
 const checkoutModalEl = document.getElementById("checkoutModal");
@@ -3163,7 +3058,101 @@ document.getElementById("userSendBtn").addEventListener("click", () => {
   sendMessage(input.value);
   input.value = "";
 });
+/* =========================================================
+   SHOE HERO CAROUSEL
+========================================================= */
 
+const shoeHero = document.getElementById("shoeHero");
+
+if (shoeHero) {
+
+    const heroSlides = shoeHero.querySelectorAll(".shoe-hero-slide");
+    const heroDots = shoeHero.querySelectorAll(".shoe-hero-dot");
+    const heroPrev = shoeHero.querySelector(".shoe-hero-prev");
+    const heroNext = shoeHero.querySelector(".shoe-hero-next");
+
+    let currentHeroSlide = 0;
+    let heroAutoSlide;
+
+    function showHeroSlide(index) {
+
+        // Wrap around
+        if (index >= heroSlides.length) {
+            currentHeroSlide = 0;
+        } else if (index < 0) {
+            currentHeroSlide = heroSlides.length - 1;
+        } else {
+            currentHeroSlide = index;
+        }
+
+        // Remove active state
+        heroSlides.forEach((slide) => {
+            slide.classList.remove("active");
+        });
+
+        heroDots.forEach((dot) => {
+            dot.classList.remove("active");
+        });
+
+        // Activate current slide
+        heroSlides[currentHeroSlide].classList.add("active");
+
+        if (heroDots[currentHeroSlide]) {
+            heroDots[currentHeroSlide].classList.add("active");
+        }
+    }
+
+    function nextHeroSlide() {
+        showHeroSlide(currentHeroSlide + 1);
+    }
+
+    function previousHeroSlide() {
+        showHeroSlide(currentHeroSlide - 1);
+    }
+
+    function startHeroAutoSlide() {
+
+        clearInterval(heroAutoSlide);
+
+        heroAutoSlide = setInterval(() => {
+            nextHeroSlide();
+        }, 6000);
+    }
+
+    // NEXT BUTTON
+    if (heroNext) {
+        heroNext.addEventListener("click", () => {
+            nextHeroSlide();
+            startHeroAutoSlide();
+        });
+    }
+
+    // PREVIOUS BUTTON
+    if (heroPrev) {
+        heroPrev.addEventListener("click", () => {
+            previousHeroSlide();
+            startHeroAutoSlide();
+        });
+    }
+
+    // DOTS
+    heroDots.forEach((dot) => {
+
+        dot.addEventListener("click", () => {
+
+            const slideIndex = Number(dot.dataset.slide);
+
+            showHeroSlide(slideIndex);
+
+            startHeroAutoSlide();
+        });
+
+    });
+
+    // Start carousel
+    showHeroSlide(0);
+    startHeroAutoSlide();
+}
 const featuredButtons = document.querySelectorAll(".featured-view");
 
 featuredButtons.forEach(button => {
