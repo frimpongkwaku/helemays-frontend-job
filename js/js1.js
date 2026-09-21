@@ -3080,13 +3080,17 @@ if (userSendButton) {
 ========================================================= */
 
 const shoeHero = document.getElementById("shoeHero");
+var heroSlides;
+var heroDots;
+var heroPrev;
+var heroNext;
 
 if (shoeHero) {
 
-    const heroSlides = shoeHero.querySelectorAll(".shoe-hero-slide");
-    const heroDots = shoeHero.querySelectorAll(".shoe-hero-dot");
-    const heroPrev = shoeHero.querySelector(".shoe-hero-prev");
-    const heroNext = shoeHero.querySelector(".shoe-hero-next");
+  heroSlides = shoeHero.querySelectorAll(".shoe-hero-slide");
+  heroDots = shoeHero.querySelectorAll(".shoe-hero-dot");
+  heroPrev = shoeHero.querySelector(".shoe-hero-prev");
+  heroNext = shoeHero.querySelector(".shoe-hero-next");
 
     let currentHeroSlide = 0;
     let heroAutoSlide;
@@ -3113,6 +3117,8 @@ if (shoeHero) {
         });
 
         // Activate current slide
+        if (!heroSlides.length) return;
+
         heroSlides[currentHeroSlide].classList.add("active");
 
         if (heroDots[currentHeroSlide]) {
