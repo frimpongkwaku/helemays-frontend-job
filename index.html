@@ -2344,6 +2344,38 @@
 
   </div>
 </div>
+<script>
+    (function () {
+        function showError(message, source, line, column) {
+            var panel = document.getElementById("mobileErrorPanel");
+
+            if (!panel) {
+                panel = document.createElement("pre");
+                panel.id = "mobileErrorPanel";
+                panel.style.cssText =
+                    "position:fixed;top:0;left:0;right:0;z-index:99999;" +
+                    "margin:0;padding:14px;background:#300;color:#fff;" +
+                    "font:13px monospace;white-space:pre-wrap;overflow:auto;" +
+                    "max-height:50vh;";
+                document.body.appendChild(panel);
+            }  
+
+            panel.textContent +=
+                (panel.textContent ? "\n\n" : "") +
+                String(message) +
+                (source ? "\nSource: " + source : "") +
+                (line ? "\nLine: " + line + ", Column: " + column : "");
+        }
+
+        window.onerror = function (message, source, line, column) {
+            showError(message, source, line, column);
+        };
+
+        window.onunhandledrejection = function (event) {
+            showError("Unhandled promise: " + event.reason);
+        };
+    }());
+</script>
  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script src="./Assests/js/bootstrap.bundle.min.js"></script>
 <script src="./js/js1.js"></script>
