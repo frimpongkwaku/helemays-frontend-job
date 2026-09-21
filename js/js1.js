@@ -19,12 +19,14 @@ const getOrderId = () =>
 // ==========================
 // 🚀 SOCKET CONNECTION
 // ==========================
-const socket = io("https://storebackend-production-f58c.up.railway.app", {
-  transports: ["websocket"],
-  reconnection: true,
-  reconnectionAttempts: 10,
-  reconnectionDelay: 1000
-});
+const socket = typeof io === "function"
+  ? io("https://storebackend-production-f58c.up.railway.app", {
+      transports: ["polling", "websocket"],
+      reconnection: true,
+      reconnectionAttempts: 10,
+      reconnectionDelay: 1000
+    })
+  : { on() {}, emit() {} };
 
 // ==========================
 // 🔌 CONNECT
@@ -127,6 +129,8 @@ async function loadMessages() {
 
 let userModal; 
 let greeting;
+let searchInput;
+let searchRow;
 // Add this at the top of your JS file, before you reference it
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -712,6 +716,9 @@ Note: ${order.note}
 
 
 // eventlistener to load after the page is ready its reads ones 
+searchInput = document.querySelector(".shoe-search-section #searchInput");
+searchRow = document.getElementById("searchFoodRow");
+
 document.addEventListener('DOMContentLoaded', function () {
   const modalEl = document.getElementById('userModal');
   userModal = modalEl ? new bootstrap.Modal(modalEl) : null;
@@ -722,8 +729,6 @@ document.addEventListener('DOMContentLoaded', function () {
   
 const userForm = document.getElementById('userForm');
 // search section for live search with key press on 26/01/26
-const searchInput = document.getElementById("searchInput");
-const searchRow = document.getElementById("searchFoodRow");
 let activeCategory ="all";// breaking down from the all elements// debugging the entire search block of codes
 
 // socket message ui 
@@ -796,13 +801,13 @@ function renderSearch() {
   const filtered = products.filter(product => {
 
     const name =
-      product.name?.toLowerCase() || "";
+      product.name ? product.name.toLowerCase() : "";
 
     const category =
-      product.category?.toLowerCase() || "";
+      product.category ? product.category.toLowerCase() : "";
 
     const description =
-      product.description?.toLowerCase() || "";
+      product.description ? product.description.toLowerCase() : "";
 
     return (
       !search ||
@@ -831,8 +836,9 @@ function renderSearch() {
   filtered.forEach(product => {
 
     const image =
-      product.images?.[0] ||
-      "./images/shoe-placeholder.png";
+      product.images && product.images[0]
+        ? product.images[0]
+        : "./images/shoe-placeholder.png";
 
     searchRow.insertAdjacentHTML(
       "beforeend",
@@ -1240,25 +1246,16 @@ if (momoBtn) {
 
 function buildConfirmation() {
 
-  const name =
-    document.getElementById("custName")
-      ?.value.trim();
-
-  const phone =
-    document.getElementById("custPhone")
-      ?.value.trim();
-
-  const address =
-    document.getElementById("custAddress")
-      ?.value.trim();
-
-  const email =
-    document.getElementById("custEmail")
-      ?.value.trim();
-
-  const note =
-    document.getElementById("orderNote")
-      ?.value.trim() || "None";
+  const nameInput = document.getElementById("custName");
+  const phoneInput = document.getElementById("custPhone");
+  const addressInput = document.getElementById("custAddress");
+  const emailInput = document.getElementById("custEmail");
+  const noteInput = document.getElementById("orderNote");
+  const name = nameInput ? nameInput.value.trim() : "";
+  const phone = phoneInput ? phoneInput.value.trim() : "";
+  const address = addressInput ? addressInput.value.trim() : "";
+  const email = emailInput ? emailInput.value.trim() : "";
+  const note = noteInput ? noteInput.value.trim() || "None" : "None";
 
 
   if (!name || !phone) {
@@ -1340,7 +1337,7 @@ function buildConfirmation() {
   if (deliveryElement) {
 
     deliveryElement.textContent =
-      deliveryType?.value || "Pickup";
+      deliveryType ? deliveryType.value : "Pickup";
 
   }
 
@@ -1348,7 +1345,7 @@ function buildConfirmation() {
   if (paymentElement) {
 
     paymentElement.textContent =
-      paymentMethod?.value || "Cash on Delivery";
+      paymentMethod ? paymentMethod.value : "Cash on Delivery";
 
   }
 
@@ -1646,12 +1643,11 @@ if (checkoutModalElement) {
       resetCheckoutFlow();
 
       selectFulfillment(
-        deliveryType?.value || "Pickup"
+        deliveryType ? deliveryType.value : "Pickup"
       );
 
       selectPayment(
-        paymentMethod?.value ||
-        "Cash on Delivery"
+        paymentMethod ? paymentMethod.value : "Cash on Delivery"
       );
 
     }
@@ -1902,18 +1898,23 @@ if (buyBtn) {
     }
 
     // Get checkout customer information
-    const name = document.getElementById("custName")?.value.trim();
-    const phone = document.getElementById("custPhone")?.value.trim();
-    const email = document.getElementById("custEmail")?.value.trim();
-    const address = document.getElementById("custAddress")?.value.trim();
-    const note = document.getElementById("orderNote")?.value.trim();
+    const nameInput = document.getElementById("custName");
+    const phoneInput = document.getElementById("custPhone");
+    const emailInput = document.getElementById("custEmail");
+    const addressInput = document.getElementById("custAddress");
+    const noteInput = document.getElementById("orderNote");
+    const name = nameInput ? nameInput.value.trim() : "";
+    const phone = phoneInput ? phoneInput.value.trim() : "";
+    const email = emailInput ? emailInput.value.trim() : "";
+    const address = addressInput ? addressInput.value.trim() : "";
+    const note = noteInput ? noteInput.value.trim() : "";
 
     const delivery =
-      document.getElementById("deliveryType")?.value ||
+      (document.getElementById("deliveryType") || {}).value ||
       "Not specified";
 
     const payment =
-      document.getElementById("paymentMethod")?.value ||
+      (document.getElementById("paymentMethod") || {}).value ||
       "Not specified";
 
     if (!name || !phone) {
@@ -2297,8 +2298,9 @@ function render(category = "All") {
     filteredProducts.forEach(item => {
 
         const mainImage =
-            item.images?.[0] ||
-            "./images/shoe-placeholder.png";
+            item.images && item.images[0]
+              ? item.images[0]
+              : "./images/shoe-placeholder.png";
 
         const badge =
             item.featured
@@ -2408,7 +2410,9 @@ if (!product) {
 window.productDetailsState = {
   product: product,
   selectedSize: null,
-  selectedColor: product.colors?.[0] || "Default",
+  selectedColor: product.colors && product.colors[0]
+    ? product.colors[0]
+    : "Default",
   quantity: 1
 };
 
@@ -2434,7 +2438,7 @@ console.log("Opening product:", product);
 
   // 4. Get product images
   const productImages =
-    product.images?.length
+    product.images && product.images.length
       ? product.images
       : ["./images/shoe-placeholder.png"];
 
@@ -2645,7 +2649,9 @@ let productQuantity = 1;
 window.productDetailsState = {
   product: product,
   selectedSize: null,
-  selectedColor: product.colors?.[0] || "Default",
+  selectedColor: product.colors && product.colors[0]
+    ? product.colors[0]
+    : "Default",
   quantity: 1
 };
 
@@ -2801,7 +2807,9 @@ productAddToCart.addEventListener("click", () => {
   const cartItem = {
     productId: product.id,
     name: product.name,
-    image: product.images?.[0] || "./images/shoe-placeholder.png",
+    image: product.images && product.images[0]
+      ? product.images[0]
+      : "./images/shoe-placeholder.png",
     price: product.price,
     size: sizeItem.size,
     color: selectedColor || "Default",
@@ -3050,14 +3058,18 @@ if (row) {
 
 
 
-document.getElementById("userSendBtn").addEventListener("click", () => {
-  const input = document.getElementById("userChatInput");
+const userSendButton = document.getElementById("userSendBtn");
 
-  if (!input.value) return;
+if (userSendButton) {
+  userSendButton.addEventListener("click", () => {
+    const input = document.getElementById("userChatInput");
 
-  sendMessage(input.value);
-  input.value = "";
-});
+    if (!input || !input.value) return;
+
+    sendMessage(input.value);
+    input.value = "";
+  });
+}
 /* =========================================================
    SHOE HERO CAROUSEL
 ========================================================= */
