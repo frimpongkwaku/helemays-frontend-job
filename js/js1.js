@@ -354,45 +354,32 @@ const products =[// item arrays// this product is for admin backend// use create
 ];
 */
 //loading effect 
-const modalLoader= document.getElementById("modalLoader");
-const pageLoader= document.getElementById("loader");
-function showLoader(){
-  if(modalLoader){
-    modalLoader.style.display = "flex";
-  }
+// ========================================
+// PAGE LOADER
+// ========================================
+
+const modalLoader = document.getElementById("modalLoader");
+const pageLoader = document.getElementById("loader");
+
+function hidePageLoader() {
+
+  if (!pageLoader) return;
+
+  pageLoader.classList.add("fade-out");
+
+  setTimeout(() => {
+    pageLoader.style.display = "none";
+  }, 500);
 
 }
 
-function hideLoader(){
-  if(modalLoader){
-    modalLoader.classList.add("fade-out");
-    setTimeout(()=>{
-      modalLoader.style.display="none";
-      modalLoader.classList.remove("fade-out");
-    },800);
-  }
+window.addEventListener("load", () => {
 
-}
+  setTimeout(() => {
+    hidePageLoader();
+  }, 1500);
 
-// universal modal opener
-function openModalWithLoader(modal){
-
-  // show top loading bar
-  if(pageLoader){
-    pageLoader.style.display = "block";
-  }
-showLoader();
-
-setTimeout(()=>{
-hideLoader();
-// hide top loading bar
-    if(pageLoader){
-      pageLoader.style.display = "none"; }
-modal.show();
-
-  },500);
-}
-
+});
 
 const scrollBox = document.querySelector(".about-scroll-wrapper");
 const scrollContent = document.querySelector(".about-scroll-content");
@@ -2859,17 +2846,17 @@ if (productDetailsOverlay && productDetailsModal) {
   });
 }
 
-// Close with X button
+/*Close with X button
 closeProductDetails.addEventListener("click", () => {
   productDetailsModal.classList.remove("active");
   productDetailsModal.setAttribute("aria-hidden", "true");
 });
 
-// Close when clicking outside the modal
+
 productDetailsOverlay.addEventListener("click", () => {
   productDetailsModal.classList.remove("active");
   productDetailsModal.setAttribute("aria-hidden", "true");
-});
+});*/
 
 // add to cart handler 
 // ========================================
@@ -3063,7 +3050,7 @@ function openMap(){ // how to design a beautiful online front end and also make 
   }
 }
 
-// loading page effect
+/* loading page effect
 window.addEventListener('load', () => {
   setTimeout(() => {
     if (pageLoader) {
@@ -3073,7 +3060,7 @@ window.addEventListener('load', () => {
       }, 500);
     }
   }, 1500); // 3 seconds delay
-});
+});*/
 
 // sticky cart 
  const stickyCartWrapper = document.getElementById("cartBadgeContainer");
