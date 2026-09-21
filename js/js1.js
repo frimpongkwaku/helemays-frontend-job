@@ -3190,9 +3190,12 @@ if (shoeHero) {
 const featuredButtons = document.querySelectorAll(".featured-view");
 
 featuredButtons.forEach(button => {
-    button.addEventListener("click", () => {
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
 
         const productId = button.dataset.productId;
+
+    if (!productId) return;
 
         openProductDetails(productId);
 
