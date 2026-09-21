@@ -3084,6 +3084,9 @@ var heroSlides;
 var heroDots;
 var heroPrev;
 var heroNext;
+var currentHeroSlide = 0;
+var heroAutoSlide;
+var touchStartX = 0;
 
 if (shoeHero) {
 
@@ -3091,10 +3094,6 @@ if (shoeHero) {
   heroDots = shoeHero.querySelectorAll(".shoe-hero-dot");
   heroPrev = shoeHero.querySelector(".shoe-hero-prev");
   heroNext = shoeHero.querySelector(".shoe-hero-next");
-
-    let currentHeroSlide = 0;
-    let heroAutoSlide;
-    let touchStartX = 0;
 
     function showHeroSlide(index) {
 
