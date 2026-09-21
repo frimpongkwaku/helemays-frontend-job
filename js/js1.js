@@ -9,6 +9,103 @@
 // ==========================
 // 💬 CHAT STATE
 // ==========================
+
+/* =========================================================
+   SHOE HERO CAROUSEL
+========================================================= */
+
+const shoeHero = document.getElementById("shoeHero");
+
+if (shoeHero) {
+
+    const heroSlides = shoeHero.querySelectorAll(".shoe-hero-slide");
+    const heroDots = shoeHero.querySelectorAll(".shoe-hero-dot");
+    const heroPrev = shoeHero.querySelector(".shoe-hero-prev");
+    const heroNext = shoeHero.querySelector(".shoe-hero-next");
+
+    let currentHeroSlide = 0;
+    let heroAutoSlide;
+
+    function showHeroSlide(index) {
+
+        // Wrap around
+        if (index >= heroSlides.length) {
+            currentHeroSlide = 0;
+        } else if (index < 0) {
+            currentHeroSlide = heroSlides.length - 1;
+        } else {
+            currentHeroSlide = index;
+        }
+
+        // Remove active state
+        heroSlides.forEach((slide) => {
+            slide.classList.remove("active");
+        });
+
+        heroDots.forEach((dot) => {
+            dot.classList.remove("active");
+        });
+
+        // Activate current slide
+        heroSlides[currentHeroSlide].classList.add("active");
+
+        if (heroDots[currentHeroSlide]) {
+            heroDots[currentHeroSlide].classList.add("active");
+        }
+    }
+
+    function nextHeroSlide() {
+        showHeroSlide(currentHeroSlide + 1);
+    }
+
+    function previousHeroSlide() {
+        showHeroSlide(currentHeroSlide - 1);
+    }
+
+    function startHeroAutoSlide() {
+
+        clearInterval(heroAutoSlide);
+
+        heroAutoSlide = setInterval(() => {
+            nextHeroSlide();
+        }, 6000);
+    }
+
+    // NEXT BUTTON
+    if (heroNext) {
+        heroNext.addEventListener("click", () => {
+            nextHeroSlide();
+            startHeroAutoSlide();
+        });
+    }
+
+    // PREVIOUS BUTTON
+    if (heroPrev) {
+        heroPrev.addEventListener("click", () => {
+            previousHeroSlide();
+            startHeroAutoSlide();
+        });
+    }
+
+    // DOTS
+    heroDots.forEach((dot) => {
+
+        dot.addEventListener("click", () => {
+
+            const slideIndex = Number(dot.dataset.slide);
+
+            showHeroSlide(slideIndex);
+
+            startHeroAutoSlide();
+        });
+
+    });
+
+    // Start carousel
+    showHeroSlide(0);
+    startHeroAutoSlide();
+}
+
 const seenMessages = new Set();
 const USER_ROLE = "user";
 
@@ -3058,101 +3155,7 @@ document.getElementById("userSendBtn").addEventListener("click", () => {
   sendMessage(input.value);
   input.value = "";
 });
-/* =========================================================
-   SHOE HERO CAROUSEL
-========================================================= */
 
-const shoeHero = document.getElementById("shoeHero");
-
-if (shoeHero) {
-
-    const heroSlides = shoeHero.querySelectorAll(".shoe-hero-slide");
-    const heroDots = shoeHero.querySelectorAll(".shoe-hero-dot");
-    const heroPrev = shoeHero.querySelector(".shoe-hero-prev");
-    const heroNext = shoeHero.querySelector(".shoe-hero-next");
-
-    let currentHeroSlide = 0;
-    let heroAutoSlide;
-
-    function showHeroSlide(index) {
-
-        // Wrap around
-        if (index >= heroSlides.length) {
-            currentHeroSlide = 0;
-        } else if (index < 0) {
-            currentHeroSlide = heroSlides.length - 1;
-        } else {
-            currentHeroSlide = index;
-        }
-
-        // Remove active state
-        heroSlides.forEach((slide) => {
-            slide.classList.remove("active");
-        });
-
-        heroDots.forEach((dot) => {
-            dot.classList.remove("active");
-        });
-
-        // Activate current slide
-        heroSlides[currentHeroSlide].classList.add("active");
-
-        if (heroDots[currentHeroSlide]) {
-            heroDots[currentHeroSlide].classList.add("active");
-        }
-    }
-
-    function nextHeroSlide() {
-        showHeroSlide(currentHeroSlide + 1);
-    }
-
-    function previousHeroSlide() {
-        showHeroSlide(currentHeroSlide - 1);
-    }
-
-    function startHeroAutoSlide() {
-
-        clearInterval(heroAutoSlide);
-
-        heroAutoSlide = setInterval(() => {
-            nextHeroSlide();
-        }, 6000);
-    }
-
-    // NEXT BUTTON
-    if (heroNext) {
-        heroNext.addEventListener("click", () => {
-            nextHeroSlide();
-            startHeroAutoSlide();
-        });
-    }
-
-    // PREVIOUS BUTTON
-    if (heroPrev) {
-        heroPrev.addEventListener("click", () => {
-            previousHeroSlide();
-            startHeroAutoSlide();
-        });
-    }
-
-    // DOTS
-    heroDots.forEach((dot) => {
-
-        dot.addEventListener("click", () => {
-
-            const slideIndex = Number(dot.dataset.slide);
-
-            showHeroSlide(slideIndex);
-
-            startHeroAutoSlide();
-        });
-
-    });
-
-    // Start carousel
-    showHeroSlide(0);
-    startHeroAutoSlide();
-}
 const featuredButtons = document.querySelectorAll(".featured-view");
 
 featuredButtons.forEach(button => {
