@@ -3085,6 +3085,7 @@ if (shoeHero) {
 
     let currentHeroSlide = 0;
     let heroAutoSlide;
+    let touchStartX = 0;
 
     function showHeroSlide(index) {
 
@@ -3164,6 +3165,27 @@ if (shoeHero) {
     // Start carousel
     showHeroSlide(0);
     startHeroAutoSlide();
+
+    shoeHero.addEventListener("touchstart", (event) => {
+      if (event.touches && event.touches.length) {
+        touchStartX = event.touches[0].clientX;
+      }
+    }, { passive: true });
+
+    shoeHero.addEventListener("touchend", (event) => {
+      if (!event.changedTouches || !event.changedTouches.length) return;
+
+      const distance = event.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(distance) < 40) return;
+
+      if (distance < 0) {
+        nextHeroSlide();
+      } else {
+        previousHeroSlide();
+      }
+
+      startHeroAutoSlide();
+    }, { passive: true });
 }
 const featuredButtons = document.querySelectorAll(".featured-view");
 

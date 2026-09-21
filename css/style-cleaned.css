@@ -9549,6 +9549,7 @@ position: relative;
     min-height: 520px;
     overflow: hidden;
     background: #f7f5f1;
+    touch-action: pan-y;
 }
 
 
@@ -9748,6 +9749,8 @@ position: relative;
     color: #222;
 
     cursor: pointer;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
 
     transform: translateY(-50%);
 
@@ -9800,6 +9803,8 @@ position: relative;
     background: rgba(0, 0, 0, 0.2);
 
     cursor: pointer;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
 
     transition:
         width 0.3s ease,
