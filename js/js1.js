@@ -922,13 +922,13 @@ function renderSearch() {
   const filtered = products.filter(product => {
 
     const name =
-      product.name?.toLowerCase() || "";
+      product.name ? product.name.toLowerCase() : "";
 
     const category =
-      product.category?.toLowerCase() || "";
+      product.category ? product.category.toLowerCase() : "";
 
     const description =
-      product.description?.toLowerCase() || "";
+      product.description ? product.description.toLowerCase() : "";
 
     return (
       !search ||
@@ -957,8 +957,9 @@ function renderSearch() {
   filtered.forEach(product => {
 
     const image =
-      product.images?.[0] ||
-      "./images/shoe-placeholder.png";
+      product.images && product.images[0]
+        ? product.images[0]
+        : "./images/shoe-placeholder.png";
 
     searchRow.insertAdjacentHTML(
       "beforeend",
@@ -1366,25 +1367,17 @@ if (momoBtn) {
 
 function buildConfirmation() {
 
-  const name =
-    document.getElementById("custName")
-      ?.value.trim();
+  const nameInput = document.getElementById("custName");
+  const phoneInput = document.getElementById("custPhone");
+  const addressInput = document.getElementById("custAddress");
+  const emailInput = document.getElementById("custEmail");
+  const noteInput = document.getElementById("orderNote");
 
-  const phone =
-    document.getElementById("custPhone")
-      ?.value.trim();
-
-  const address =
-    document.getElementById("custAddress")
-      ?.value.trim();
-
-  const email =
-    document.getElementById("custEmail")
-      ?.value.trim();
-
-  const note =
-    document.getElementById("orderNote")
-      ?.value.trim() || "None";
+  const name = nameInput ? nameInput.value.trim() : "";
+  const phone = phoneInput ? phoneInput.value.trim() : "";
+  const address = addressInput ? addressInput.value.trim() : "";
+  const email = emailInput ? emailInput.value.trim() : "";
+  const note = noteInput ? noteInput.value.trim() || "None" : "None";
 
 
   if (!name || !phone) {
@@ -1466,7 +1459,7 @@ function buildConfirmation() {
   if (deliveryElement) {
 
     deliveryElement.textContent =
-      deliveryType?.value || "Pickup";
+      deliveryType ? deliveryType.value : "Pickup";
 
   }
 
@@ -1474,7 +1467,7 @@ function buildConfirmation() {
   if (paymentElement) {
 
     paymentElement.textContent =
-      paymentMethod?.value || "Cash on Delivery";
+      paymentMethod ? paymentMethod.value : "Cash on Delivery";
 
   }
 
@@ -1772,12 +1765,11 @@ if (checkoutModalElement) {
       resetCheckoutFlow();
 
       selectFulfillment(
-        deliveryType?.value || "Pickup"
+        deliveryType ? deliveryType.value : "Pickup"
       );
 
       selectPayment(
-        paymentMethod?.value ||
-        "Cash on Delivery"
+        paymentMethod ? paymentMethod.value : "Cash on Delivery"
       );
 
     }
@@ -2028,18 +2020,23 @@ if (buyBtn) {
     }
 
     // Get checkout customer information
-    const name = document.getElementById("custName")?.value.trim();
-    const phone = document.getElementById("custPhone")?.value.trim();
-    const email = document.getElementById("custEmail")?.value.trim();
-    const address = document.getElementById("custAddress")?.value.trim();
-    const note = document.getElementById("orderNote")?.value.trim();
+    const nameInput = document.getElementById("custName");
+    const phoneInput = document.getElementById("custPhone");
+    const emailInput = document.getElementById("custEmail");
+    const addressInput = document.getElementById("custAddress");
+    const noteInput = document.getElementById("orderNote");
+    const name = nameInput ? nameInput.value.trim() : "";
+    const phone = phoneInput ? phoneInput.value.trim() : "";
+    const email = emailInput ? emailInput.value.trim() : "";
+    const address = addressInput ? addressInput.value.trim() : "";
+    const note = noteInput ? noteInput.value.trim() : "";
 
     const delivery =
-      document.getElementById("deliveryType")?.value ||
+      (document.getElementById("deliveryType") || {}).value ||
       "Not specified";
 
     const payment =
-      document.getElementById("paymentMethod")?.value ||
+      (document.getElementById("paymentMethod") || {}).value ||
       "Not specified";
 
     if (!name || !phone) {
@@ -2419,8 +2416,9 @@ function render(category = "All") {
     filteredProducts.forEach(item => {
 
         const mainImage =
-            item.images?.[0] ||
-            "./images/shoe-placeholder.png";
+          item.images && item.images[0]
+            ? item.images[0]
+            : "./images/shoe-placeholder.png";
 
         const badge =
             item.featured
@@ -2530,7 +2528,9 @@ if (!product) {
 window.productDetailsState = {
   product: product,
   selectedSize: null,
-  selectedColor: product.colors?.[0] || "Default",
+  selectedColor: product.colors && product.colors[0]
+    ? product.colors[0]
+    : "Default",
   quantity: 1
 };
 
@@ -2556,7 +2556,7 @@ console.log("Opening product:", product);
 
   // 4. Get product images
   const productImages =
-    product.images?.length
+    product.images && product.images.length
       ? product.images
       : ["./images/shoe-placeholder.png"];
 
@@ -2767,7 +2767,9 @@ let productQuantity = 1;
 window.productDetailsState = {
   product: product,
   selectedSize: null,
-  selectedColor: product.colors?.[0] || "Default",
+  selectedColor: product.colors && product.colors[0]
+    ? product.colors[0]
+    : "Default",
   quantity: 1
 };
 
@@ -2910,7 +2912,7 @@ if (productAddToCart) {
     productAddToCart.addEventListener("click", () => {
 
         // Make sure a product is selected
-        if (!window.productDetailsState?.product) {
+        if (!window.productDetailsState || !window.productDetailsState.product) {
             console.warn("No product selected.");
             return;
         }
@@ -2932,7 +2934,7 @@ if (productAddToCart) {
            CHECK SIZE
         ------------------------------------------------- */
 
-        if (product.sizes?.length && !selectedSize) {
+        if (product.sizes && product.sizes.length && !selectedSize) {
 
             alert("Please select a size.");
 
@@ -3016,7 +3018,7 @@ if (productAddToCart) {
 
             image:
                 product.image ||
-                product.images?.[0] ||
+              (product.images && product.images[0]) ||
                 "",
 
             size:
