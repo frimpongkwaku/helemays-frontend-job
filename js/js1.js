@@ -262,6 +262,9 @@ let greeting;
 let userForm;
 let userNameInput;
 let userEmailInput;
+let searchInput;
+let searchRow;
+let activeCategory = "all";
 // Add this at the top of your JS file, before you reference it
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -838,6 +841,9 @@ Note: ${order.note}
 
 
 // eventlistener to load after the page is ready its reads ones 
+searchInput = document.querySelector(".shoe-search-section #searchInput");
+searchRow = document.getElementById("searchFoodRow");
+
 document.addEventListener('DOMContentLoaded', function () {
   const modalEl = document.getElementById('userModal');
   userModal = modalEl ? new bootstrap.Modal(modalEl) : null;
@@ -848,9 +854,6 @@ document.addEventListener('DOMContentLoaded', function () {
   
 userForm = document.getElementById('userForm');
 // search section for live search with key press on 26/01/26
-const searchInput = document.getElementById("searchInput");
-const searchRow = document.getElementById("searchFoodRow");
-let activeCategory ="all";// breaking down from the all elements// debugging the entire search block of codes
 
 // socket message ui 
 /*function addMessageToUI(data) {
