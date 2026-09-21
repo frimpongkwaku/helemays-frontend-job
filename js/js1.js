@@ -106,6 +106,39 @@ if (shoeHero) {
     startHeroAutoSlide();
 }
 
+  const featuredWrapper = document.querySelector(".featured-wrapper");
+  const featuredTrack = document.getElementById("featuredTrack");
+  const featuredPrevious = document.querySelector(".featured-prev");
+  const featuredNext = document.querySelector(".featured-next");
+  let featuredOffset = 0;
+
+  function moveFeatured(direction) {
+    if (!featuredWrapper || !featuredTrack) return;
+
+    const firstItem = featuredTrack.querySelector(".featured-item");
+    if (!firstItem) return;
+
+    const trackStyle = window.getComputedStyle(featuredTrack);
+    const gap = parseFloat(trackStyle.columnGap || trackStyle.gap) || 0;
+    const step = firstItem.getBoundingClientRect().width + gap;
+    const maxOffset = Math.max(0, featuredTrack.scrollWidth - featuredWrapper.clientWidth);
+
+    featuredOffset = Math.min(
+      maxOffset,
+      Math.max(0, featuredOffset + direction * step)
+    );
+
+    featuredTrack.style.transform = `translateX(-${featuredOffset}px)`;
+  }
+
+  if (featuredPrevious) {
+    featuredPrevious.addEventListener("click", () => moveFeatured(-1));
+  }
+
+  if (featuredNext) {
+    featuredNext.addEventListener("click", () => moveFeatured(1));
+  }
+
 const seenMessages = new Set();
 const USER_ROLE = "user";
 
@@ -116,12 +149,14 @@ const getOrderId = () =>
 // ==========================
 // 🚀 SOCKET CONNECTION
 // ==========================
-const socket = io("https://storebackend-production-f58c.up.railway.app", {
-  transports: ["polling", "websocket"],
-  reconnection: true,
-  reconnectionAttempts: 10,
-  reconnectionDelay: 1000
-});
+const socket = typeof io === "function"
+  ? io("https://storebackend-production-f58c.up.railway.app", {
+      transports: ["polling", "websocket"],
+      reconnection: true,
+      reconnectionAttempts: 10,
+      reconnectionDelay: 1000
+    })
+  : { on() {}, emit() {} };
 
 // ==========================
 // 🔌 CONNECT
@@ -222,8 +257,11 @@ async function loadMessages() {
 }
 
 
-let userModal; 
+let userModal;
 let greeting;
+let userForm;
+let userNameInput;
+let userEmailInput;
 // Add this at the top of your JS file, before you reference it
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -804,11 +842,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const modalEl = document.getElementById('userModal');
   userModal = modalEl ? new bootstrap.Modal(modalEl) : null;
   
-  const userNameInput = document.getElementById('userName');
-  const userEmailInput = document.getElementById('userEmail');
+  userNameInput = document.getElementById('userName');
+  userEmailInput = document.getElementById('userEmail');
   greeting = document.getElementById('greeting');
   
-const userForm = document.getElementById('userForm');
+userForm = document.getElementById('userForm');
 // search section for live search with key press on 26/01/26
 const searchInput = document.getElementById("searchInput");
 const searchRow = document.getElementById("searchFoodRow");
