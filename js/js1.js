@@ -14,71 +14,44 @@
    SHOE HERO CAROUSEL
 ========================================================= */
 
-/* =========================================================
-   SHOE HERO CAROUSEL
-========================================================= */
+const shoeHero = document.getElementById("shoeHero");
 
-function initShoeHeroCarousel() {
+if (shoeHero) {
 
-    const shoeHero = document.getElementById("shoeHero");
-
-    if (!shoeHero) {
-        console.log("❌ shoeHero not found");
-        return;
-    }
-
-    const heroSlides =
-        shoeHero.querySelectorAll(".shoe-hero-slide");
-
-    const heroDots =
-        shoeHero.querySelectorAll(".shoe-hero-dot");
-
-    const heroPrev =
-        shoeHero.querySelector(".shoe-hero-prev");
-
-    const heroNext =
-        shoeHero.querySelector(".shoe-hero-next");
-
-    if (!heroSlides.length) {
-        console.log("❌ No hero slides found");
-        return;
-    }
+    const heroSlides = shoeHero.querySelectorAll(".shoe-hero-slide");
+    const heroDots = shoeHero.querySelectorAll(".shoe-hero-dot");
+    const heroPrev = shoeHero.querySelector(".shoe-hero-prev");
+    const heroNext = shoeHero.querySelector(".shoe-hero-next");
 
     let currentHeroSlide = 0;
     let heroAutoSlide;
 
     function showHeroSlide(index) {
 
+        // Wrap around
         if (index >= heroSlides.length) {
             currentHeroSlide = 0;
-
         } else if (index < 0) {
             currentHeroSlide = heroSlides.length - 1;
-
         } else {
             currentHeroSlide = index;
         }
 
-        heroSlides.forEach(slide => {
+        // Remove active state
+        heroSlides.forEach((slide) => {
             slide.classList.remove("active");
         });
 
-        heroDots.forEach(dot => {
+        heroDots.forEach((dot) => {
             dot.classList.remove("active");
         });
 
-        heroSlides[currentHeroSlide]
-            .classList.add("active");
+        // Activate current slide
+        heroSlides[currentHeroSlide].classList.add("active");
 
         if (heroDots[currentHeroSlide]) {
-            heroDots[currentHeroSlide]
-                .classList.add("active");
+            heroDots[currentHeroSlide].classList.add("active");
         }
-
-        console.log(
-            "Hero slide:",
-            currentHeroSlide
-        );
     }
 
     function nextHeroSlide() {
@@ -89,70 +62,48 @@ function initShoeHeroCarousel() {
         showHeroSlide(currentHeroSlide - 1);
     }
 
-    if (heroNext) {
-
-        heroNext.addEventListener("click", () => {
-            nextHeroSlide();
-            startHeroAutoSlide();
-        });
-
-    }
-
-    if (heroPrev) {
-
-        heroPrev.addEventListener("click", () => {
-            previousHeroSlide();
-            startHeroAutoSlide();
-        });
-
-    }
-
-    heroDots.forEach(dot => {
-
-        dot.addEventListener("click", () => {
-
-            const slideIndex =
-                Number(dot.dataset.slide);
-
-            showHeroSlide(slideIndex);
-
-            startHeroAutoSlide();
-
-        });
-
-    });
-
     function startHeroAutoSlide() {
 
         clearInterval(heroAutoSlide);
 
         heroAutoSlide = setInterval(() => {
-
             nextHeroSlide();
-
         }, 6000);
-
     }
 
+    // NEXT BUTTON
+    if (heroNext) {
+        heroNext.addEventListener("click", () => {
+            nextHeroSlide();
+            startHeroAutoSlide();
+        });
+    }
+
+    // PREVIOUS BUTTON
+    if (heroPrev) {
+        heroPrev.addEventListener("click", () => {
+            previousHeroSlide();
+            startHeroAutoSlide();
+        });
+    }
+
+    // DOTS
+    heroDots.forEach((dot) => {
+
+        dot.addEventListener("click", () => {
+
+            const slideIndex = Number(dot.dataset.slide);
+
+            showHeroSlide(slideIndex);
+
+            startHeroAutoSlide();
+        });
+
+    });
+
+    // Start carousel
     showHeroSlide(0);
-
     startHeroAutoSlide();
-
-    console.log("✅ Hero carousel initialized");
-}
-
-
-if (document.readyState === "loading") {
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        initShoeHeroCarousel
-    );
-
-} else {
-
-    initShoeHeroCarousel();
-
 }
 
 const seenMessages = new Set();
@@ -3038,38 +2989,25 @@ render("sides","sidesRow");
 
 
 // function submit user data// need to work on this one to act as a login
-  if (userForm) {
-  userForm.addEventListener('submit', function (e) {
+    userForm.addEventListener('submit', function (e) {
     e.preventDefault();
-
     const name = userNameInput.value.trim();
     const email = userEmailInput.value.trim();
-
+// if statement to  check the validation of the email 
     if (name && email && isValidEmail(email)) {
       localStorage.setItem('userName', name);
       localStorage.setItem('userEmail', email);
-
       if (userModal) userModal.hide();
-
-      if (greeting) {
-        greeting.textContent =
-          `Hi, ${name}! Welcome to Helemays Foods Limited`;
-      }
-
+      greeting.textContent = `Hi, ${name}! Welcome to Helemays Foods Limited`;
       greetUser();
-
     } else {
-
-      alert('Please enter a valid name and email!');
-
-      if (!name) {
-        userNameInput.focus();
-      } else if (!isValidEmail(email)) {
-        userEmailInput.focus();
-      }
+      alert('Please enter a valid name and email!');// 
+      if (!name) userNameInput.focus();// focus(come in  view) on wrong or no input space 
+      else if (!isValidEmail(email)) userEmailInput.focus();
     }
   });
-}
+  greetUser();
+}); 
 // greeting function 
 function greetUser() {
   const storedName = localStorage.getItem('userName');
