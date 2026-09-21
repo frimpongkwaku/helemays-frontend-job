@@ -133,54 +133,43 @@ function isValidEmail(email) {
 }
 const WHATSAPP_NUMBER = "233206092604";
 
-const products = [{
-    id: "shoe001",
-
-    name: "Classic Leather Derby",
-
-    category: "Formal",
-
-    price: 450,
-
-    description: "Handcrafted leather derby shoe made for timeless everyday elegance.",
-
-    images: [
-        "./images/loaffers.png",
-        "./images/derby-side.png",
-        "./images/derby-top.png",
-        "./images/derby-back.png"
-    ],
-
-    colors: [
-        "Black",
-        "Brown"
-    ],
-
-    sizes: [
-        { size: 40, stock: 5 },
-        { size: 41, stock: 7 },
-        { size: 42, stock: 0 },
-        { size: 43, stock: 3 },
-        { size: 44, stock: 2 }
-    ],
-
-    featured: true,
-
-    active: true
+const products = [{id: "shoe001",name: "Classic Leather sandals",category: "Sandals",price: 450,description: "Handcrafted leather derby shoe made for timeless everyday elegance.",
+images: ["./images/sandals2.png","./images/derby-side.png","./images/derby-top.png","./images/derby-back.png"],
+colors: ["Black","Brown"],
+sizes: [{ size: 40, stock: 5 },{ size: 41, stock: 7 },{ size: 42, stock: 0 },{ size: 43, stock: 3 },{ size: 44, stock: 2 }],
+featured: true,active: true
+},
+{id: "shoe002",name: "Classic Leather Shoe",category: "Formal",price: 450,description: "Handcrafted leather derby shoe made for timeless everyday elegance.",
+images: ["./images/shoes-removebg-preview.png","./images/derby-side.png","./images/derby-top.png","./images/derby-back.png"],
+colors: ["Black","Brown"],
+sizes: [{ size: 40, stock: 5 },{ size: 41, stock: 7 },{ size: 42, stock: 0 },{ size: 43, stock: 3 },{ size: 44, stock: 2 }],
+featured: true,active: true
+},
+{id: "shoe003",name: "Classic Leather Loafers",category: "Loafers",price: 450,description: "Handcrafted leather derby shoe made for timeless everyday elegance.",
+images: ["./images/loaffers.png","./images/derby-side.png","./images/derby-top.png","./images/derby-back.png"],
+colors: ["Black","Brown"],
+sizes: [{ size: 40, stock: 5 },{ size: 41, stock: 7 },{ size: 42, stock: 0 },{ size: 43, stock: 3 },{ size: 44, stock: 2 }],
+featured: true,active: true
+},
+{id: "shoe004",name: "Classic Leather Derby",category: "Slippers",price: 450,description: "Handcrafted leather derby shoe made for timeless everyday elegance.",
+images: ["./images/sandals2.png","./images/derby-side.png","./images/derby-top.png","./images/derby-back.png"],
+colors: ["Black","Brown"],
+sizes: [{ size: 40, stock: 5 },{ size: 41, stock: 7 },{ size: 42, stock: 0 },{ size: 43, stock: 3 },{ size: 44, stock: 2 }],
+featured: true,active: true
 },
 {
-    id: "shoe002",
+    id: "shoe005",
 
-    name: "Classic Leather Derby",
+    name: "Classic Leather Boots",
 
-    category: "Loafers",
+    category: "Boots",
 
     price: 450,
 
     description: "Handcrafted leather derby shoe made for timeless everyday elegance.",
 
     images: [
-        "./images/loaffers.png",
+        "./images/boots-removebg-preview.png",
         "./images/derby-side.png",
         "./images/derby-top.png",
         "./images/derby-back.png"
@@ -2886,6 +2875,7 @@ render("sides","sidesRow");
 },1200);
 */
 
+
 // function submit user data// need to work on this one to act as a login
     userForm.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -3163,7 +3153,17 @@ if (shoeHero) {
     showHeroSlide(0);
     startHeroAutoSlide();
 }
+const featuredButtons = document.querySelectorAll(".featured-view");
 
+featuredButtons.forEach(button => {
+    button.addEventListener("click", () => {
+
+        const productId = button.dataset.productId;
+
+        openProductDetails(productId);
+
+    });
+});
 
 // refactor this code to make more moduler form 
 // refactor to react front end 

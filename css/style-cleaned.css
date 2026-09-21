@@ -11863,3 +11863,302 @@ position: relative;
         font-size: 10px;
     }
 }
+
+/* =========================================================
+   CLEAN CHECKOUT + CONFIRMATION HEADERS
+   Add this at the VERY BOTTOM of the CSS file
+========================================================= */
+
+
+/* =========================================================
+   CHECKOUT HEADER
+========================================================= */
+
+#checkoutModal .checkout-header {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+
+    padding: 22px 40px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #ece8e3;
+
+    box-sizing: border-box;
+}
+
+
+/* LEFT SIDE */
+
+#checkoutModal .checkout-header-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    min-width: 0;
+}
+
+
+#checkoutModal .checkout-eyebrow {
+    margin: 0;
+
+    color: #9a938c;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    letter-spacing: 1.8px;
+
+    text-transform: uppercase;
+}
+
+
+#checkoutModal .checkout-title {
+    margin: 0;
+
+    color: #181614;
+
+    font-size: 25px;
+    font-weight: 700;
+
+    line-height: 1.15;
+
+    letter-spacing: -0.5px;
+}
+
+
+/* CLOSE BUTTON */
+
+#checkoutModal .checkout-close {
+    flex-shrink: 0;
+
+    width: 38px;
+    height: 38px;
+
+    margin-left: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #e5e0da;
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    color: #55504b;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        color .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
+}
+
+
+#checkoutModal .checkout-close:hover {
+    background: #181614;
+
+    border-color: #181614;
+
+    color: #ffffff;
+
+    transform: rotate(90deg);
+}
+
+
+/* =========================================================
+   CONFIRMATION HEADER
+========================================================= */
+
+#checkoutModal .confirmation-screen {
+    position: relative;
+}
+
+
+/*
+   The confirmation order header becomes
+   a clean information header.
+*/
+
+#checkoutModal .confirmation-order-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 20px 22px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #ece8e3;
+
+    box-sizing: border-box;
+}
+
+
+/* ORDER NUMBER */
+
+#checkoutModal .confirmation-order-header > div:first-child {
+    min-width: 0;
+}
+
+
+#checkoutModal .confirmation-order-header span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #9a938c;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+}
+
+
+#checkoutModal .confirmation-order-header strong {
+    display: block;
+
+    color: #181614;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    line-height: 1.2;
+}
+
+
+/* SECURE STATUS */
+
+#checkoutModal .confirmation-status {
+    flex-shrink: 0;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 7px 10px;
+
+    border: 1px solid #e7e2dc;
+
+    border-radius: 999px;
+
+    background: #faf9f7;
+
+    color: #77716b;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    letter-spacing: .7px;
+
+    text-transform: uppercase;
+}
+
+
+#checkoutModal .confirmation-status i {
+    font-size: 10px;
+
+    color: #181614;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    #checkoutModal .checkout-header {
+        padding: 18px 17px;
+
+        gap: 14px;
+    }
+
+
+    #checkoutModal .checkout-title {
+        font-size: 21px;
+    }
+
+
+    #checkoutModal .checkout-eyebrow {
+        font-size: 7px;
+
+        letter-spacing: 1.5px;
+    }
+
+
+    #checkoutModal .checkout-close {
+        width: 34px;
+        height: 34px;
+
+        margin-left: 10px;
+
+        font-size: 12px;
+    }
+
+
+    #checkoutModal .confirmation-order-header {
+        padding: 17px;
+
+        gap: 12px;
+    }
+
+
+    #checkoutModal .confirmation-order-header strong {
+        font-size: 13px;
+    }
+
+
+    #checkoutModal .confirmation-status {
+        padding: 6px 8px;
+
+        font-size: 7px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    #checkoutModal .checkout-header {
+        padding: 16px 14px;
+    }
+
+
+    #checkoutModal .checkout-title {
+        font-size: 19px;
+    }
+
+
+    #checkoutModal .confirmation-order-header {
+        padding: 15px;
+    }
+
+
+    #checkoutModal .confirmation-status {
+        gap: 4px;
+
+        padding: 5px 7px;
+    }
+
+}
