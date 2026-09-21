@@ -117,7 +117,7 @@ const getOrderId = () =>
 // 🚀 SOCKET CONNECTION
 // ==========================
 const socket = io("https://storebackend-production-f58c.up.railway.app", {
-  transports: ["websocket"],
+  transports: ["polling", "websocket"],
   reconnection: true,
   reconnectionAttempts: 10,
   reconnectionDelay: 1000
@@ -2863,86 +2863,224 @@ productDetailsOverlay.addEventListener("click", () => {
 // 13. PRODUCT ADD TO CART BUTTON
 // ========================================
 
-const productAddToCart = document.getElementById("productAddToCart");
+/* =========================================================
+   PRODUCT DETAILS — ADD TO CART
+========================================================= */
 
-productAddToCart.addEventListener("click", () => {
-  const state = window.productDetailsState;
+if (productAddToCart) {
 
-  if (!state || !state.product) {
-    console.error("Product details state not found.");
-    return;
-  }
+    productAddToCart.addEventListener("click", () => {
 
-  const { product, selectedSize, selectedColor, quantity } = state;
+        // Make sure a product is selected
+        if (!window.productDetailsState?.product) {
+            console.warn("No product selected.");
+            return;
+        }
 
-  // Size is required
-  if (!selectedSize) {
-    selectedSizeText.textContent = "Please select a size";
-    return;
-  }
+        const product = window.productDetailsState.product;
 
-  // Find the selected size and check stock
-  const sizeItem = product.sizes.find(
-    sizeItem => Number(sizeItem.size) === Number(selectedSize)
-  );
+        const selectedSize =
+            window.productDetailsState.selectedSize;
 
-  if (!sizeItem) {
-    console.error("Selected size not found.");
-    return;
-  }
+        const selectedColor =
+            window.productDetailsState.selectedColor ||
+            "Default";
 
-  if (quantity > sizeItem.stock) {
-    console.log("Not enough stock.");
-    return;
-  }
+        const quantity =
+            Number(window.productDetailsState.quantity) || 1;
 
-  // Create the cart item
-  const cartItem = {
-    productId: product.id,
-    name: product.name,
-    image: product.images?.[0] || "./images/shoe-placeholder.png",
-    price: product.price,
-    size: sizeItem.size,
-    color: selectedColor || "Default",
-    qty: quantity
-  };
 
-  console.log("Cart item ready:", cartItem);
+        /* -------------------------------------------------
+           CHECK SIZE
+        ------------------------------------------------- */
 
-  // Check if the exact same product + size + color is already in cart
-  const existingItem = cart.find(
-    item =>
-      item.productId === cartItem.productId &&
-      Number(item.size) === Number(cartItem.size) &&
-      item.color === cartItem.color
-  );
+        if (product.sizes?.length && !selectedSize) {
 
-  if (existingItem) {
-    const newQuantity = existingItem.qty + cartItem.qty;
+            alert("Please select a size.");
 
-    if (newQuantity > sizeItem.stock) {
-      console.log("Cannot add more than available stock.");
-      return;
-    }
+            return;
+        }
 
-    existingItem.qty = newQuantity;
-  } else {
-    cart.push(cartItem);
-  }
 
-  console.log("Updated cart:", cart);
+        /* -------------------------------------------------
+           CHECK STOCK
+        ------------------------------------------------- */
 
-  // Show the cart
-renderCart();
+        let availableStock = product.stock;
 
-productDetailsModal.classList.remove("active");
-productDetailsModal.setAttribute("aria-hidden", "true");
+        if (
+            selectedSize &&
+            product.sizes &&
+            Array.isArray(product.sizes)
+        ) {
 
-// Open cart modal
-if (cartModal) {
-  openModalWithLoader(cartModal);
+            const sizeData = product.sizes.find(
+                size => size.size === selectedSize
+            );
+
+            if (sizeData) {
+                availableStock = sizeData.stock;
+            }
+        }
+
+
+        if (
+            availableStock !== undefined &&
+            quantity > Number(availableStock)
+        ) {
+
+            alert(
+                `Only ${availableStock} item${
+                    Number(availableStock) === 1 ? "" : "s"
+                } available.`
+            );
+
+            return;
+        }
+
+
+        /* -------------------------------------------------
+           GET PRICE
+        ------------------------------------------------- */
+
+        let selectedPrice = Number(product.price) || 0;
+
+        if (
+            selectedSize &&
+            product.sizes &&
+            Array.isArray(product.sizes)
+        ) {
+
+            const sizeData = product.sizes.find(
+                size => size.size === selectedSize
+            );
+
+            if (
+                sizeData &&
+                sizeData.price !== undefined
+            ) {
+                selectedPrice = Number(sizeData.price);
+            }
+        }
+
+
+        /* -------------------------------------------------
+           CREATE CART ITEM
+        ------------------------------------------------- */
+
+        const cartItem = {
+
+            productId: product.id,
+
+            name: product.name,
+
+            price: selectedPrice,
+
+            image:
+                product.image ||
+                product.images?.[0] ||
+                "",
+
+            size:
+                selectedSize ||
+                "N/A",
+
+            color:
+                selectedColor ||
+                "Default",
+
+            qty: quantity
+
+        };
+
+
+        /* -------------------------------------------------
+           CHECK IF SAME ITEM ALREADY EXISTS
+        ------------------------------------------------- */
+
+        const existingItemIndex = cart.findIndex(item =>
+
+            item.productId === cartItem.productId &&
+
+            item.size === cartItem.size &&
+
+            item.color === cartItem.color
+
+        );
+
+
+        if (existingItemIndex !== -1) {
+
+            cart[existingItemIndex].qty += quantity;
+
+        } else {
+
+            cart.push(cartItem);
+
+        }
+
+
+        /* -------------------------------------------------
+           UPDATE CART UI
+        ------------------------------------------------- */
+
+        renderCart();
+
+
+        /* -------------------------------------------------
+           CLOSE PRODUCT DETAILS MODAL
+        ------------------------------------------------- */
+
+        if (productDetailsModal) {
+
+            productDetailsModal.classList.remove("active");
+
+            productDetailsModal.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+        }
+
+
+        /* -------------------------------------------------
+           SHOW CART INDICATOR
+        ------------------------------------------------- */
+
+        if (stickyCartWrapper) {
+
+            stickyCartWrapper.style.display = "flex";
+
+        }
+
+
+        /* -------------------------------------------------
+           SMALL SUCCESS FEEDBACK
+        ------------------------------------------------- */
+
+        const originalText =
+            productAddToCart.textContent;
+
+        productAddToCart.textContent = "Added ✓";
+
+        productAddToCart.disabled = true;
+
+
+        setTimeout(() => {
+
+            if (productAddToCart) {
+
+                productAddToCart.textContent =
+                    originalText;
+
+                productAddToCart.disabled = false;
+
+            }
+
+        }, 1200);
+
+    });
+
 }
-});
 
 // ==========================
 // 👟 RENDER SHOE COLLECTION
