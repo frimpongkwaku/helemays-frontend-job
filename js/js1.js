@@ -14,44 +14,71 @@
    SHOE HERO CAROUSEL
 ========================================================= */
 
-const shoeHero = document.getElementById("shoeHero");
+/* =========================================================
+   SHOE HERO CAROUSEL
+========================================================= */
 
-if (shoeHero) {
+function initShoeHeroCarousel() {
 
-    const heroSlides = shoeHero.querySelectorAll(".shoe-hero-slide");
-    const heroDots = shoeHero.querySelectorAll(".shoe-hero-dot");
-    const heroPrev = shoeHero.querySelector(".shoe-hero-prev");
-    const heroNext = shoeHero.querySelector(".shoe-hero-next");
+    const shoeHero = document.getElementById("shoeHero");
+
+    if (!shoeHero) {
+        console.log("❌ shoeHero not found");
+        return;
+    }
+
+    const heroSlides =
+        shoeHero.querySelectorAll(".shoe-hero-slide");
+
+    const heroDots =
+        shoeHero.querySelectorAll(".shoe-hero-dot");
+
+    const heroPrev =
+        shoeHero.querySelector(".shoe-hero-prev");
+
+    const heroNext =
+        shoeHero.querySelector(".shoe-hero-next");
+
+    if (!heroSlides.length) {
+        console.log("❌ No hero slides found");
+        return;
+    }
 
     let currentHeroSlide = 0;
     let heroAutoSlide;
 
     function showHeroSlide(index) {
 
-        // Wrap around
         if (index >= heroSlides.length) {
             currentHeroSlide = 0;
+
         } else if (index < 0) {
             currentHeroSlide = heroSlides.length - 1;
+
         } else {
             currentHeroSlide = index;
         }
 
-        // Remove active state
-        heroSlides.forEach((slide) => {
+        heroSlides.forEach(slide => {
             slide.classList.remove("active");
         });
 
-        heroDots.forEach((dot) => {
+        heroDots.forEach(dot => {
             dot.classList.remove("active");
         });
 
-        // Activate current slide
-        heroSlides[currentHeroSlide].classList.add("active");
+        heroSlides[currentHeroSlide]
+            .classList.add("active");
 
         if (heroDots[currentHeroSlide]) {
-            heroDots[currentHeroSlide].classList.add("active");
+            heroDots[currentHeroSlide]
+                .classList.add("active");
         }
+
+        console.log(
+            "Hero slide:",
+            currentHeroSlide
+        );
     }
 
     function nextHeroSlide() {
@@ -62,48 +89,70 @@ if (shoeHero) {
         showHeroSlide(currentHeroSlide - 1);
     }
 
+    if (heroNext) {
+
+        heroNext.addEventListener("click", () => {
+            nextHeroSlide();
+            startHeroAutoSlide();
+        });
+
+    }
+
+    if (heroPrev) {
+
+        heroPrev.addEventListener("click", () => {
+            previousHeroSlide();
+            startHeroAutoSlide();
+        });
+
+    }
+
+    heroDots.forEach(dot => {
+
+        dot.addEventListener("click", () => {
+
+            const slideIndex =
+                Number(dot.dataset.slide);
+
+            showHeroSlide(slideIndex);
+
+            startHeroAutoSlide();
+
+        });
+
+    });
+
     function startHeroAutoSlide() {
 
         clearInterval(heroAutoSlide);
 
         heroAutoSlide = setInterval(() => {
+
             nextHeroSlide();
+
         }, 6000);
+
     }
 
-    // NEXT BUTTON
-    if (heroNext) {
-        heroNext.addEventListener("click", () => {
-            nextHeroSlide();
-            startHeroAutoSlide();
-        });
-    }
-
-    // PREVIOUS BUTTON
-    if (heroPrev) {
-        heroPrev.addEventListener("click", () => {
-            previousHeroSlide();
-            startHeroAutoSlide();
-        });
-    }
-
-    // DOTS
-    heroDots.forEach((dot) => {
-
-        dot.addEventListener("click", () => {
-
-            const slideIndex = Number(dot.dataset.slide);
-
-            showHeroSlide(slideIndex);
-
-            startHeroAutoSlide();
-        });
-
-    });
-
-    // Start carousel
     showHeroSlide(0);
+
     startHeroAutoSlide();
+
+    console.log("✅ Hero carousel initialized");
+}
+
+
+if (document.readyState === "loading") {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        initShoeHeroCarousel
+    );
+
+} else {
+
+    initShoeHeroCarousel();
+
 }
 
 const seenMessages = new Set();
@@ -397,13 +446,17 @@ modal.show();
 const scrollBox = document.querySelector(".about-scroll-wrapper");
 const scrollContent = document.querySelector(".about-scroll-content");
 
-scrollBox.addEventListener("touchstart", () => {
-  scrollContent.style.animationPlayState = "paused";
-});
+if (scrollBox && scrollContent) {
 
-scrollBox.addEventListener("touchend", () => {
-  scrollContent.style.animationPlayState = "running";
-});
+  scrollBox.addEventListener("touchstart", () => {
+    scrollContent.style.animationPlayState = "paused";
+  });
+
+  scrollBox.addEventListener("touchend", () => {
+    scrollContent.style.animationPlayState = "running";
+  });
+
+}
 
 
 // cart function 
@@ -2108,17 +2161,13 @@ const sendWhatsAppBtn = document.getElementById("sendWhatsAppBtn");
 const stickyCart = document.getElementById("cartBadgeContainer");
 
 
- const CartIcon= document.getElementById("cartIcon");
- CartIcon.addEventListener("click",function(){
-  openModalWithLoader(cartModal);
- }) 
+const CartIcon = document.getElementById("cartIcon");
 
-  stickyCart.addEventListener("click", () => {
-    if (cartModal) {
-      openModalWithLoader(cartModal);
-    }
+if (CartIcon) {
+  CartIcon.addEventListener("click", function(){
+    openModalWithLoader(cartModal);
   });
-
+}
 const cartModalEl = document.getElementById("cartModal");
 const checkoutModalEl = document.getElementById("checkoutModal");
 
@@ -2840,9 +2889,24 @@ document.querySelectorAll(".collection-filter").forEach(button => {
 
 const productDetailsModal = document.getElementById("productDetailsModal");
 const closeProductDetails = document.getElementById("closeProductDetails");
-const productDetailsOverlay = productDetailsModal.querySelector(
-  "[data-close-product-modal]"
-);
+
+const productDetailsOverlay = productDetailsModal
+  ? productDetailsModal.querySelector("[data-close-product-modal]")
+  : null;
+
+if (closeProductDetails && productDetailsModal) {
+  closeProductDetails.addEventListener("click", () => {
+    productDetailsModal.classList.remove("active");
+    productDetailsModal.setAttribute("aria-hidden", "true");
+  });
+}
+
+if (productDetailsOverlay && productDetailsModal) {
+  productDetailsOverlay.addEventListener("click", () => {
+    productDetailsModal.classList.remove("active");
+    productDetailsModal.setAttribute("aria-hidden", "true");
+  });
+}
 
 // Close with X button
 closeProductDetails.addEventListener("click", () => {
@@ -2974,25 +3038,38 @@ render("sides","sidesRow");
 
 
 // function submit user data// need to work on this one to act as a login
-    userForm.addEventListener('submit', function (e) {
+  if (userForm) {
+  userForm.addEventListener('submit', function (e) {
     e.preventDefault();
+
     const name = userNameInput.value.trim();
     const email = userEmailInput.value.trim();
-// if statement to  check the validation of the email 
+
     if (name && email && isValidEmail(email)) {
       localStorage.setItem('userName', name);
       localStorage.setItem('userEmail', email);
+
       if (userModal) userModal.hide();
-      greeting.textContent = `Hi, ${name}! Welcome to Helemays Foods Limited`;
+
+      if (greeting) {
+        greeting.textContent =
+          `Hi, ${name}! Welcome to Helemays Foods Limited`;
+      }
+
       greetUser();
+
     } else {
-      alert('Please enter a valid name and email!');// 
-      if (!name) userNameInput.focus();// focus(come in  view) on wrong or no input space 
-      else if (!isValidEmail(email)) userEmailInput.focus();
+
+      alert('Please enter a valid name and email!');
+
+      if (!name) {
+        userNameInput.focus();
+      } else if (!isValidEmail(email)) {
+        userEmailInput.focus();
+      }
     }
   });
-  greetUser();
-}); 
+}
 // greeting function 
 function greetUser() {
   const storedName = localStorage.getItem('userName');
@@ -3146,27 +3223,18 @@ if (row) {
 
 
 
+const userSendBtn = document.getElementById("userSendBtn");
 
-document.getElementById("userSendBtn").addEventListener("click", () => {
-  const input = document.getElementById("userChatInput");
+if (userSendBtn) {
+  userSendBtn.addEventListener("click", () => {
+    const input = document.getElementById("userChatInput");
 
-  if (!input.value) return;
+    if (!input || !input.value) return;
 
-  sendMessage(input.value);
-  input.value = "";
-});
-
-const featuredButtons = document.querySelectorAll(".featured-view");
-
-featuredButtons.forEach(button => {
-    button.addEventListener("click", () => {
-
-        const productId = button.dataset.productId;
-
-        openProductDetails(productId);
-
-    });
-});
+    sendMessage(input.value);
+    input.value = "";
+  });
+}
 
 // refactor this code to make more moduler form 
 // refactor to react front end 
