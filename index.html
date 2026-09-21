@@ -2344,27 +2344,6 @@
 
   </div>
 </div>
- <script>
-     (function () {
-         function hidePageLoader() {
-             var loader = document.getElementById("loader");
-             if (!loader || loader.dataset.hidden === "true") return;
-
-             loader.dataset.hidden = "true";
-             loader.classList.add("fade-out");
-
-             setTimeout(function () {
-                 loader.style.display = "none";
-             }, 500);
-         }
-
-         document.addEventListener("DOMContentLoaded", function () {
-             setTimeout(hidePageLoader, 1500);
-         });
-
-         setTimeout(hidePageLoader, 5000);
-     }());
- </script>
  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script src="./Assests/js/bootstrap.bundle.min.js"></script>
 <script src="./js/js1.js"></script>
