@@ -938,18 +938,80 @@
             </div>
             <div class="modal-body">
                 <form id="userForm">
-                    <div class="mb-3" id ="input-group-modern">
-                      <input type="text" class="form-control" id="userName" required>
-                        <label for="userName" >Enter Your Name</label>
-                        
-                    </div>
-                    <div class="mb-3" id="input-group-modern">
-                      <input type="email" class="form-control" id="userEmail" required>
-                        <label for="userEmail" class="form-label">Enter Your Email</label>
-                        
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100" id="userdetails">Submit</button><!--google sheet on how to make more attraction on tthe internet -->
-                </form>
+
+    <!-- NAME -->
+    <div class="mb-3" id="input-group-modern">
+        <input
+            type="text"
+            class="form-control"
+            id="userName"
+            required
+        >
+        <label for="userName">Enter Your Name</label>
+    </div>
+
+
+    <!-- PHONE -->
+    <div class="mb-3" id="input-group-modern">
+        <input
+            type="tel"
+            class="form-control"
+            id="userPhone"
+            placeholder="+233 XX XXX XXXX"
+            required
+        >
+        <label for="userPhone">Enter Your Phone Number</label>
+    </div>
+
+
+    <!-- PASSWORD -->
+    
+
+
+    <!-- CONFIRM PASSWORD -->
+    
+
+
+    <button
+        type="submit"
+        class="btn btn-primary w-100"
+        id="userdetails"
+    >
+        Create Account
+    </button>
+
+</form>
+<!-- OTP VERIFICATION -->
+<div id="otpSection" style="display: none;">
+
+    <h5 class="text-center mb-3">
+        Verify Your Phone
+    </h5>
+
+    <p class="text-center">
+        Enter the OTP sent to your phone.
+    </p>
+
+    <div class="mb-3">
+        <input
+            type="text"
+            id="otpCode"
+            class="form-control"
+            inputmode="numeric"
+            maxlength="6"
+            placeholder="Enter 6-digit OTP"
+        >
+    </div>
+
+    <button
+        type="button"
+        id="verifyOtpButton"
+        class="btn btn-primary w-100"
+    >
+        Verify OTP
+    </button>
+
+</div>
             </div>
         </div>
     </div>
@@ -2379,6 +2441,7 @@
  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script src="./Assests/js/bootstrap.bundle.min.js"></script>
 <script type="module" src="./js/firebase-config.js"></script>
+<script type="module" src="./js/auth.js"></script>
 <script src="./js/js1.js"></script>
 </body>
 </html>
