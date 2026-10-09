@@ -24,7 +24,7 @@
     <div class="spinner-border text-success" style="width: 3rem; height: 3rem;color: rgb(108, 10, 138);" role="status">
       <span class="visually-hidden"></span>
     </div>
-    <p class="mt-3 text-muted" style="color: rgb(241, 236, 246);"><strong>Helemays Foods</strong><br>
+    <p class="mt-3 text-muted" style="color: rgb(241, 236, 246);"><strong>Edward shoe store</strong><br>
       We making with care...
     </p>
 
@@ -49,31 +49,19 @@
 </div>
 
 <!-- Navbar  section with off canvas side-->
- <nav class="navbar navbar-dark  shadow-sm px-3"id="nav-style">
-  <a href="#" class="navbar-brand fw-bold text-light" >Edward Shoe Store</a>
-  <button class="navbar-toggler d-lg-none" style="color: whitesmoke;" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
-    <span class="navbar-toggler-icon color white" style="color: whitesmoke;"></span>
-  </button>
-  <ul class="navbar-nav flex-row gap-4 d-none d-lg-flex" id="navul">
-    <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-home"></i>Home</a></li>
-    <li class="nav-item" id="cartIcon"><a class="nav-link" href="#"><i class="fa-solid fa-cart-shopping"></i>Cart</a></li>
-    <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-phone"></i>support</a></li>
+ <nav class="navbar navbar-dark shadow-sm" id="nav-style" aria-label="Main navigation">
+    <a href="#shoeHero" class="navbar-brand fw-bold text-light">
+        <span class="navbar-brand-mark"><i class="fa-solid fa-shoe-prints" aria-hidden="true"></i></span>
+        <span class="navbar-brand-copy">Edward <small>SHOE STORE</small></span>
+    </a>
+    <ul class="navbar-nav flex-row d-none d-lg-flex" id="navul">
+        <li class="nav-item"><a class="nav-link" href="#shoeHero"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Home</span></a></li>
+        <li class="nav-item"><a class="nav-link orders-nav-link" href="./orders.html"><i class="fa-solid fa-box" aria-hidden="true"></i><span>My Orders</span><span class="orders-nav-count" data-orders-count hidden>0</span></a></li>
+        <li class="nav-item"><button class="nav-link nav-search-link" type="button" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><span>Search</span></button></li>
+        <li class="nav-item" id="cartIcon"><a class="nav-link nav-cart-link" href="#"><i class="fa-solid fa-bag-shopping" aria-hidden="true"></i><span>Cart</span></a></li>
+        <li class="nav-item"><button class="nav-link nav-account-link" type="button" data-bs-toggle="modal" data-bs-target="#userModal"><i class="fa-regular fa-user" aria-hidden="true"></i><span>Sign in</span></button></li>
   </ul>
  </nav>
-<!--off canva menu for mobile view-->
-<div class="offcanvas offcanvas-start"tabindex="-1" id="mobileMenu">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title">Helemays Foods</h5>
-    <button type="button" class="btn-close"data-bs-dismiss="offcanvas"></button>
-  </div>
-  <div class="offcanvas-body">
-    <ul class="navbar-nav gap-3">
-    <li class="nav-item"><a href="#"class="mobilenav-link"><i class="fa-solid fa-home"></i>Home</a></li>
-    <li class="nav-item"><a href="#"class="mobilenav-link"><i class="fa-solid fa-cart-shopping"></i>Cart</a></li>
-    <li class="nav-item"><a href="#"class="mobilenav-link"><i class="fa-solid fa-phone"></i>Support</a></li>
-   </ul>
-  </div>
-</div>
 
 <!-- Greeting section
 <div class="container">
@@ -186,7 +174,7 @@
             <div class="shoe-hero-image">
 
                 <img
-                    src="./images/shoes-removebg-preview.png"
+                    src="./images/loaffers.png"
                     alt="Premium leather loafers"
                 >
 
@@ -334,12 +322,13 @@
     </div>
 
 </section>
-<section class="shoe-categories-section">
+
+<!--<section class="shoe-categories-section">
 
     <div class="shoe-categories-inner">
 
         <div class="categories-heading">
-            <span>SHOP BY CATEGORY</span>
+            <h2>Shop by category</h2>
         </div>
 
         <div class="shoe-categories">
@@ -349,8 +338,8 @@
                 data-category="All"
                 type="button"
             >
-                <span class="category-icon">
-                    <i class="fa-solid fa-border-all"></i>
+                <span class="category-icon" aria-hidden="true">
+                    <img src="./images/shoes.png" alt="" loading="lazy">
                 </span>
 
                 <span class="category-name">
@@ -363,8 +352,8 @@
                 data-category="Formal"
                 type="button"
             >
-                <span class="category-icon">
-                    <i class="fa-solid fa-shoe-prints"></i>
+                <span class="category-icon" aria-hidden="true">
+                    <img src="./images/ChatGPT_Image_Sep_8__2026__10_43_58_PM-removebg-preview.png" alt="" loading="lazy">
                 </span>
 
                 <span class="category-name">
@@ -377,8 +366,8 @@
                 data-category="Loafers"
                 type="button"
             >
-                <span class="category-icon">
-                    <i class="fa-solid fa-shoe-prints"></i>
+                <span class="category-icon" aria-hidden="true">
+                    <img src="./images/loaffers.png" alt="" loading="lazy">
                 </span>
 
                 <span class="category-name">
@@ -391,8 +380,8 @@
                 data-category="Casual"
                 type="button"
             >
-                <span class="category-icon">
-                    <i class="fa-solid fa-shoe-prints"></i>
+                <span class="category-icon" aria-hidden="true">
+                    <img src="./images/sandals2.png" alt="" loading="lazy">
                 </span>
 
                 <span class="category-name">
@@ -405,8 +394,8 @@
                 data-category="Boots"
                 type="button"
             >
-                <span class="category-icon">
-                    <i class="fa-solid fa-boot"></i>
+                <span class="category-icon" aria-hidden="true">
+                    <img src="./images/boots-removebg-preview.png" alt="" loading="lazy">
                 </span>
 
                 <span class="category-name">
@@ -419,8 +408,8 @@
                 data-category="Sandals"
                 type="button"
             >
-                <span class="category-icon">
-                    <i class="fa-solid fa-shoe-prints"></i>
+                <span class="category-icon" aria-hidden="true">
+                    <img src="./images/sandals.png" alt="" loading="lazy">
                 </span>
 
                 <span class="category-name">
@@ -432,7 +421,7 @@
 
     </div>
 
-</section>
+</section>-->
 
 
 <section class="featured-shoes">
@@ -471,7 +460,7 @@
                     </button>
 
                     <img
-                        src="./images/ChatGPT_Image_Sep_8__2026__10_43_58_PM-removebg-preview.png"
+                        src="./images/featured.jpg"
                         alt="Classic Leather Derby"
                     >
                 </div>
@@ -688,49 +677,73 @@
                 <button
                     class="collection-filter active"
                     data-category="All"
+                    aria-pressed="true"
                     type="button"
                 >
-                    All
+                    <span class="collection-filter-image" aria-hidden="true">
+                        <img src="./images/shoes.png" alt="" loading="lazy">
+                    </span>
+                    <span>All</span>
                 </button>
 
                 <button
                     class="collection-filter"
                     data-category="Formal"
+                    aria-pressed="false"
                     type="button"
                 >
-                    Formal
+                    <span class="collection-filter-image" aria-hidden="true">
+                        <img src="./images/ChatGPT_Image_Sep_8__2026__10_43_58_PM-removebg-preview.png" alt="" loading="lazy">
+                    </span>
+                    <span>Formal</span>
                 </button>
 
                 <button
                     class="collection-filter"
                     data-category="Loafers"
+                    aria-pressed="false"
                     type="button"
                 >
-                    Loafers
+                    <span class="collection-filter-image" aria-hidden="true">
+                        <img src="./images/loaffers.png" alt="" loading="lazy">
+                    </span>
+                    <span>Loafers</span>
                 </button>
 
                 <button
                     class="collection-filter"
-                    data-category="Casual"
+                    data-category="Slippers"
+                    aria-pressed="false"
                     type="button"
                 >
-                    Casual
+                    <span class="collection-filter-image" aria-hidden="true">
+                        <img src="./images/sandals2.png" alt="" loading="lazy">
+                    </span>
+                    <span>Slippers</span>
                 </button>
 
                 <button
                     class="collection-filter"
                     data-category="Boots"
+                    aria-pressed="false"
                     type="button"
                 >
-                    Boots
+                    <span class="collection-filter-image" aria-hidden="true">
+                        <img src="./images/boots-removebg-preview.png" alt="" loading="lazy">
+                    </span>
+                    <span>Boots</span>
                 </button>
 
                 <button
                     class="collection-filter"
                     data-category="Sandals"
+                    aria-pressed="false"
                     type="button"
                 >
-                    Sandals
+                    <span class="collection-filter-image" aria-hidden="true">
+                        <img src="./images/sandals.png" alt="" loading="lazy">
+                    </span>
+                    <span>Sandals</span>
                 </button>
 
             </div>
@@ -763,56 +776,28 @@
   <!--End of food listing cards-->
 
  
-<!-- About & Contact Section -->
-<div class="container my-5" style="margin-top: 80px;">
-  <div class="row justify-content-center g-4">
-    <!-- About Us -->
-   <div class="col-md-6">
-  <div class="card about-card p-4 h-100" 
-       style="cursor: pointer;">
-
-    <div class="d-flex align-items-start">
-      <i class="bi bi-headset fs-1 text-primary me-3"></i>
-
-      <div class="contact-content w-100">
-        <span><h5 style="color:#670680;font-weight:bolder; font-size:25px;">About Us</h5><i class="fa-solid fa-customer-support"></i></span>
-
-        <!-- SCROLL WRAPPER -->
-        <div class="about-scroll-wrapper">
-          <div class="about-scroll-content" >
-            <p class="mb-2 fw-semibold">Helemays Foods Limited</p>
-            <p class="mb-2">Helemays Foods is the best in town.</p>
-            <p class="mb-2">We deliver fresh, premium quality meals daily.</p>
-            <p class="mb-0">Your satisfaction is our top priority.</p>
-          </div>
+<section class="location" aria-labelledby="locationTitle">
+    <div class="location-shell">
+        <div class="location-pin" aria-hidden="true">
+            <i class="fa-solid fa-location-dot"></i>
         </div>
 
-      </div>
-    </div>
-  </div>
-</div>
-
-    <!-- Contact Us -->
-    <div class="col-md-6">
-      <div class="card  p-4  h-100" style="cursor: pointer; background:#670680;" style="cursor: pointer;"
-       data-bs-toggle="modal" 
-       data-bs-target="#contactModal">
-        <div class="d-flex align-items-center">
-          <i class="bi bi-headset fs-1 text-primary me-3"></i>
-          <div class="contact-content">
-            
-            <h5 class="card-title mb-2" id="support" style="font-size:25px;font-weight:bold;">Support</h5>
-            <p  class="  card-text mb-1"style="color: #ffffff;" ><strong><span><i class="fa-solid fa-location-dot"  ></i></span></strong> Helemays Foods, Accra, East Legon</p>
-            <p class="card-text mb-1"style="color: #ffffff;" ><strong><span><i class="fa-solid fa-phone" ></i></span></strong> +233 59 3189155</p>
-            <p class="card-text" style="color: #ffffff;" ><strong><span><i class="fa-solid fa-message"  ></i></span></strong> support@helemaysFoods.com</p>
-          </div>
+        <div class="location-copy">
+            <span class="location-kicker">Find us in Accra</span>
+            <h2 id="locationTitle">Come to the show room for premium handcrafted shoe.</h2>
+            <p>Visit Edward Shoe store in East Legon for handmade, premium and quality crafted shoes.</p>
+            <div class="location-address">
+                <i class="fa-solid fa-map-pin" aria-hidden="true"></i>
+                <span>Edward shoe store, Accra, East Legon</span>
+            </div>
         </div>
-      </div>
+
+        <button class="location-action" type="button" onclick="openMap()">
+            <span>Get directions</span>
+            <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+        </button>
     </div>
-  </div>
-</div>
-<div class="location"><span><i class="fa-solid fa-location-dot"style="cursor: pointer;" onclick="openMap()" ></i><br>LIVE LOCATION TO OUR RESTAURANT</span>
-   </div>
+</section>
 
 <!--image slides for show room or lobby-->
 <div class="container my-5">
@@ -823,8 +808,8 @@
         <div class="d-flex align-items-center" style="height: 300px;">
           <!-- Header Text Side -->
           <div class="w-50 p-4" style="background-color: #ffffff; color:rgb(17, 16, 16); border-radius: 10px 0 0 10px;">
-            <h2 class="fw-bold">We host the best culinary experience</h2>
-            <p>Beautiful serene Dinning Area</p>
+            <h2 class="fw-bold">The home to Premium Footwear</h2>
+            <p>Handmade Premium Shoe Store</p>
           </div>
       <!-- Image Side -->
           <div class="w-50">
@@ -875,38 +860,38 @@
   <div class="d-flex flex-column" id="stickyCart">
     <span id="cartItemCount" class="fw-bold">0 items</span>
     <span class="cartTotal"  id="stickyCartTotal" class="text-muted">GHS 0</span>
-    <span class="cart-add-animation" id="cartAddAnimation">Added!</span>
+    <span class="cart-add-animation" id="cartAddAnimation" role="status" aria-live="polite">Added!</span>
   </div>
 </div>
 
 <!-- Footer -->
-<footer class="footer  text-light pt-5" style="width: auto;">
+<footer class="footer pt-5" style="width: auto;">
   <div class="container" style="width: 100%;">
     <div class="row g-4">
       <div class="col-md-4">
         <h5 class="fw-bold">THE SHOE STORE</h5>
-        <p class=" small text-white">The Culinary services in the city</p>
+        <p class=" small text-white">The Premium Handcrafted Shoe Store</p>
       </div>
       <!--link-->
       <div class="col-md-2 col-6">
         <h6 class="fw-semibold">THE SHOE STORE</h6>
         <ul class="list-unstyled">
-          <li><a href="#" class="footer-link">Careers</a></li>
-          <li><a href="#" class="footer-link">Contact</a></li>
+          <li><a href="./careers.html" class="footer-link">Careers</a></li>
+          <li><a href="./contact.html" class="footer-link">Contact</a></li>
         </ul>
       </div>
       <div class="col-md-2 col-6">
         <h6 class="fw-semibold">Support</h6>
         <ul class="list-unstyled">
-          <li><a href="#" class="footer-link">Privacy Policy</a></li>
-          <li><a href="#" class="footer-link">Help Center</a></li>
-          <li><a href="#" class="footer-link">Terms</a></li>
+          <li><a href="./privacy.html" class="footer-link">Privacy Policy</a></li>
+          <li><a href="./help.html" class="footer-link">Help Center</a></li>
+          <li><a href="./terms.html" class="footer-link">Terms</a></li>
         </ul>
       </div>
       <!--contact-->
       <div class="col-md-4">
         <h6 class="fw-semibold">Contact</h6>
-        <p class="small text-white mb-2"><i class="fa-solid fa-envelope"></i>frimpongdizzle@gmail.com</p>
+        <p class="small mb-2"><i class="fa-solid fa-envelope"></i> <a class="footer-link d-inline" href="mailto:frimpongdizzle@gmail.com">frimpongdizzle@gmail.com</a></p>
         <div class="d-flex gap-3" style="justify-content: center;">
           <a href="#" class="social-icon"><i class="fa-brands fa-twitter"></i></a>
           <a href="#" class="social-icon"><i class="fa-brands fa-youtube"></i></a>
@@ -916,103 +901,117 @@
         </div>
       </div>
     </div>
-    <hr class="border-secondary my-4">
-    <div class="text-center small text-white pb-3">2026 THE SHOE STORE. All rights reserved.</div>
-        <div class="text-center small text-white pb-3">Developed by Edward Frimpong</div>
+    <hr class="footer-divider my-4">
+    <div class="text-center small pb-3">2026 THE SHOE STORE. All rights reserved.</div>
+        <div class="text-center small pb-3">Developed by Edward Frimpong</div>
     </div>
 </footer>
 
-<!--mobile view sticky menu -->
-<div class=" bg-warning text-dark text-center py-2" id="mobileview-sticky">
-  <strong><span> <i class="fa-solid  fa-shopping-cart"></i> </span><span><i class="fa-solid fa-search"></i></span><span><i class="fa-solid fa-phone"></i></span>
-  <span><i class="fa-solid fa-home"></i></span></strong>
-</div>
-
-<!-- User modal at the beginning of the page-->
-<div class="modal fade" style="margin-top: 140px;" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="userModalLabel" style="color: #670680;font-weight: bold; font-size: large; font-style: italic;justify-content: center;align-items: center;">HELEMAYS FOODS LTD</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="userForm">
-
-    <!-- NAME -->
-    <div class="mb-3" id="input-group-modern">
-        <input
-            type="text"
-            class="form-control"
-            id="userName"
-            required
-        >
-        <label for="userName">Enter Your Name</label>
-    </div>
-
-
-    <!-- PHONE -->
-    <div class="mb-3" id="input-group-modern">
-        <input
-            type="tel"
-            class="form-control"
-            id="userPhone"
-            placeholder="+233 XX XXX XXXX"
-            required
-        >
-        <label for="userPhone">Enter Your Phone Number</label>
-    </div>
-
-
-    <!-- PASSWORD -->
-    
-
-
-    <!-- CONFIRM PASSWORD -->
-    
-
-
-    <button
-        type="submit"
-        class="btn btn-primary w-100"
-        id="userdetails"
-    >
-        Create Account
+<nav class="mobile-bottom-nav" id="mobileview-sticky" aria-label="Mobile navigation">
+    <a class="mobile-nav-item is-active" href="#head-banner" aria-current="page">
+        <i class="fa-solid fa-house" aria-hidden="true"></i>
+        <span>Home</span>
+    </a>
+    <button class="mobile-nav-item" type="button" data-bs-toggle="modal" data-bs-target="#searchModal">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        <span>Search</span>
     </button>
-
-</form>
-<!-- OTP VERIFICATION -->
-<div id="otpSection" style="display: none;">
-
-    <h5 class="text-center mb-3">
-        Verify Your Phone
-    </h5>
-
-    <p class="text-center">
-        Enter the OTP sent to your phone.
-    </p>
-
-    <div class="mb-3">
-        <input
-            type="text"
-            id="otpCode"
-            class="form-control"
-            inputmode="numeric"
-            maxlength="6"
-            placeholder="Enter 6-digit OTP"
-        >
-    </div>
-
-    <button
-        type="button"
-        id="verifyOtpButton"
-        class="btn btn-primary w-100"
-    >
-        Verify OTP
+    <a class="mobile-nav-item" href="./orders.html">
+        <i class="fa-solid fa-box" aria-hidden="true"></i>
+        <span>Orders</span>
+        <span class="orders-nav-count mobile-orders-nav-count" data-orders-count hidden>0</span>
+    </a>
+    <button class="mobile-nav-item mobile-nav-cart" type="button" data-bs-toggle="modal" data-bs-target="#cartModal">
+        <span class="mobile-cart-icon" id="mobileCartIcon">
+            <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
+            <span class="mobile-cart-count" id="mobileCartCount" aria-hidden="true" hidden>0</span>
+        </span>
+        <span>Cart</span>
+        <span class="mobile-cart-total" id="mobileCartTotal" hidden>0 items · GH₵ 0.00</span>
     </button>
+    <button class="mobile-nav-item" type="button" data-bs-toggle="modal" data-bs-target="#contactModal">
+        <i class="fa-solid fa-headset" aria-hidden="true"></i>
+        <span>Support</span>
+    </button>
+</nav>
 
-</div>
+<!-- User account modal -->
+<div class="modal fade auth-modal" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered auth-dialog">
+        <div class="modal-content auth-content">
+            <button type="button" class="auth-close" data-bs-dismiss="modal" aria-label="Close">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+
+            <div class="auth-brand">
+                <span class="auth-brand-mark"><i class="fa-solid fa-shoe-prints" aria-hidden="true"></i></span>
+                <span>Edward <small>SHOE STORE</small></span>
             </div>
+
+            <div class="auth-intro">
+                <span class="auth-eyebrow">YOUR STORE ACCOUNT</span>
+                <h2 id="userModalLabel">Welcome back</h2>
+                <p>Sign in to manage your orders and account.</p>
+            </div>
+
+            <div class="auth-tabs" id="authTabs" role="tablist" aria-label="Account options">
+                <button type="button" class="active" data-auth-view="login" role="tab" aria-selected="true">Sign in</button>
+                <button type="button" data-auth-view="register" role="tab" aria-selected="false">Create account</button>
+            </div>
+
+            <form id="loginForm" class="auth-form" data-auth-panel="login">
+                <label for="loginEmail">Email address</label>
+                <input type="email" id="loginEmail" autocomplete="username" placeholder="you@example.com" required>
+
+                <div class="auth-label-row">
+                    <label for="loginPassword">Password</label>
+                    <button type="button" class="auth-text-button" id="forgotPasswordButton" data-auth-view="reset">Forgot password?</button>
+                </div>
+                <div class="auth-password-field">
+                    <input type="password" id="loginPassword" autocomplete="current-password" maxlength="72" placeholder="Your password" required>
+                    <button class="auth-password-toggle" type="button" data-toggle-password="loginPassword" aria-label="Show password" aria-pressed="false"><i class="fa-regular fa-eye" aria-hidden="true"></i></button>
+                </div>
+
+                <button type="submit" class="auth-submit">
+                    <span>Sign in</span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                </button>
+            </form>
+
+            <form id="registerForm" class="auth-form" data-auth-panel="register" hidden>
+                <label for="registerName">Your name</label>
+                    <input type="text" id="registerName" autocomplete="name" placeholder="Full name" minlength="2" maxlength="80" required>
+                <label for="registerEmail">Email address</label>
+                <input type="email" id="registerEmail" autocomplete="email" placeholder="you@example.com" required>
+                <label for="registerPassword">Create a password</label>
+                    <div class="auth-password-field">
+                        <input type="password" id="registerPassword" autocomplete="new-password" minlength="10" maxlength="72" placeholder="10 to 72 characters" required>
+                        <button class="auth-password-toggle" type="button" data-toggle-password="registerPassword" aria-label="Show password" aria-pressed="false"><i class="fa-regular fa-eye" aria-hidden="true"></i></button>
+                    </div>
+                <button type="submit" class="auth-submit">
+                    <span>Create account</span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                </button>
+            </form>
+
+            <form id="resetForm" class="auth-form" data-auth-panel="reset" hidden>
+                <label for="resetEmail">Email address</label>
+                <input type="email" id="resetEmail" autocomplete="email" placeholder="you@example.com" required>
+                <button type="button" class="auth-secondary-action" id="sendResetCodeButton">Send reset code</button>
+                <div id="resetCodeFields" hidden>
+                    <label for="resetCode">6-digit email code</label>
+                    <input type="text" id="resetCode" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="000000">
+                    <label for="resetPassword">New password</label>
+                    <div class="auth-password-field">
+                        <input type="password" id="resetPassword" autocomplete="new-password" minlength="10" maxlength="72" placeholder="10 to 72 characters">
+                        <button class="auth-password-toggle" type="button" data-toggle-password="resetPassword" aria-label="Show password" aria-pressed="false"><i class="fa-regular fa-eye" aria-hidden="true"></i></button>
+                    </div>
+                    <button type="submit" class="auth-submit"><span>Update password</span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+                </div>
+                <button type="button" class="auth-phone-link" data-auth-view="login">Back to sign in</button>
+            </form>
+
+            <p id="authFeedback" class="auth-feedback" role="status" aria-live="polite"></p>
+            <button type="button" id="resendVerificationButton" class="auth-text-button auth-resend" hidden>Resend verification email</button>
+            <p class="auth-legal">We will email you a verification link before enabling your account.</p>
         </div>
     </div>
 </div>
@@ -1528,6 +1527,7 @@
                                 class="payment-option active"
                                 id="codBtn"
                                 data-value="Cash on Delivery"
+                                aria-pressed="true"
                             >
 
                                 <div class="payment-icon">
@@ -1548,7 +1548,7 @@
 
                                 </div>
 
-                                <i class="fa-solid fa-circle-check"></i>
+                                <span class="payment-selection" aria-hidden="true"></span>
 
                             </button>
 
@@ -1558,6 +1558,7 @@
                                 class="payment-option"
                                 id="momoBtn"
                                 data-value="Mobile Money"
+                                aria-pressed="false"
                             >
 
                                 <div class="payment-icon">
@@ -1578,7 +1579,7 @@
 
                                 </div>
 
-                                <i class="fa-regular fa-circle"></i>
+                                <span class="payment-selection" aria-hidden="true"></span>
 
                             </button>
 
@@ -1644,7 +1645,7 @@
 
                             </div>
 
-                            <i class="fa-solid fa-bag-shopping"></i>
+                            <i class="fa-solid fa-bag-shopping" style="color: rgb(131, 97, 3);"></i>
 
                         </div>
 
@@ -1763,8 +1764,7 @@
 
 
                     <p class="confirmation-message">
-                        Please review your order details before proceeding
-                        to secure payment.
+                        Review your order details before sending your order to the store.
                     </p>
 
 
@@ -1930,7 +1930,7 @@
                         >
 
                             <span>
-                                Proceed to payment
+                                Send order
                             </span>
 
                             <i class="fa-solid fa-arrow-right"></i>
@@ -2010,7 +2010,7 @@
         data-bs-dismiss="modal"
         aria-label="Close cart"
     >
-        <i class="fa-solid fa-xmark"></i>
+        <i class="fa-solid fa-xmark cart-closei"></i>
     </button>
 
 </div>
@@ -2020,7 +2020,7 @@
                  BODY
                  ========================= -->
 
-            <div class="cart-body">
+             <div class="cart-body">
 
                 <!-- JS renders products here -->
                 <div
@@ -2049,11 +2049,9 @@
         </p>
     </div>
 
-    <button
-        type="button"
+    <button type="button"
         class="cart-empty-btn"
-        data-bs-dismiss="modal"
-    >
+        data-bs-dismiss="modal">
         <span>Continue Shopping</span>
         <i class="fa-solid fa-arrow-right"></i>
     </button>
@@ -2072,15 +2070,18 @@
 
                 <div class="cart-summary">
 
-                    <span class="cart-summary-label">
-                        Total
-                    </span>
+                    <div class="cart-summary-copy">
+                        <span class="cart-summary-label">Order total</span>
+                        <span class="cart-summary-items" id="cartSummaryItems">0 items</span>
+                    </div>
 
                     <strong id="modalCartTotal">
                         0
                     </strong>
 
                 </div>
+
+                <p class="cart-summary-note"><i class="fa-solid fa-lock" aria-hidden="true"></i> Delivery options are confirmed at checkout.</p>
 
 
                 <div class="cart-actions">
@@ -2091,7 +2092,7 @@
                         onclick="clearCart()"
                         aria-label="Clear cart">
 
-                        <i class="fas fa-trash-can"></i>
+                        <i class="fas fa-trash-can" style="color: red;"></i>
 
                     </button>
 
@@ -2330,6 +2331,13 @@
                 <!-- STICKY CART FOOTER -->
                 <div class="product-details-footer">
 
+                    <p class="product-selection-alert" id="productColorAlert" role="alert" hidden>
+                        Please select a color.
+                    </p>
+                    <p class="product-selection-alert" id="productSizeAlert" role="alert" hidden>
+                        Please select a shoe size.
+                    </p>
+
                     <button
                         type="button"
                         class="product-add-to-cart"
@@ -2353,22 +2361,6 @@
 <!-- Bootstrap JS and Dependencies -->
 
 
-<div class="right-mini-sidebar">
-
-  <!-- Cart -->
-  <div class="side-box" id="sideCart">
-    <i class="fa fa-shopping-cart"></i>
-    <span>Cart</span>
-    <small id="sideCartCount">0</small>
-  </div>
-
-  <!-- Support / Chat -->
-  <div class="side-box" id="sideSupport">
-    <i class="fa fa-headset"></i>
-    <span>Help</span>
-  </div>
-
-</div>
 
 <!-- CHAT UI (BOOTSTRAP VERSION) -->
 <div id="chatWidget"
@@ -2390,7 +2382,6 @@
          class="border rounded p-2 bg-light"
          style="height: 220px; overflow-y: auto;">
     </div>
-
     <!-- INPUT AREA -->
     <div class="input-group">
       <input id="userChatInput"
@@ -2440,7 +2431,6 @@
 </script>-->
  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script src="./Assests/js/bootstrap.bundle.min.js"></script>
-<script type="module" src="./js/firebase-config.js"></script>
 <script type="module" src="./js/auth.js"></script>
 <script src="./js/js1.js"></script>
 </body>

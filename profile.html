@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile | Edward Shoe Store</title>
+  <link rel="stylesheet" href="./Assests/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="./Assests/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="./css/profile-dashboard.css" />
+  <style>
+    body {
+      background: #f7f4fb;
+      color: #1d1d1d;
+      font-family: Arial, sans-serif;
+    }
+
+    .profile-shell {
+      max-width: 980px;
+      margin: 48px auto 72px;
+      padding: 0 18px;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      background: linear-gradient(135deg, #2f0c43, #5d1f85);
+      color: white;
+      border-radius: 22px;
+      padding: 24px 28px;
+      margin-bottom: 28px;
+      box-shadow: 0 14px 30px rgba(59, 23, 84, 0.18);
+    }
+
+    .profile-header h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 2vw, 2.4rem);
+    }
+
+    .profile-header p {
+      margin: 8px 0 0;
+      opacity: 0.9;
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .profile-card {
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 12px 24px rgba(15, 15, 15, 0.06);
+      border: 1px solid rgba(40, 35, 46, 0.06);
+      padding: 24px;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .profile-label {
+      display: block;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #7d6f86;
+      margin-bottom: 8px;
+    }
+
+    .profile-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #201b27;
+      word-break: break-word;
+    }
+
+    .profile-meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      background: #f1e9fd;
+      color: #4b1d73;
+      padding: 8px 12px;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .btn-primary-custom {
+      background: #5d1f85;
+      border: none;
+      color: white;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-weight: 700;
+    }
+
+    .btn-primary-custom:hover {
+      background: #4a176d;
+      color: white;
+    }
+
+    .btn-secondary-custom {
+      background: transparent;
+      color: #5d1f85;
+      border: 1px solid #d3b8ef;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body class="account-page">
+  <div class="account-shell">
+    <aside class="account-sidebar">
+      <a class="account-brand" href="./index.html">
+        <span class="account-brand-mark"><i class="fa-solid fa-shoe-prints" aria-hidden="true"></i></span>
+        <span>EDWARD <small>SHOE STORE</small></span>
+      </a>
+      <span class="account-nav-label">YOUR ACCOUNT</span>
+      <nav class="account-nav" aria-label="Account dashboard">
+        <button class="account-nav-item active" type="button" data-profile-view="overview" aria-current="page"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i><span>Overview</span></button>
+        <button class="account-nav-item" type="button" data-profile-view="orders"><i class="fa-solid fa-box" aria-hidden="true"></i><span>Orders</span><b id="sidebarOrderCount">0</b></button>
+        <button class="account-nav-item" type="button" data-profile-view="messages"><i class="fa-regular fa-message" aria-hidden="true"></i><span>Messages</span><b id="sidebarMessageCount">0</b></button>
+        <button class="account-nav-item" type="button" data-profile-view="cart"><i class="fa-solid fa-bag-shopping" aria-hidden="true"></i><span>Cart</span><b id="sidebarCartCount">0</b></button>
+        <button class="account-nav-item" type="button" data-profile-view="account"><i class="fa-regular fa-user" aria-hidden="true"></i><span>Account details</span></button>
+      </nav>
+      <div class="account-sidebar-bottom">
+        <a href="./index.html"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to store</a>
+        <button type="button" id="logoutButton"><i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i> Sign out</button>
+      </div>
+    </aside>
+
+    <main class="account-main">
+      <header class="account-topbar">
+        <span>Customer account <i class="fa-solid fa-angle-right" aria-hidden="true"></i> <strong id="accountBreadcrumb">Overview</strong></span>
+        <a class="account-store-link" href="./index.html"><i class="fa-solid fa-store" aria-hidden="true"></i> Visit store</a>
+      </header>
+
+      <div class="account-content">
+        <section class="account-welcome">
+          <div>
+            <span class="account-eyebrow">YOUR STORE ACTIVITY</span>
+            <h1 id="profileHeading">My account</h1>
+            <p id="profileSubtitle">Orders, messages and your shopping bag in one place.</p>
+          </div>
+          <button class="account-refresh" id="refreshDashboard" type="button" aria-label="Refresh account activity" title="Refresh activity"><i class="fa-solid fa-rotate" aria-hidden="true"></i></button>
+        </section>
+
+        <section class="account-stats" aria-label="Account activity summary">
+          <article class="account-stat"><span>ORDERS</span><strong id="profileOrderCount">0</strong><i class="fa-solid fa-box" aria-hidden="true"></i></article>
+          <article class="account-stat"><span>STORE MESSAGES</span><strong id="profileMessageCount">0</strong><i class="fa-regular fa-message" aria-hidden="true"></i></article>
+          <article class="account-stat"><span>CART ITEMS</span><strong id="profileCartCount">0</strong><i class="fa-solid fa-bag-shopping" aria-hidden="true"></i></article>
+        </section>
+
+        <section class="account-panel-view" data-profile-panel="overview">
+          <div class="account-section-heading"><div><span class="account-eyebrow">RECENT ACTIVITY</span><h2>Latest orders</h2></div><button type="button" class="account-text-link" data-profile-view="orders">View all <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button></div>
+          <div class="activity-list" id="profileRecentOrders"></div>
+          <div class="account-overview-bottom">
+            <section class="account-surface account-overview-messages"><div class="account-section-heading"><div><span class="account-eyebrow">SUPPORT</span><h2>Recent messages</h2></div><button type="button" class="account-text-link" data-profile-view="messages">Open messages <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button></div><div id="profileRecentMessages" class="message-preview-list"></div></section>
+            <section class="account-surface account-overview-cart"><span class="account-eyebrow">SHOPPING BAG</span><h2>Your cart</h2><p id="overviewCartSummary">Your bag is empty.</p><button type="button" class="account-primary-link" data-profile-view="cart">View cart <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button></section>
+          </div>
+        </section>
+
+        <section class="account-panel-view" data-profile-panel="orders" hidden>
+          <div class="account-section-heading"><div><span class="account-eyebrow">YOUR PURCHASES</span><h2>Orders</h2><p>Order status and details from your store activity.</p></div><a class="account-text-link" href="./orders.html">Full order tracking <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a></div>
+          <div class="activity-list" id="profileOrdersList"></div>
+        </section>
+
+        <section class="account-panel-view" data-profile-panel="messages" hidden>
+          <div class="account-section-heading"><div><span class="account-eyebrow">ORDER SUPPORT</span><h2>Messages</h2><p>Conversations attached to your orders.</p></div></div>
+          <div class="account-surface" id="profileMessagesList"></div>
+        </section>
+
+        <section class="account-panel-view" data-profile-panel="cart" hidden>
+          <div class="account-section-heading"><div><span class="account-eyebrow">SHOPPING BAG</span><h2>Your cart</h2><p>Cart contents are shared with the store on this device.</p></div><a class="account-primary-link" href="./index.html">Continue shopping <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></div>
+          <div class="account-surface"><div class="activity-list" id="profileCartList"></div><div class="cart-profile-total" id="profileCartTotal"></div></div>
+        </section>
+
+        <section class="account-panel-view" data-profile-panel="account" hidden>
+          <div class="account-section-heading"><div><span class="account-eyebrow">PERSONAL INFORMATION</span><h2>Account details</h2><p>Your signed-in store account.</p></div></div>
+          <div class="account-surface account-details-grid">
+            <div><span class="account-detail-label">FULL NAME</span><strong id="profileName">Customer</strong></div>
+            <div><span class="account-detail-label">EMAIL ADDRESS</span><strong id="profileEmail">Not available</strong></div>
+            <div><span class="account-detail-label">ACCOUNT STATUS</span><strong class="account-verified"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Verified</strong></div>
+          </div>
+        </section>
+        <p class="account-feedback" id="profileFeedback" role="status" aria-live="polite"></p>
+      </div>
+    </main>
+  </div>
+  <button type="button" id="profileSignOut" class="visually-hidden">Sign out</button>
+
+  <script src="./Assests/js/bootstrap.bundle.min.js"></script>
+  <script src="./js/profile.js"></script>
+</body>
+</html>

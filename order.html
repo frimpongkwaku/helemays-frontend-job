@@ -113,6 +113,7 @@
       border-radius: 8px;
       cursor: pointer;
     }
+
   </style>
 </head>
 
@@ -152,72 +153,31 @@
   </div>
 
 <script>
-  // =========================
-  // SOCKET CONNECTION
-  // =========================
   const socket = io("http://localhost:5000");
-
-  // =========================
-  // GET ORDER ID FROM URL
-  // =========================
   const params = new URLSearchParams(window.location.search);
   const orderId = params.get("orderId");
-
   document.getElementById("orderId").innerText = orderId;
-
-  // =========================
-  // JOIN ORDER ROOM
-  // =========================
   socket.emit("join-order", orderId);
 
-  // =========================
-  // LOAD OLD MESSAGES
-  // =========================
   fetch(`http://localhost:5000/api/messages/${orderId}`)
     .then(res => res.json())
-    .then(data => {
-      data.forEach(addMessage);
-    });
+    .then(data => data.forEach(addMessage));
 
-  // =========================
-  // RECEIVE LIVE MESSAGES
-  // =========================
-  socket.on("receive-message", (msg) => {
-    addMessage(msg);
-  });
+  socket.on("receive-message", msg => addMessage(msg));
 
-  // =========================
-  // SEND MESSAGE
-  // =========================
   function sendMessage() {
     const input = document.getElementById("messageInput");
-
     if (!input.value.trim()) return;
-
-    socket.emit("send-message", {
-      orderId,
-      message: input.value,
-      sender: "user"
-    });
-
+    socket.emit("send-message", { orderId, message: input.value, sender: "user" });
     input.value = "";
   }
 
-  // =========================
-  // RENDER MESSAGE
-  // =========================
   function addMessage(msg) {
     const div = document.createElement("div");
-
-    div.classList.add("msg");
-    div.classList.add(msg.sender);
-
+    div.classList.add("msg", msg.sender);
     div.innerText = msg.message;
-
     document.getElementById("messages").appendChild(div);
-
-    document.getElementById("messages").scrollTop =
-      document.getElementById("messages").scrollHeight;
+    document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
   }
 </script>
 

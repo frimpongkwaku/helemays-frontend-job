@@ -1,3 +1,8 @@
+const localStoreFrontend = ["", "localhost", "127.0.0.1"].includes(window.location.hostname);
+const storeApiBaseUrl = window.HELEMAYS_API_BASE || (localStoreFrontend
+  ? "http://localhost:5000/api"
+  : "https://storebackend-production-f58c.up.railway.app/api");
+
 // the first apperearing user modal and greeting handler
 // connecting socket to my front end server
 // ==========================
@@ -20,10 +25,11 @@ const USER_ROLE = "user";
 const getOrderId = () =>
   localStorage.getItem("currentOrderId") ||
   new URLSearchParams(window.location.search).get("orderId");
+const savedLocalChatMessages = JSON.parse(localStorage.getItem("helemays.chat.v1") || "[]");
+const previousLocalThreadId = savedLocalChatMessages.findLast(message => message.sender === "customer")?.threadId;
+const localChatThreadId = previousLocalThreadId || localStorage.getItem("helemays.chatSession.v1") || `visitor-${crypto.randomUUID()}`;
+localStorage.setItem("helemays.chatSession.v1", localChatThreadId);
 
-// ==========================
-// 🚀 SOCKET CONNECTION
-// ==========================
 const socket = typeof io === "function"
   ? io("https://storebackend-production-f58c.up.railway.app", {
       transports: ["polling", "websocket"],
@@ -33,101 +39,103 @@ const socket = typeof io === "function"
     })
   : { on() {}, emit() {} };
 
-// ==========================
-// 🔌 CONNECT
-// ==========================
 socket.on("connect", () => {
-  console.log("🟢 connected:", socket.id);
-
   const orderId = getOrderId();
   if (!orderId) return;
-
   socket.emit("join-order", { orderId });
   loadMessages();
 });
 
-// ==========================
-// 📩 RECEIVE MESSAGE
-// ==========================
-socket.on("receive-message", (data) => {
+socket.on("receive-message", data => {
   const key = data._id || `${data.sender}-${data.message}`;
-
   if (seenMessages.has(key)) return;
   seenMessages.add(key);
-
   renderMessage(data);
 });
 
-// ==========================
-// 💬 RENDER MESSAGE
-// ==========================
 function renderMessage(data) {
   const chatBox = document.getElementById("userChatBox");
   if (!chatBox) return;
-
   const div = document.createElement("div");
-
   const sender = data.senderRole || data.sender || "system";
-
   if (sender === "admin") div.className = "msg admin";
   else if (sender === "user") div.className = "msg user";
   else div.className = "msg system";
-
   div.textContent = data.message;
-
   chatBox.appendChild(div);
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// ==========================
-// 📤 SEND MESSAGE
-// ==========================
 function sendMessage(message) {
+  if (!message) return;
   const orderId = getOrderId();
-  if (!orderId || !message) return;
-
   const payload = {
-    orderId,
+    orderId: orderId || localChatThreadId,
     message,
     sender: USER_ROLE,
     senderRole: USER_ROLE,
     senderName: localStorage.getItem("userName") || "Guest",
     createdAt: new Date().toISOString()
   };
-
-  // ✅ show instantly (optimistic UI)
   renderMessage(payload);
-
-  socket.emit("send-message", payload);
+  const storedMessages = JSON.parse(localStorage.getItem("helemays.chat.v1") || "[]");
+  storedMessages.push({
+    id: crypto.randomUUID(),
+    threadId: localChatThreadId,
+    sender: "customer",
+    senderName: payload.senderName,
+    text: message,
+    createdAt: payload.createdAt,
+    read: false
+  });
+  localStorage.setItem("helemays.chat.v1", JSON.stringify(storedMessages.slice(-500)));
+  if (orderId) socket.emit("send-message", payload);
 }
 
-// ==========================
-// 📥 LOAD HISTORY
-// ==========================
+window.addEventListener("storage", event => {
+  if (event.key !== "helemays.chat.v1" || !event.newValue) return;
+  try {
+    const messages = JSON.parse(event.newValue);
+    const latestReply = messages.filter(message => message.threadId === localChatThreadId && message.sender === "admin").at(-1);
+    if (latestReply && !seenMessages.has(latestReply.id)) {
+      seenMessages.add(latestReply.id);
+      renderMessage({ senderRole: "admin", message: latestReply.text });
+    }
+  } catch (error) {
+    console.warn("Local support replies could not be read:", error);
+  }
+});
+
+try {
+  JSON.parse(localStorage.getItem("helemays.chat.v1") || "[]")
+    .filter(message => message.threadId === localChatThreadId)
+    .forEach(message => {
+      const key = message.id || `${message.sender}-${message.createdAt}`;
+      if (seenMessages.has(key)) return;
+      seenMessages.add(key);
+      renderMessage({ senderRole: message.sender === "admin" ? "admin" : "user", message: message.text });
+    });
+} catch (error) {
+  console.warn("Saved local chat could not be loaded:", error);
+}
+
 async function loadMessages() {
   const orderId = getOrderId();
   if (!orderId) return;
-
   const chatBox = document.getElementById("userChatBox");
   if (chatBox) chatBox.innerHTML = "";
-
   try {
-    const res = await fetch(
-      `https://storebackend-production-f58c.up.railway.app/api/messages/${orderId}`
-    );
-
-    const result = await res.json();
+    const response = await fetch(`https://storebackend-production-f58c.up.railway.app/api/messages/${orderId}`);
+    const result = await response.json();
     if (!result.success) return;
-
-    result.data.forEach((msg) => {
-      const key = msg._id || `${msg.sender}-${msg.message}`;
+    result.data.forEach(message => {
+      const key = message._id || `${message.sender}-${message.message}`;
       if (seenMessages.has(key)) return;
-
       seenMessages.add(key);
-      renderMessage(msg);
+      renderMessage(message);
     });
-  } catch (err) {
-    console.error("Failed to load messages:", err);
+  } catch (error) {
+    console.error("Failed to load messages:", error);
   }
 }
 
@@ -155,13 +163,13 @@ sizes: [{ size: 40, stock: 5 },{ size: 41, stock: 7 },{ size: 42, stock: 0 },{ s
 featured: true,active: true
 },
 {id: "shoe003",name: "Classic Leather Loafers",category: "Loafers",price: 450,description: "Handcrafted leather derby shoe made for timeless everyday elegance.",
-images: ["./images/loaffers.png","./images/derby-side.png","./images/derby-top.png","./images/derby-back.png"],
+images: ["./images/featured1.png","./images/derby-side.png","./images/derby-top.png","./images/derby-back.png"],
 colors: ["Black","Brown"],
 sizes: [{ size: 40, stock: 5 },{ size: 41, stock: 7 },{ size: 42, stock: 0 },{ size: 43, stock: 3 },{ size: 44, stock: 2 }],
 featured: true,active: true
 },
 {id: "shoe004",name: "Classic Leather Derby",category: "Slippers",price: 450,description: "Handcrafted leather derby shoe made for timeless everyday elegance.",
-images: ["./images/sandals2.png","./images/derby-side.png","./images/derby-top.png","./images/derby-back.png"],
+images: ["./images/featured.jpg","./images/derby-side.png","./images/derby-top.png","./images/derby-back.png"],
 colors: ["Black","Brown"],
 sizes: [{ size: 40, stock: 5 },{ size: 41, stock: 7 },{ size: 42, stock: 0 },{ size: 43, stock: 3 },{ size: 44, stock: 2 }],
 featured: true,active: true
@@ -202,6 +210,44 @@ featured: true,active: true
     active: true
 }
 ]
+
+const localProductStorageKey = "helemays.products.v1";
+const savedProducts = localStorage.getItem(localProductStorageKey);
+
+if (savedProducts) {
+  try {
+    const parsedProducts = JSON.parse(savedProducts);
+    if (Array.isArray(parsedProducts)) {
+      products.splice(0, products.length, ...parsedProducts);
+    }
+  } catch (error) {
+    console.warn("Saved product list could not be read:", error);
+  }
+}
+
+function addProductCategoryFilters() {
+  const categories = [...new Set(products.map(product => product.category).filter(Boolean))];
+  const filters = document.querySelector(".collection-filters");
+  if (!filters) return;
+
+  categories.forEach(category => {
+    const exists = [...filters.querySelectorAll(".collection-filter")]
+      .some(button => button.dataset.category.toLowerCase() === category.toLowerCase());
+    if (exists) return;
+
+    const button = document.createElement("button");
+    button.className = "collection-filter";
+    button.type = "button";
+    button.setAttribute("aria-pressed", "false");
+    button.dataset.category = category;
+    button.innerHTML = `<span class="collection-filter-image" aria-hidden="true"><img src="./images/shoes.png" alt="" loading="lazy"></span><span></span>`;
+    button.querySelector("span:last-child").textContent = category;
+    filters.appendChild(button);
+  });
+}
+
+addProductCategoryFilters();
+
 /*
 const products =[// item arrays// this product is for admin backend// use create data through admin to post this data
 {id:"local1", name:"Waakye",price:1,description:"the best waakye in the city",category:"local1",},
@@ -305,7 +351,7 @@ modal.show();
   },500);
 }
 
-
+/*
 const scrollBox = document.querySelector(".about-scroll-wrapper");
 const scrollContent = document.querySelector(".about-scroll-content");
 
@@ -315,12 +361,20 @@ scrollBox.addEventListener("touchstart", () => {
 
 scrollBox.addEventListener("touchend", () => {
   scrollContent.style.animationPlayState = "running";
-});
+});*/
 
 
 // cart function 
-let cart=[];
-let cartInitialized=false;
+let cart = (() => {
+  try {
+    const savedCart = JSON.parse(localStorage.getItem("helemays.cart.v1") || "[]");
+    return Array.isArray(savedCart) ? savedCart : [];
+  } catch {
+    return [];
+  }
+})();
+let cartInitialized = cart.length > 0;
+let cartAddedTimer;
 function addToCart(productId){
   const product = products.find(p=>p.id===(productId));
   if(!product){
@@ -338,7 +392,7 @@ function addToCart(productId){
     document.getElementById("cartBadgeContainer").classList.remove("d-none");
     cartInitialized=true;
   }
-  renderCart();
+  renderCart(true);
 }
 
 // closing cart modal cartmodal and cart modal declaring 
@@ -347,18 +401,96 @@ let checkoutModal;
 
 
 //render cart items 
-function renderCart() {
+function renderCart(animateAdded = false) {
   const cartItemsContainer = document.getElementById("cartItems");
   const emptyCartText = document.getElementById("emptyCartText");
   const cartFooter = document.querySelector("#cartModal .cart-footer");
 
   const modalCartTotal = document.getElementById("modalCartTotal");
   const cartHeaderCount = document.getElementById("cartHeaderCount");
+  const cartSummaryItems = document.getElementById("cartSummaryItems");
 
   const cartTotalElement = document.getElementById("cartTotal");
   const cartBadge = document.getElementById("cartBadge");
+  const stickyCartItemCount = document.getElementById("cartItemCount");
+  const stickyCartTotal = document.getElementById("stickyCartTotal");
 
   const mobileCartBar = document.getElementById("mobileCartBar");
+  const mobileCartCount = document.getElementById("mobileCartCount");
+  const mobileCartTotal = document.getElementById("mobileCartTotal");
+  const mobileCartIcon = document.getElementById("mobileCartIcon");
+  const cartAddedMessage = document.getElementById("cartAddAnimation");
+  const stickyCartContainer = document.getElementById("cartBadgeContainer");
+
+  const totalItems = cart.reduce(
+    (count, item) => count + (Number(item.qty) || 0),
+    0
+  );
+  const total = cart.reduce(
+    (amount, item) => amount + (Number(item.price) || 0) * (Number(item.qty) || 0),
+    0
+  );
+
+  try {
+    localStorage.setItem("helemays.cart.v1", JSON.stringify(cart));
+  } catch (error) {
+    console.warn("Cart could not be saved on this device:", error);
+  }
+
+  if (stickyCartItemCount) {
+    stickyCartItemCount.textContent = `${totalItems} ${totalItems === 1 ? "item" : "items"}`;
+  }
+
+  if (stickyCartTotal) {
+    stickyCartTotal.textContent = `GH₵ ${total.toFixed(2)}`;
+  }
+
+  if (stickyCartContainer) {
+    stickyCartContainer.classList.toggle("d-none", totalItems === 0);
+  }
+
+  if (mobileCartCount) {
+    mobileCartCount.textContent = totalItems;
+    mobileCartCount.hidden = totalItems === 0;
+  }
+
+  if (mobileCartTotal) {
+    mobileCartTotal.textContent = `${totalItems} ${totalItems === 1 ? "item" : "items"} · GH₵ ${total.toFixed(2)}`;
+    mobileCartTotal.hidden = totalItems === 0;
+  }
+
+  const mobileCartButton = mobileCartCount?.closest(".mobile-nav-cart");
+  if (mobileCartButton) {
+    mobileCartButton.setAttribute(
+      "aria-label",
+      totalItems
+        ? `Cart, ${totalItems} ${totalItems === 1 ? "item" : "items"}, total GH₵ ${total.toFixed(2)}`
+        : "Cart, empty, total GH₵ 0.00"
+    );
+  }
+
+  if (animateAdded && totalItems > 0 && mobileCartIcon) {
+    mobileCartIcon.classList.remove("is-popping");
+    void mobileCartIcon.offsetWidth;
+    mobileCartIcon.classList.add("is-popping");
+  }
+
+  if (animateAdded && totalItems > 0 && stickyCartContainer) {
+    stickyCartContainer.classList.remove("d-none");
+    stickyCartContainer.classList.remove("pop");
+    void stickyCartContainer.offsetWidth;
+    stickyCartContainer.classList.add("pop");
+  }
+
+  if (animateAdded && cartAddedMessage) {
+    cartAddedMessage.textContent = "Added!";
+    cartAddedMessage.setAttribute("aria-label", `${cart.at(-1)?.name || "Item"} added to cart`);
+    cartAddedMessage.classList.remove("show");
+    void cartAddedMessage.offsetWidth;
+    cartAddedMessage.classList.add("show");
+    clearTimeout(cartAddedTimer);
+    cartAddedTimer = setTimeout(() => cartAddedMessage.classList.remove("show"), 1800);
+  }
 
   if (!cartItemsContainer) return;
 
@@ -388,6 +520,10 @@ function renderCart() {
 
     if (cartHeaderCount) {
       cartHeaderCount.textContent = "0";
+    }
+
+    if (cartSummaryItems) {
+      cartSummaryItems.textContent = "0 items";
     }
 
     // Keep old elements working if they still exist
@@ -423,9 +559,6 @@ function renderCart() {
   }
 
 
-  let total = 0;
-  let totalItems = 0;
-
   cartItemsContainer.innerHTML = "";
 
 
@@ -436,10 +569,6 @@ function renderCart() {
   cart.forEach((item) => {
 
     const itemTotal = item.price * item.qty;
-
-    total += itemTotal;
-    totalItems += item.qty;
-
 
     const cartItemElement = document.createElement("div");
 
@@ -525,7 +654,7 @@ function renderCart() {
             )"
             aria-label="Remove item"
           >
-            <i class="fa-solid fa-trash"></i>
+            <i class="fa-solid fa-trash" style="color:red;"></i>
           </button>
 
         </div>
@@ -554,6 +683,10 @@ function renderCart() {
 
   if (cartHeaderCount) {
     cartHeaderCount.textContent = totalItems;
+  }
+
+  if (cartSummaryItems) {
+    cartSummaryItems.textContent = `${totalItems} ${totalItems === 1 ? "item" : "items"} in your bag`;
   }
 
 
@@ -585,7 +718,8 @@ function renderCart() {
 
     if (mobileCartTotal) {
       mobileCartTotal.textContent =
-        `GH₵ ${total.toFixed(2)}`;
+        `${totalItems} ${totalItems === 1 ? "item" : "items"} · GH₵ ${total.toFixed(2)}`;
+      mobileCartTotal.hidden = totalItems === 0;
     }
 
 
@@ -665,7 +799,7 @@ function changeQty(productId, size, color, change) {
 
 // generate invoice function 
 function generateInvoice() {
-  return "HMF-" + Date.now();
+  return "EDS" + Date.now();
 }
 function getOrderTime() {
   return new Date().toLocaleString();
@@ -727,12 +861,11 @@ searchRow = document.getElementById("searchFoodRow");
 document.addEventListener('DOMContentLoaded', function () {
   const modalEl = document.getElementById('userModal');
   userModal = modalEl ? new bootstrap.Modal(modalEl) : null;
+  modalEl?.addEventListener('hide.bs.modal', () => {
+    sessionStorage.setItem("helemays.userModalDismissed", "true");
+  });
   
-  const userNameInput = document.getElementById('userName');
-  const userEmailInput = document.getElementById('userEmail');
   greeting = document.getElementById('greeting');
-  
-const userForm = document.getElementById('userForm');
 // search section for live search with key press on 26/01/26
 let activeCategory ="all";// breaking down from the all elements// debugging the entire search block of codes
 
@@ -1181,20 +1314,7 @@ function selectPayment(method) {
       "active",
       !isMomo
     );
-
-    const icon =
-      codBtn.querySelector(
-        "i:last-child"
-      );
-
-    if (icon) {
-
-      icon.className =
-        !isMomo
-          ? "fa-solid fa-circle-check"
-          : "fa-regular fa-circle";
-
-    }
+    codBtn.setAttribute("aria-pressed", String(!isMomo));
 
   }
 
@@ -1205,20 +1325,7 @@ function selectPayment(method) {
       "active",
       isMomo
     );
-
-    const icon =
-      momoBtn.querySelector(
-        "i:last-child"
-      );
-
-    if (icon) {
-
-      icon.className =
-        isMomo
-          ? "fa-solid fa-circle-check"
-          : "fa-regular fa-circle";
-
-    }
+    momoBtn.setAttribute("aria-pressed", String(isMomo));
 
   }
 
@@ -1809,14 +1916,8 @@ if (buyBtn) {
             orderId
           );
 
-
           if (typeof socket !== "undefined") {
-
-            socket.emit(
-              "join-order",
-              { orderId }
-            );
-
+            socket.emit("join-order", { orderId });
           }
 
         }
@@ -1892,10 +1993,29 @@ if (buyBtn) {
 // =========================================================
 // SEND ORDER TO WHATSAPP
 // =========================================================
+function updatePendingOrderCount() {
+  let trackedOrders = [];
+  try {
+    trackedOrders = JSON.parse(localStorage.getItem("helemays.trackedOrders.v1") || "[]");
+  } catch {
+    trackedOrders = [];
+  }
+  const pendingCount = trackedOrders.filter(order => !["Completed", "Cancelled"].includes(order.status)).length;
+  document.querySelectorAll("[data-orders-count]").forEach(badge => {
+    badge.textContent = pendingCount > 99 ? "99+" : String(pendingCount);
+    badge.hidden = pendingCount === 0;
+  });
+}
+
+updatePendingOrderCount();
+window.addEventListener("storage", event => {
+  if (event.key === "helemays.trackedOrders.v1") updatePendingOrderCount();
+});
+
 const buyBtn = document.getElementById("buyBtn");
 
 if (buyBtn) {
-  buyBtn.addEventListener("click", () => {
+  buyBtn.addEventListener("click", async () => {
 
     if (!cart.length) {
       alert("Your cart is empty.");
@@ -1930,61 +2050,81 @@ if (buyBtn) {
     // Get invoice generated by buildConfirmation()
     const invoice =
       localStorage.getItem("checkoutInvoice") || generateInvoice();
-
-    const orderTime = getOrderTime();
-
-    // Build item list
-    const itemsText = cart.map((item, index) => {
-      const subtotal = Number(item.price || 0) * Number(item.qty || 1);
-
-      return (
-        `${index + 1}. ${item.name}\n` +
-        `   Size: ${item.size || "N/A"}\n` +
-        `   Color: ${item.color || "N/A"}\n` +
-        `   Qty: ${item.qty || 1}\n` +
-        `   Price: ${item.price}\n` +
-        `   Subtotal: ${subtotal}`
-      );
-    }).join("\n\n");
+    const trackingTokenKey = `helemays.orderToken.${invoice}`;
+    let trackingToken = localStorage.getItem(trackingTokenKey);
+    if (!trackingToken) {
+      const tokenBytes = crypto.getRandomValues(new Uint8Array(32));
+      trackingToken = Array.from(tokenBytes, byte => byte.toString(16).padStart(2, "0")).join("");
+      localStorage.setItem(trackingTokenKey, trackingToken);
+    }
 
     // Calculate total
     const total = cart.reduce((sum, item) => {
       return sum + Number(item.price || 0) * Number(item.qty || 1);
     }, 0);
 
-    const message = `
-🛍️ NEW ORDER
+    const localOrders = JSON.parse(localStorage.getItem("helemays.orders.v1") || "[]");
+    const localOrder = {
+      id: invoice,
+      invoice,
+      createdAt: new Date().toISOString(),
+      customer: { name, phone, email, address },
+      delivery,
+      payment,
+      note,
+      items: cart.map(item => ({
+        productId: item.productId || item.id,
+        name: item.name,
+        price: Number(item.price || 0),
+        qty: Number(item.qty || 1),
+        size: item.size || "N/A",
+        color: item.color || "N/A"
+      })),
+      total,
+      status: "New",
+      channel: "Storefront"
+    };
 
-Invoice: ${invoice}
-Time: ${orderTime}
+    buyBtn.disabled = true;
+    const buyButtonLabel = buyBtn.querySelector("span");
+    const originalLabel = buyButtonLabel?.textContent;
+    if (buyButtonLabel) buyButtonLabel.textContent = "Sending order...";
+    let orderResult = {};
+    try {
+      const response = await fetch(`${storeApiBaseUrl}/orders`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...localOrder, trackingToken }),
+        signal: AbortSignal.timeout(15000)
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.message || "The order could not be sent to the store.");
+      orderResult = result;
+    } catch (error) {
+      alert(`${error.message} Check your connection and try again.`);
+      buyBtn.disabled = false;
+      if (buyButtonLabel) buyButtonLabel.textContent = originalLabel;
+      return;
+    }
 
-CUSTOMER
-Name: ${name}
-Phone: ${phone}
-Email: ${email || "Not provided"}
+    localOrders.unshift(localOrder);
+    localStorage.setItem("helemays.orders.v1", JSON.stringify(localOrders.slice(0, 1000)));
+    const trackedOrders = JSON.parse(localStorage.getItem("helemays.trackedOrders.v1") || "[]");
+    const updatedTrackedOrders = [
+      { invoice, createdAt: localOrder.createdAt, status: "New" },
+      ...trackedOrders.filter(order => order.invoice !== invoice)
+    ].slice(0, 100);
+    localStorage.setItem("helemays.trackedOrders.v1", JSON.stringify(updatedTrackedOrders));
+    updatePendingOrderCount();
 
-ORDER TYPE
-Delivery: ${delivery}
-Payment: ${payment}
-
-ADDRESS
-${address || "Not provided"}
-
-ITEMS
-${itemsText}
-
-TOTAL
-${total}
-
-NOTE
-${note || "None"}
-`.trim();
-
-    // Open WhatsApp
-    const whatsappUrl =
-      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-
-    window.open(whatsappUrl, "_blank");
+    clearCart();
+    cartInitialized = false;
+    document.getElementById("cartBadgeContainer")?.classList.add("d-none");
+    checkoutModal?.hide();
+    const trackingPage = new URL("./orders.html", window.location.href);
+    trackingPage.searchParams.set("orderId", invoice);
+    if (orderResult.invoiceEmailSent === false) trackingPage.searchParams.set("emailStatus", "failed");
+    window.location.href = trackingPage.href;
   });
 }
 
@@ -2035,6 +2175,9 @@ cartModal = cartModalEl
   ? new bootstrap.Modal(cartModalEl)
   : null;
 
+cartModalEl?.addEventListener("show.bs.modal", () => renderCart());
+renderCart();
+
 checkoutModal = checkoutModalEl
   ? new bootstrap.Modal(checkoutModalEl)
   : null;
@@ -2067,8 +2210,19 @@ if (checkoutBtn) {
 // =========================================================
 
 const searchWrapper = document.querySelector(".shoe-search-wrapper");
+const searchSection = document.querySelector(".shoe-search-section");
 const searchDropdown = document.getElementById("searchDropdown");
 const searchClear = document.getElementById("searchClear");
+
+function updateStickySearch() {
+  if (!searchSection) return;
+  searchSection.classList.toggle("is-search-sticky", searchSection.getBoundingClientRect().top <= 0);
+}
+
+window.addEventListener("scroll", updateStickySearch, { passive: true });
+window.addEventListener("resize", updateStickySearch);
+window.addEventListener("pageshow", updateStickySearch);
+updateStickySearch();
 
 
 // ---------------------------------------------------------
@@ -2267,7 +2421,7 @@ function render(category = "All") {
             ? products.filter(item => item.active !== false)
             : products.filter(
                 item =>
-                    item.category === category &&
+                String(item.category).toLowerCase() === String(category).toLowerCase() &&
                     item.active !== false
             );
 
@@ -2395,6 +2549,8 @@ function render(category = "All") {
     });
 }
 
+  window.render = render;
+
 
 function openProductDetails(productId) {
 
@@ -2415,9 +2571,7 @@ if (!product) {
 window.productDetailsState = {
   product: product,
   selectedSize: null,
-  selectedColor: product.colors && product.colors[0]
-    ? product.colors[0]
-    : "Default",
+  selectedColor: product.colors && product.colors.length ? null : "Default",
   quantity: 1
 };
 
@@ -2502,6 +2656,8 @@ console.log("Opening product:", product);
 
 const colorOptions = document.getElementById("productColorOptions");
 const selectedColorText = document.getElementById("selectedColorText");
+document.getElementById("productColorAlert").hidden = true;
+document.getElementById("productSizeAlert").hidden = true;
 
 // Clear colors from previous product
 colorOptions.innerHTML = "";
@@ -2512,7 +2668,7 @@ selectedColorText.textContent = "Select a color";
 // Check if this product has colors
 if (product.colors && product.colors.length > 0) {
 
-  product.colors.forEach((color, index) => {
+  product.colors.forEach(color => {
 
     const colorButton = document.createElement("button");
 
@@ -2520,12 +2676,6 @@ if (product.colors && product.colors.length > 0) {
     colorButton.className = "product-color-option";
 
     colorButton.textContent = color;
-
-    // Select first color automatically
-    if (index === 0) {
-      colorButton.classList.add("active");
-      selectedColorText.textContent = color;
-    }
 
     // When customer selects a color
     colorButton.addEventListener("click", () => {
@@ -2543,6 +2693,7 @@ if (product.colors && product.colors.length > 0) {
       // Update selected color text
       selectedColorText.textContent = color;
       window.productDetailsState.selectedColor = color;
+      document.getElementById("productColorAlert").hidden = true;
 
       console.log("Selected color:", color);
     });
@@ -2554,6 +2705,7 @@ if (product.colors && product.colors.length > 0) {
 
   // Product has no color options
   selectedColorText.textContent = "Default";
+  window.productDetailsState.selectedColor = "Default";
 
   const defaultColor = document.createElement("span");
 
@@ -2617,6 +2769,7 @@ if (product.sizes && product.sizes.length > 0) {
         // Update selected size text
         selectedSizeText.textContent = sizeItem.size;
          window.productDetailsState.selectedSize = sizeItem.size;
+        document.getElementById("productSizeAlert").hidden = true;
 
         console.log("Selected size:", sizeItem.size);
         console.log("Available stock:", sizeItem.stock);
@@ -2654,9 +2807,7 @@ let productQuantity = 1;
 window.productDetailsState = {
   product: product,
   selectedSize: null,
-  selectedColor: product.colors && product.colors[0]
-    ? product.colors[0]
-    : "Default",
+  selectedColor: product.colors && product.colors.length ? null : "Default",
   quantity: 1
 };
 
@@ -2726,27 +2877,16 @@ window.openProductDetails = openProductDetails;
 // 👟 CATEGORY SWITCHING
 // ==========================
 
-document.querySelectorAll(".collection-filter").forEach(button => {
+document.querySelector(".collection-filters")?.addEventListener("click", event => {
+  const button = event.target.closest(".collection-filter");
+  if (!button) return;
 
-    button.addEventListener("click", () => {
-
-        // Get the category from the clicked button
-        const category = button.dataset.category;
-
-        // Render products for that category
-        render(category);
-
-        // Remove active state from all buttons
-        document
-            .querySelectorAll(".collection-filter")
-            .forEach(btn => {
-                btn.classList.remove("active");
-            });
-
-        // Make the clicked button active
-        button.classList.add("active");
-    });
-
+  render(button.dataset.category);
+  document.querySelectorAll(".collection-filter").forEach(filter => {
+    filter.classList.toggle("active", filter === button);
+    filter.setAttribute("aria-pressed", String(filter === button));
+  });
+  document.querySelector(".collection-products-header")?.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 //product modal close button// ========================================
 // 14. CLOSE PRODUCT DETAILS MODAL
@@ -2786,10 +2926,18 @@ productAddToCart.addEventListener("click", () => {
   }
 
   const { product, selectedSize, selectedColor, quantity } = state;
+  const sizeAlert = document.getElementById("productSizeAlert");
+  const colorAlert = document.getElementById("productColorAlert");
+
+  sizeAlert.hidden = Boolean(selectedSize) || !product.sizes?.length;
+  colorAlert.hidden = Boolean(selectedColor) || !product.colors?.length;
 
   // Size is required
-  if (!selectedSize) {
-    selectedSizeText.textContent = "Please select a size";
+  if (!selectedSize && product.sizes?.length) {
+    return;
+  }
+
+  if (!selectedColor && product.colors?.length) {
     return;
   }
 
@@ -2846,16 +2994,10 @@ productAddToCart.addEventListener("click", () => {
 
   console.log("Updated cart:", cart);
 
-  // Show the cart
-renderCart();
+  renderCart(true);
 
 productDetailsModal.classList.remove("active");
 productDetailsModal.setAttribute("aria-hidden", "true");
-
-// Open cart modal
-if (cartModal) {
-  openModalWithLoader(cartModal);
-}
 });
 
 // ==========================
@@ -2889,24 +3031,6 @@ render("sides","sidesRow");
 */
 
 
-// function submit user data// need to work on this one to act as a login
-    userForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const name = userNameInput.value.trim();
-    const email = userEmailInput.value.trim();
-// if statement to  check the validation of the email 
-    if (name && email && isValidEmail(email)) {
-      localStorage.setItem('userName', name);
-      localStorage.setItem('userEmail', email);
-      if (userModal) userModal.hide();
-      greeting.textContent = `Hi, ${name}! Welcome to Helemays Foods Limited`;
-      greetUser();
-    } else {
-      alert('Please enter a valid name and email!');// 
-      if (!name) userNameInput.focus();// focus(come in  view) on wrong or no input space 
-      else if (!isValidEmail(email)) userEmailInput.focus();
-    }
-  });
   greetUser();
 }); 
 // greeting function 
@@ -2921,7 +3045,9 @@ function greetUser() {
   else greet = "Good evening";
 
   if (!storedName) {
-    if (userModal) userModal.show();
+    if (userModal && sessionStorage.getItem("helemays.userModalDismissed") !== "true") {
+      userModal.show();
+    }
   } else {
     if (greeting) {
       greeting.textContent = `Hi ${greet}, ${storedName}! AKWAABA!`;
@@ -3079,7 +3205,79 @@ if (userSendButton) {
    SHOE HERO CAROUSEL
 ========================================================= */
 
+function applyLocalHeroBanners(hero) {
+  const storedBanners = localStorage.getItem("helemays.banners.v1");
+  if (storedBanners === null || !hero) return false;
+
+  let banners;
+  try {
+    banners = JSON.parse(storedBanners);
+  } catch (error) {
+    console.warn("Saved hero campaigns could not be read:", error);
+    return false;
+  }
+  if (!Array.isArray(banners)) return false;
+
+  const track = hero.querySelector(".shoe-hero-track");
+  const indicators = hero.querySelector(".shoe-hero-indicators");
+  if (!track || !indicators) return false;
+
+  const published = banners
+    .filter(banner => banner.active !== false)
+    .sort((first, second) => Number(first.order || 0) - Number(second.order || 0));
+
+  track.replaceChildren();
+  indicators.replaceChildren();
+  hero.hidden = published.length === 0;
+
+  published.forEach((banner, index) => {
+    const slide = document.createElement("div");
+    slide.className = `shoe-hero-slide${index === 0 ? " active" : ""}`;
+
+    const content = document.createElement("div");
+    content.className = "shoe-hero-content";
+    const eyebrow = document.createElement("p");
+    eyebrow.className = "hero-eyebrow";
+    eyebrow.textContent = banner.eyebrow || "HELEMAYS COLLECTION";
+    const headline = document.createElement("h1");
+    headline.append(document.createTextNode(banner.title || "Discover"));
+    if (banner.highlight) {
+      const highlight = document.createElement("span");
+      highlight.textContent = banner.highlight;
+      headline.append(" ", highlight);
+    }
+    const description = document.createElement("p");
+    description.className = "hero-description";
+    description.textContent = banner.description || "Explore our latest collection.";
+    content.append(eyebrow, headline, description);
+
+    const imageWrap = document.createElement("div");
+    imageWrap.className = "shoe-hero-image";
+    const image = document.createElement("img");
+    image.src = banner.image || "./images/shoe-placeholder.png";
+    image.alt = banner.imageAlt || banner.title || "Featured collection";
+    imageWrap.append(image);
+    slide.append(content, imageWrap);
+    track.append(slide);
+
+    const dot = document.createElement("button");
+    dot.type = "button";
+    dot.className = `shoe-hero-dot${index === 0 ? " active" : ""}`;
+    dot.dataset.slide = index;
+    dot.setAttribute("aria-label", `Slide ${index + 1}`);
+    indicators.append(dot);
+  });
+
+  const hasMultipleSlides = published.length > 1;
+  hero.querySelectorAll(".shoe-hero-arrow").forEach(button => {
+    button.hidden = !hasMultipleSlides;
+  });
+  indicators.hidden = !hasMultipleSlides;
+  return true;
+}
+
 const shoeHero = document.getElementById("shoeHero");
+applyLocalHeroBanners(shoeHero);
 var heroSlides;
 var heroDots;
 var heroPrev;
@@ -3158,18 +3356,12 @@ if (shoeHero) {
         });
     }
 
-    // DOTS
-    heroDots.forEach((dot) => {
-
-        dot.addEventListener("click", () => {
-
-            const slideIndex = Number(dot.dataset.slide);
-
-            showHeroSlide(slideIndex);
-
-            startHeroAutoSlide();
-        });
-
+    // Delegate indicator clicks so admin-published slides can be refreshed.
+    shoeHero.querySelector(".shoe-hero-indicators")?.addEventListener("click", event => {
+      const dot = event.target.closest(".shoe-hero-dot");
+      if (!dot) return;
+      showHeroSlide(Number(dot.dataset.slide));
+      startHeroAutoSlide();
     });
 
     // Start carousel
@@ -3196,20 +3388,158 @@ if (shoeHero) {
 
       startHeroAutoSlide();
     }, { passive: true });
-}
-const featuredButtons = document.querySelectorAll(".featured-view");
 
-featuredButtons.forEach(button => {
-  button.addEventListener("click", (event) => {
-    event.preventDefault();
-
-        const productId = button.dataset.productId;
-
-    if (!productId) return;
-
-        openProductDetails(productId);
-
+    window.addEventListener("storage", event => {
+      if (event.key !== "helemays.banners.v1") return;
+      applyLocalHeroBanners(shoeHero);
+      heroSlides = shoeHero.querySelectorAll(".shoe-hero-slide");
+      heroDots = shoeHero.querySelectorAll(".shoe-hero-dot");
+      currentHeroSlide = 0;
+      clearInterval(heroAutoSlide);
+      if (!heroSlides.length) return;
+      showHeroSlide(0);
+      if (heroSlides.length > 1) startHeroAutoSlide();
     });
+}
+
+function renderFeaturedProducts() {
+  const track = document.getElementById("featuredTrack");
+  if (!track) return;
+  const featuredProducts = products.filter(product => product.active !== false && product.featured);
+  track.replaceChildren();
+
+  featuredProducts.forEach(product => {
+    const item = document.createElement("div");
+    item.className = "featured-item";
+    const imageWrap = document.createElement("div");
+    imageWrap.className = "featured-image";
+    const badge = document.createElement("span");
+    badge.className = "featured-badge";
+    badge.textContent = "FEATURED";
+    const image = document.createElement("img");
+    image.src = product.images?.[0] || "./images/shoe-placeholder.png";
+    image.alt = product.name;
+    imageWrap.append(badge, image);
+
+    const info = document.createElement("div");
+    info.className = "featured-info";
+    const category = document.createElement("span");
+    category.textContent = product.category || "COLLECTION";
+    const name = document.createElement("h3");
+    name.textContent = product.name;
+    const bottom = document.createElement("div");
+    bottom.className = "featured-bottom";
+    const price = document.createElement("strong");
+    price.textContent = `GH₵${Number(product.price || 0).toFixed(2)}`;
+    const view = document.createElement("button");
+    view.className = "featured-view";
+    view.type = "button";
+    view.dataset.productId = product.id;
+    view.innerHTML = 'View Product <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
+    bottom.append(price, view);
+    info.append(category, name, bottom);
+    item.append(imageWrap, info);
+    track.append(item);
+  });
+}
+
+renderFeaturedProducts();
+
+const featuredTrack = document.getElementById("featuredTrack");
+const featuredWrapper = document.querySelector(".featured-wrapper");
+const featuredStep = () => {
+  const item = featuredTrack?.querySelector(".featured-item");
+  if (!item || !featuredTrack) return 0;
+  return item.getBoundingClientRect().width + (parseFloat(getComputedStyle(featuredTrack).columnGap) || 0);
+};
+
+let featuredAutoScrollTimer;
+let featuredScrollAnimationFrame = 0;
+const featuredCarousel = document.querySelector(".featured-shoes");
+const scrollFeaturedTo = target => {
+  if (!featuredWrapper) return;
+  cancelAnimationFrame(featuredScrollAnimationFrame);
+  const start = featuredWrapper.scrollLeft;
+  const distance = target - start;
+  if (!distance) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    featuredWrapper.scrollLeft = target;
+    return;
+  }
+
+  const duration = 850;
+  const startedAt = performance.now();
+  const animate = now => {
+    const progress = Math.min((now - startedAt) / duration, 1);
+    const eased = progress < 0.5
+      ? 4 * progress * progress * progress
+      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+    featuredWrapper.scrollLeft = start + distance * eased;
+    if (progress < 1) featuredScrollAnimationFrame = requestAnimationFrame(animate);
+  };
+  featuredScrollAnimationFrame = requestAnimationFrame(animate);
+};
+const advanceFeatured = () => {
+  if (!featuredWrapper || !featuredTrack || document.hidden) return;
+  const step = featuredStep();
+  if (!step) return;
+  const maxScroll = featuredWrapper.scrollWidth - featuredWrapper.clientWidth;
+  if (maxScroll <= 4) return;
+  if (featuredWrapper.scrollLeft >= maxScroll - 4) {
+    scrollFeaturedTo(0);
+  } else {
+    scrollFeaturedTo(Math.min(featuredWrapper.scrollLeft + step, maxScroll));
+  }
+};
+const startFeaturedAutoScroll = () => {
+  clearInterval(featuredAutoScrollTimer);
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  featuredAutoScrollTimer = setInterval(advanceFeatured, 4000);
+};
+const pauseFeaturedAutoScroll = () => clearInterval(featuredAutoScrollTimer);
+
+featuredCarousel?.addEventListener("mouseenter", pauseFeaturedAutoScroll);
+featuredCarousel?.addEventListener("mouseleave", startFeaturedAutoScroll);
+featuredCarousel?.addEventListener("focusin", pauseFeaturedAutoScroll);
+featuredCarousel?.addEventListener("focusout", event => {
+  if (!featuredCarousel.contains(event.relatedTarget)) startFeaturedAutoScroll();
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) pauseFeaturedAutoScroll();
+  else startFeaturedAutoScroll();
+});
+startFeaturedAutoScroll();
+
+document.querySelector(".featured-prev")?.addEventListener("click", () => {
+  scrollFeaturedTo(Math.max(0, (featuredWrapper?.scrollLeft || 0) - featuredStep()));
+});
+
+document.querySelector(".featured-next")?.addEventListener("click", () => {
+  const maxScroll = featuredWrapper ? featuredWrapper.scrollWidth - featuredWrapper.clientWidth : 0;
+  scrollFeaturedTo(Math.min((featuredWrapper?.scrollLeft || 0) + featuredStep(), maxScroll));
+});
+
+window.refreshStoreProducts = storedProducts => {
+  products.splice(0, products.length, ...storedProducts);
+  addProductCategoryFilters();
+  window.render("All");
+  renderFeaturedProducts();
+};
+
+document.getElementById("featuredTrack")?.addEventListener("click", event => {
+  const button = event.target.closest(".featured-view");
+  if (button?.dataset.productId) openProductDetails(button.dataset.productId);
+});
+
+window.addEventListener("storage", event => {
+  if (event.key !== localProductStorageKey || !event.newValue) return;
+  try {
+    const storedProducts = JSON.parse(event.newValue);
+    if (!Array.isArray(storedProducts)) return;
+    window.refreshStoreProducts(storedProducts);
+  } catch (error) {
+    console.warn("Updated product list could not be read:", error);
+  }
 });
 
 // refactor this code to make more moduler form 

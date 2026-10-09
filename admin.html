@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f3f4ef">
+    <title>Helemays | Store Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./Assests/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="./admin.css">
+</head>
+<body>
+    <main class="login-screen" id="adminLogin" hidden>
+        <form class="login-panel" id="adminLoginForm">
+            <span class="brand-mark"><i class="fa-solid fa-leaf"></i></span>
+            <p class="eyebrow">HELEMAYS STORE ADMIN</p>
+            <h1>Sign in to your store</h1>
+            <p class="muted">Use an administrator account to manage the backend catalog.</p>
+            <label for="adminEmail">Email address</label>
+            <input id="adminEmail" type="email" autocomplete="username" required>
+            <label for="adminPassword">Password</label>
+            <input id="adminPassword" type="password" autocomplete="current-password" required>
+            <p class="form-message" id="adminLoginMessage" role="status"></p>
+            <button class="verification-resend" id="adminResendVerification" type="button" hidden>Resend verification email</button>
+            <button class="primary-button wide" type="submit"><span>Sign in</span><i class="fa-solid fa-arrow-right"></i></button>
+        </form>
+    </main>
+    <div class="admin-app" id="adminApp" hidden>
+        <aside class="sidebar">
+            <a class="brand" href="./index.html"><span class="brand-mark"><i class="fa-solid fa-leaf"></i></span><span>HELEMAYS<small>STORE ADMIN</small></span></a>
+            <p class="side-caption">WORKSPACE</p>
+            <button class="side-link active" type="button" data-view="overview"><i class="fa-solid fa-chart-pie"></i>Overview</button>
+            <button class="side-link" type="button" data-view="orders"><i class="fa-solid fa-receipt"></i>Orders<span class="nav-count" id="orderNavCount">0</span></button>
+            <button class="side-link" type="button" data-view="inbox"><i class="fa-regular fa-comments"></i>Inbox<span class="nav-count" id="inboxNavCount">0</span></button>
+            <button class="side-link" type="button" data-view="products"><i class="fa-solid fa-boxes-stacked"></i>Products</button>
+            <button class="side-link" type="button" data-view="campaigns"><i class="fa-regular fa-images"></i>Hero campaigns</button>
+            <div class="sidebar-bottom"><span class="status-dot"></span><span>Catalog syncs to backend</span></div>
+        </aside>
+
+        <main class="workspace">
+            <header class="topbar">
+                <div><span class="eyebrow" id="breadcrumb">OPERATIONS</span><h1 id="pageTitle">Overview</h1></div>
+                <div class="topbar-actions"><span class="connection-state offline" id="backendState"><i></i><span>BACKEND OFFLINE</span></span><a class="store-link" href="./index.html" target="_blank" rel="noreferrer"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>View store</span></a><button class="store-link" type="button" id="adminLogout" title="Sign out" aria-label="Sign out"><i class="fa-solid fa-arrow-right-from-bracket"></i></button></div>
+            </header>
+
+            <section class="view active" id="overviewView">
+                <div class="overview-heading"><div><h2>Store pulse</h2><p>Orders, payments, and customer activity saved in this browser.</p></div><button class="secondary-button" type="button" id="refreshDashboard"><i class="fa-solid fa-rotate"></i><span>Refresh</span></button></div>
+                <div class="metrics-grid">
+                    <article class="metric-card"><span class="metric-label">Orders today</span><div><strong id="ordersTodayMetric">0</strong><span class="metric-icon green"><i class="fa-solid fa-bag-shopping"></i></span></div><small id="ordersTodayNote">No orders recorded today</small></article>
+                    <article class="metric-card"><span class="metric-label">Checkout value today</span><div><strong id="salesTodayMetric">GH₵ 0</strong><span class="metric-icon gold"><i class="fa-solid fa-arrow-trend-up"></i></span></div><small>Submitted order value, not payment confirmation</small></article>
+                    <article class="metric-card"><span class="metric-label">Awaiting review</span><div><strong id="pendingMetric">0</strong><span class="metric-icon rust"><i class="fa-regular fa-clock"></i></span></div><small>New orders needing attention</small></article>
+                    <article class="metric-card"><span class="metric-label">Unread messages</span><div><strong id="unreadMetric">0</strong><span class="metric-icon green"><i class="fa-regular fa-message"></i></span></div><small>Messages received in this browser</small></article>
+                </div>
+                <div class="dashboard-grid">
+                    <section class="dashboard-panel sales-panel"><div class="panel-heading"><div><span class="eyebrow">PAYMENT MIX</span><h2>Order value by method</h2></div><span class="range-label">All local orders</span></div><div class="payment-chart" id="paymentChart"></div><div class="chart-legend" id="paymentLegend"></div></section>
+                    <section class="dashboard-panel activity-panel"><div class="panel-heading"><div><span class="eyebrow">LIVE ACTIVITY</span><h2>Store activity</h2></div><span class="live-tag"><i></i> THIS BROWSER</span></div><div class="activity-list" id="activityList"></div></section>
+                </div>
+                <section class="dashboard-panel recent-orders"><div class="panel-heading"><div><span class="eyebrow">LATEST</span><h2>Recent orders</h2></div><button class="text-action" type="button" data-open-view="orders">All orders <i class="fa-solid fa-arrow-right"></i></button></div><div class="table-wrap compact-table"><table><thead><tr><th>Order</th><th>Customer</th><th>Payment</th><th>Total</th><th>Status</th></tr></thead><tbody id="recentOrderRows"></tbody></table><div class="empty-state" id="recentOrdersEmpty" hidden><i class="fa-solid fa-receipt"></i><strong>No orders yet</strong><span>Storefront checkouts will appear here before WhatsApp opens.</span></div></div></section>
+            </section>
+
+            <section class="view" id="ordersView">
+                <div class="toolbar"><label class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="orderSearch" type="search" placeholder="Search order or customer"></label><div class="toolbar-actions"><select id="orderStatusFilter" aria-label="Filter orders"><option value="all">All statuses</option><option>New</option><option>Confirmed</option><option>Preparing</option><option>Completed</option><option>Cancelled</option></select></div></div>
+                <div class="table-wrap"><table><thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Payment</th><th>Total</th><th>Status</th><th>Placed</th></tr></thead><tbody id="orderRows"></tbody></table><div class="empty-state" id="ordersEmpty" hidden><i class="fa-solid fa-receipt"></i><strong>No matching orders</strong><span>Orders are recorded locally when customers submit checkout.</span></div></div>
+            </section>
+
+            <section class="view" id="inboxView">
+                <div class="inbox-shell"><aside class="inbox-list"><div class="inbox-list-heading"><div><span class="eyebrow">ORDER SUPPORT</span><h2>Conversations</h2></div><span id="conversationCount" class="count-chip">0</span></div><div id="conversationList"></div><div class="inbox-empty" id="inboxEmpty">Customer messages about their orders will appear here.</div></aside><section class="conversation"><div class="conversation-heading" id="conversationHeading"><span class="conversation-avatar"><i class="fa-regular fa-user"></i></span><div><strong>Select an order</strong><small>Order-linked support messages</small></div></div><div class="message-list" id="adminMessageList"><div class="conversation-placeholder">Choose an order to message its customer.</div></div><form class="reply-form" id="adminReplyForm"><input id="adminReplyInput" type="text" placeholder="Reply about this order..." disabled><button class="primary-button" type="submit" disabled aria-label="Send reply"><i class="fa-solid fa-paper-plane"></i></button></form></section></div>
+            </section>
+
+            <section class="view" id="productsView">
+                <div class="toolbar">
+                    <label class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="productSearch" type="search" placeholder="Search products"></label>
+                    <div class="toolbar-actions"><select id="productFilter" aria-label="Filter products"><option value="all">All products</option><option value="active">Active</option><option value="inactive">Inactive</option><option value="featured">Featured</option></select><button class="secondary-button" type="button" id="importLocalProducts" hidden><i class="fa-solid fa-file-import"></i><span>Import local catalog</span></button><button class="primary-button" type="button" id="addProductButton"><i class="fa-solid fa-plus"></i><span>Add product</span></button></div>
+                </div>
+                <div class="table-wrap">
+                    <table><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Inventory</th><th>Visibility</th><th></th></tr></thead><tbody id="productRows"></tbody></table>
+                    <div class="empty-state" id="productEmpty" hidden><i class="fa-solid fa-box-open"></i><strong>No products to show</strong><span>Add a product or change your filters.</span></div>
+                </div>
+            </section>
+
+            <section class="view" id="campaignsView">
+                <div class="section-toolbar"><div><h2>Hero campaigns</h2><p>Control the large rotating feature banners on the storefront.</p></div><button class="primary-button" type="button" id="addBannerButton"><i class="fa-solid fa-plus"></i><span>Add campaign</span></button></div>
+                <div class="campaign-grid" id="bannerGrid"></div>
+                <div class="empty-state" id="bannerEmpty" hidden><i class="fa-regular fa-images"></i><strong>No campaigns yet</strong><span>Create a campaign to replace the sample hero slides.</span></div>
+            </section>
+        </main>
+    </div>
+
+    <dialog class="editor-dialog" id="productDialog">
+        <form id="productForm" class="editor-form">
+            <div class="dialog-heading"><div><span class="eyebrow">CATALOG</span><h2 id="productDialogTitle">Add product</h2></div><button class="icon-button" type="button" data-close="productDialog" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+            <input type="hidden" id="productId">
+            <div class="form-grid">
+                <label class="field span-2">Product name<input id="productName" required maxlength="120" placeholder="Handcrafted leather sandals"></label>
+                <label class="field">Category<input id="productCategory" required maxlength="60" placeholder="Sandals"></label>
+                <label class="field">Price (GH₵)<input id="productPrice" type="number" required min="0" step="0.01" placeholder="450"></label>
+                <label class="field span-2">Primary image path or URL<input id="productImage" type="text" required placeholder="./images/product.jpg or https://..."></label>
+                <div class="field span-2 image-gallery-field">
+                    <span>Product photos <small>Upload up to 4 photos, then select a thumbnail to choose the main image.</small></span>
+                    <label class="image-dropzone" id="productImageDropzone" for="productImageFiles" tabindex="0">
+                        <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i>
+                        <span><strong>Choose photos</strong> or drag and drop here</span>
+                        <small>JPG, PNG, or WebP · optimized automatically</small>
+                    </label>
+                    <input id="productImageFiles" class="visually-hidden-file" type="file" accept="image/*" multiple>
+                    <div class="image-thumbnail-list" id="productImageThumbnails" aria-label="Product image thumbnails"></div>
+                    <p class="upload-message" id="productImageMessage" role="status" aria-live="polite"></p>
+                </div>
+                <label class="field span-2">Description<textarea id="productDescription" rows="3" placeholder="Product details"></textarea></label>
+                <label class="field span-2">Colors <small>Separate with commas</small><input id="productColors" placeholder="Black, Brown"></label>
+                <label class="field span-2">Sizes and stock <small>One per line: size, stock</small><textarea id="productSizes" rows="3" required placeholder="40, 5&#10;41, 7&#10;42, 4"></textarea></label>
+                <label class="check-field"><input id="productActive" type="checkbox" checked><span>Visible in store</span></label>
+                <label class="check-field"><input id="productFeatured" type="checkbox"><span>Mark as featured</span></label>
+            </div>
+            <p class="form-message" id="productMessage" role="status"></p>
+            <div class="dialog-actions"><button class="secondary-button" type="button" data-close="productDialog">Cancel</button><button class="primary-button" type="submit"><i class="fa-solid fa-check"></i><span>Save product</span></button></div>
+        </form>
+    </dialog>
+
+    <dialog class="editor-dialog" id="bannerDialog">
+        <form id="bannerForm" class="editor-form">
+            <div class="dialog-heading"><div><span class="eyebrow">STOREFRONT</span><h2 id="bannerDialogTitle">Add campaign</h2></div><button class="icon-button" type="button" data-close="bannerDialog" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+            <input type="hidden" id="bannerId">
+            <div class="form-grid">
+                <label class="field span-2">Image path or URL<input id="bannerImage" type="text" required placeholder="./images/campaign.jpg or https://..."></label>
+                <div class="field span-2 image-gallery-field">
+                    <span>Campaign photo <small>Choose a local image or drop it here.</small></span>
+                    <label class="image-dropzone image-dropzone-compact" id="bannerImageDropzone" for="bannerImageFile" tabindex="0">
+                        <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i>
+                        <span><strong>Choose photo</strong> or drag and drop here</span>
+                        <small>JPG, PNG, or WebP · optimized automatically</small>
+                    </label>
+                    <input id="bannerImageFile" class="visually-hidden-file" type="file" accept="image/*">
+                    <div class="banner-image-preview" id="bannerImagePreview" hidden><img id="bannerImagePreviewImage" alt="Campaign image preview"></div>
+                    <p class="upload-message" id="bannerImageMessage" role="status" aria-live="polite"></p>
+                </div>
+                <label class="field">Eyebrow<input id="bannerEyebrow" maxlength="80" placeholder="HANDCRAFTED IN GHANA"></label>
+                <label class="field">Image description<input id="bannerAlt" maxlength="160" placeholder="Leather sandals on display"></label>
+                <label class="field span-2">Headline<input id="bannerTitle" required maxlength="100" placeholder="Crafted for"></label>
+                <label class="field span-2">Highlighted headline<input id="bannerHighlight" maxlength="80" placeholder="every step."></label>
+                <label class="field span-2">Supporting copy<textarea id="bannerDescription" rows="3" maxlength="240" placeholder="A short campaign message"></textarea></label>
+                <label class="field">Slide order<input id="bannerOrder" type="number" min="0" step="1" value="0"></label>
+                <label class="check-field"><input id="bannerActive" type="checkbox" checked><span>Published on storefront</span></label>
+            </div>
+            <p class="form-message" id="bannerMessage" role="status"></p>
+            <div class="dialog-actions"><button class="secondary-button" type="button" data-close="bannerDialog">Cancel</button><button class="primary-button" type="submit"><i class="fa-solid fa-check"></i><span>Save campaign</span></button></div>
+        </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./js/admin.js"></script>
+</body>
+</html>

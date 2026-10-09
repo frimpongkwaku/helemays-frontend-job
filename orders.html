@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f6f1">
+    <title>My Orders | Helemays</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./Assests/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="./Assests/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/orders.css">
+</head>
+<body>
+    <header class="orders-topbar">
+        <a class="orders-brand" href="./index.html"><span class="brand-mark"><i class="fa-solid fa-leaf"></i></span><span>HELEMAYS<small>HANDCRAFTED FOOTWEAR</small></span></a>
+        <a class="store-link" href="./index.html"><i class="fa-solid fa-arrow-left"></i><span>Back to store</span></a>
+    </header>
+
+    <main class="orders-page">
+        <div class="orders-heading">
+            <div><span class="eyebrow">YOUR ACCOUNT</span><h1>My Orders</h1><p>Follow your order as our team prepares it.</p></div>
+            <button class="refresh-button" id="refreshOrders" type="button" aria-label="Refresh order status" title="Refresh order status"><i class="fa-solid fa-rotate"></i></button>
+        </div>
+
+        <div class="orders-layout">
+            <section class="orders-list-panel" aria-labelledby="ordersListTitle">
+                <div class="panel-heading"><h2 id="ordersListTitle">Recent orders</h2><span id="ordersCount">0</span></div>
+                <div id="ordersList" class="orders-list" aria-live="polite"></div>
+            </section>
+            <section id="orderDetails" class="order-details-panel" aria-live="polite">
+                <div class="empty-state"><i class="fa-solid fa-box-open"></i><h2>Select an order</h2><p>Your tracking details will appear here.</p></div>
+            </section>
+        </div>
+        <p id="ordersMessage" class="orders-message" role="status" aria-live="polite"></p>
+    </main>
+
+    <script src="./js/orders.js"></script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+:root {
+    color-scheme: light;
+    --ink: #252b26;
+    --muted: #737d73;
+    --line: #e1e6df;
+    --paper: #fff;
+    --canvas: #f5f6f1;
+    --green: #295d3e;
+    --green-soft: #e8f1e9;
+    --gold: #987332;
+    --danger: #a34135;
+}
+
+* { box-sizing: border-box; }
+body { min-width: 320px; min-height: 100vh; margin: 0; background: var(--canvas); color: var(--ink); font-family: "DM Sans", sans-serif; }
+h1, h2, h3, p { margin-top: 0; }
+h1, h2, h3 { font-family: Manrope, sans-serif; }
+.orders-topbar { min-height: 74px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px max(20px, calc((100vw - 1180px) / 2)); border-bottom: 1px solid var(--line); background: rgba(255,255,255,.94); }
+.orders-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--green); font-family: Manrope, sans-serif; font-size: 12px; font-weight: 800; text-decoration: none; }
+.orders-brand small { display: block; margin-top: 3px; color: #849084; font-family: "DM Sans", sans-serif; font-size: 8px; font-weight: 700; }
+.brand-mark { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 9px; background: var(--green); color: #fff; font-size: 15px; }
+.store-link { min-height: 38px; display: inline-flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; background: white; color: var(--ink); font-size: 12px; font-weight: 700; text-decoration: none; }
+.orders-page { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 42px 0 60px; }
+.orders-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+.eyebrow { display: block; margin-bottom: 7px; color: var(--gold); font-size: 10px; font-weight: 800; letter-spacing: 1.2px; }
+.orders-heading h1 { margin: 0 0 5px; font-size: 27px; }
+.orders-heading p { margin: 0; color: var(--muted); font-size: 13px; }
+.refresh-button { width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); color: var(--green); cursor: pointer; }
+.refresh-button:disabled { opacity: .55; cursor: wait; }
+.orders-layout { display: grid; grid-template-columns: minmax(240px, .72fr) minmax(0, 1.6fr); gap: 16px; align-items: start; }
+.orders-list-panel, .order-details-panel { min-width: 0; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
+.panel-heading { min-height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; border-bottom: 1px solid var(--line); }
+.panel-heading h2 { margin: 0; font-size: 13px; }
+.panel-heading > span { min-width: 24px; height: 24px; display: grid; place-items: center; padding: 0 6px; border-radius: 50%; background: var(--green-soft); color: var(--green); font-size: 10px; font-weight: 800; }
+.orders-list { display: grid; }
+.order-list-item { display: grid; gap: 6px; width: 100%; padding: 14px 15px; border: 0; border-bottom: 1px solid #edf0eb; background: transparent; color: inherit; text-align: left; cursor: pointer; }
+.order-list-item:last-child { border-bottom: 0; }
+.order-list-item:hover, .order-list-item.active { background: #f4f8f3; }
+.order-list-item strong { font-size: 12px; }
+.order-list-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 10px; }
+.status-tag { width: fit-content; padding: 4px 7px; border-radius: 99px; background: #f4eedc; color: #806323; font-size: 9px; font-weight: 800; }
+.status-tag.confirmed, .status-tag.preparing { background: #e8f1e9; color: #315e3e; }
+.status-tag.completed { background: #dcefe1; color: #27623a; }
+.status-tag.cancelled { background: #f8e9e6; color: var(--danger); }
+.order-detail { padding: 22px; }
+.order-detail-header { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 14px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.order-detail-header h2 { margin: 0 0 5px; font-size: 18px; }
+.order-detail-header p { margin: 0; color: var(--muted); font-size: 11px; }
+.current-status { padding: 6px 9px; border-radius: 99px; background: #f4eedc; color: #806323; font-size: 10px; font-weight: 800; }
+.current-status.confirmed, .current-status.preparing { background: #e8f1e9; color: #315e3e; }
+.current-status.completed { background: #dcefe1; color: #27623a; }
+.current-status.cancelled { background: #f8e9e6; color: var(--danger); }
+.progress-track { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 22px 0; }
+.progress-step { position: relative; display: grid; justify-items: center; gap: 8px; color: #929b91; font-size: 9px; font-weight: 700; text-align: center; }
+.progress-step::before { position: absolute; top: 12px; right: 50%; z-index: 0; width: 100%; height: 2px; background: #e7ebe5; content: ""; }
+.progress-step:first-child::before { display: none; }
+.progress-step.done::before { background: #76a582; }
+.progress-dot { position: relative; z-index: 1; width: 25px; height: 25px; display: grid; place-items: center; border: 2px solid #d9dfd7; border-radius: 50%; background: white; }
+.progress-step.done { color: var(--green); }
+.progress-step.done .progress-dot { border-color: var(--green); background: var(--green); color: white; }
+.order-items { display: grid; gap: 8px; margin: 20px 0; }
+.order-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding: 11px 0; border-bottom: 1px solid #edf0eb; font-size: 11px; }
+.order-item:last-child { border-bottom: 0; }
+.order-item-name { font-weight: 700; }
+.order-item-meta { margin-top: 3px; color: var(--muted); font-size: 10px; }
+.order-item-price { flex: 0 0 auto; font-weight: 700; white-space: nowrap; }
+.order-total { display: flex; justify-content: space-between; gap: 12px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 12px; font-weight: 800; }
+.order-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+.summary-cell { padding: 11px; border-radius: 6px; background: #f6f7f3; }
+.summary-cell span { display: block; margin-bottom: 5px; color: var(--muted); font-size: 9px; font-weight: 700; text-transform: uppercase; }
+.summary-cell strong { font-size: 11px; }
+.order-chat { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); }
+.order-chat-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.order-chat-heading .eyebrow { margin-bottom: 4px; }
+.order-chat-heading h3 { margin: 0; font-size: 14px; }
+.chat-private { display: inline-flex; align-items: center; gap: 5px; color: var(--muted); font-size: 9px; font-weight: 700; }
+.order-chat-messages { max-height: 250px; min-height: 76px; display: flex; flex-direction: column; gap: 9px; padding: 12px; overflow-y: auto; border: 1px solid var(--line); border-radius: 6px 6px 0 0; background: #fafbf8; }
+.chat-empty { margin: auto; color: var(--muted); font-size: 11px; text-align: center; }
+.order-chat-message { max-width: min(82%, 440px); padding: 9px 11px; border-radius: 8px; }
+.order-chat-message p { margin: 0; font-size: 11px; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; }
+.order-chat-message time { display: block; margin-top: 4px; opacity: .72; font-size: 8px; }
+.order-chat-message.sent { align-self: flex-end; background: #e6efe6; color: #264b32; }
+.order-chat-message.received { align-self: flex-start; background: #fff; box-shadow: 0 1px 4px rgba(30, 40, 30, .08); }
+.order-chat-form { display: flex; min-height: 43px; }
+.order-chat-form input { min-width: 0; flex: 1; padding: 0 11px; border: 1px solid var(--line); border-top: 0; border-radius: 0 0 0 6px; outline: 0; font: inherit; font-size: 11px; }
+.order-chat-form input:focus { border-color: #72917a; box-shadow: inset 0 0 0 1px #72917a; }
+.order-chat-form button { width: 46px; flex: 0 0 46px; border: 0; border-radius: 0 0 6px 0; background: var(--green); color: #fff; cursor: pointer; }
+.order-chat-form button:disabled { opacity: .6; cursor: wait; }
+.order-chat-error { min-height: 15px; margin: 5px 0 0; color: var(--danger); font-size: 10px; }
+.empty-state { min-height: 270px; display: grid; align-content: center; justify-items: center; gap: 8px; padding: 24px; color: var(--muted); text-align: center; }
+.empty-state > i { color: #7e9880; font-size: 25px; }
+.empty-state h2 { margin: 3px 0 0; color: var(--ink); font-size: 16px; }
+.empty-state p { max-width: 290px; margin: 0; font-size: 12px; line-height: 1.5; }
+.empty-state a { margin-top: 7px; color: var(--green); font-size: 12px; font-weight: 700; }
+.orders-message { min-height: 20px; margin: 12px 0 0; color: var(--danger); font-size: 11px; }
+
+@media (max-width: 700px) {
+    .orders-topbar { min-height: 64px; padding: 10px 14px; }
+    .orders-page { width: calc(100% - 24px); padding-top: 26px; }
+    .orders-heading { margin-bottom: 16px; }
+    .orders-heading h1 { font-size: 23px; }
+    .orders-layout { grid-template-columns: 1fr; gap: 12px; }
+    .orders-list { display: flex; overflow-x: auto; }
+    .order-list-item { min-width: 168px; border-right: 1px solid #edf0eb; border-bottom: 0; }
+    .order-detail { padding: 16px; }
+    .progress-step { font-size: 8px; }
+    .progress-track { margin: 20px 0; }
+}
+
+:root {
+    --muted: #59665c;
+    --line: #c8d2c8;
+}
+
+.orders-topbar,
+.orders-list-panel,
+.order-details-panel,
+.order-chat-messages,
+.order-chat-form input {
+    border-color: var(--line);
+}
+
+.panel-heading,
+.order-detail-header,
+.order-total,
+.order-chat,
+.order-chat-form input {
+    border-color: var(--line);
+}
+
+.order-list-item {
+    border-bottom-color: #d5ded5;
+}
+
+.progress-step::before {
+    background: #c9d3c9;
+}
+
+.progress-dot {
+    border-color: #bfcbbf;
+}
+
+.orders-heading p,
+.order-list-meta,
+.order-detail-header p,
+.order-item-meta,
+.summary-cell span,
+.chat-private,
+.chat-empty,
+.empty-state,
+.orders-message {
+    color: #59665c;
+}
+
+.order-list-item strong { font-size: 13px; }
+.order-list-meta { font-size: 11px; }
+.status-tag { font-size: 10px; }
+.order-detail-header p { font-size: 12px; }
+.order-item { font-size: 12px; }
+.order-item-meta { font-size: 11px; }
+.summary-cell span { font-size: 10px; }
+.summary-cell strong { font-size: 12px; }
+.order-chat-message p { font-size: 12px; }
+.order-chat-message time { font-size: 9px; }
+.chat-private { font-size: 10px; }
+.empty-state p { font-size: 13px; }
+
+@media (max-width: 700px) {
+    .order-list-item { border-right-color: #d5ded5; }
+}
