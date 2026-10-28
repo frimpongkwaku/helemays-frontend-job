@@ -94,7 +94,7 @@
             <input type="hidden" id="productId">
             <div class="form-grid">
                 <label class="field span-2">Product name<input id="productName" required maxlength="120" placeholder="Handcrafted leather sandals"></label>
-                <label class="field">Category<input id="productCategory" required maxlength="60" placeholder="Sandals"></label>
+                <label class="field">Category<select id="productCategory" required><option value="" disabled selected>Select a category</option><option value="Formal">Formal</option><option value="Loafers">Loafers</option><option value="Slippers">Slippers</option><option value="Boots">Boots</option><option value="Sandals">Sandals</option></select></label>
                 <label class="field">Price (GH₵)<input id="productPrice" type="number" required min="0" step="0.01" placeholder="450"></label>
                 <label class="field span-2">Primary image path or URL<input id="productImage" type="text" required placeholder="./images/product.jpg or https://..."></label>
                 <div class="field span-2 image-gallery-field">

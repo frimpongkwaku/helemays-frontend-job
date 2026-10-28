@@ -3,6 +3,10 @@
     const BANNER_KEY = "helemays.banners.v1";
     const ORDER_KEY = "helemays.orders.v1";
     const CHAT_KEY = "helemays.chat.v1";
+    const localAdminFrontend = ["", "localhost", "127.0.0.1"].includes(window.location.hostname);
+    const adminApiBaseUrl = window.HELEMAYS_API_BASE || (localAdminFrontend
+        ? "http://localhost:5000/api"
+        : "https://storebackend-production-f58c.up.railway.app/api");
 
     const seedProducts = [
         { id: "shoe001", name: "Classic Leather sandals", category: "Sandals", price: 450, description: "Handcrafted leather derby shoe made for timeless everyday elegance.", images: ["./images/sandals2.png", "./images/derby-side.png", "./images/derby-top.png", "./images/derby-back.png"], colors: ["Black", "Brown"], sizes: [{ size: 40, stock: 5 }, { size: 41, stock: 7 }, { size: 42, stock: 0 }, { size: 43, stock: 3 }, { size: 44, stock: 2 }], featured: true, active: true },
@@ -82,7 +86,7 @@
     async function apiRequest(path, options = {}) {
         const headers = { "Content-Type": "application/json", ...options.headers };
         if (apiToken) headers.Authorization = `Bearer ${apiToken}`;
-        const response = await fetch(`http://localhost:5000/api${path}`, { ...options, headers });
+        const response = await fetch(`${adminApiBaseUrl}${path}`, { ...options, headers });
         const result = await response.json().catch(() => ({}));
         if (!response.ok) {
             const error = new Error(result.message || `Request failed (${response.status})`);
@@ -120,7 +124,12 @@
             image: product.images?.[0] || product.image,
             images: product.images?.length ? product.images : [product.image],
             colors: product.colors || [],
-            sizes: (product.sizes || []).map(size => typeof size === "object" ? `${size.size}:${size.stock}` : String(size)),
+            sizes: (product.sizes || []).map(size => typeof size === "object"
+                ? { size: String(size.size), stock: Number(size.stock) }
+                : (() => {
+                    const [number, stock = 0] = String(size).split(/[,:]/).map(part => part.trim());
+                    return { size: number, stock: Number(stock) || 0 };
+                })()),
             featured: product.featured,
             available: product.active
         };
