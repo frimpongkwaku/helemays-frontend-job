@@ -1,4 +1,4 @@
-const socket = io("https://storebackend-production-f58c.up.railway.app", {
+const socket = io("https://helen-backend.onrender.com", {
   transports: ["websocket"],
   reconnection: true,
   reconnectionAttempts: 10,

@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const localFrontend = ["", "localhost", "127.0.0.1"].includes(window.location.hostname);
     const apiBase = window.HELEMAYS_API_BASE || (localFrontend
         ? "http://localhost:5000/api"
-        : "https://storebackend-production-f58c.up.railway.app/api");
+        : "https://helen-backend.onrender.com/api");
     const readList = key => {
         try {
             const value = JSON.parse(localStorage.getItem(key) || "[]");

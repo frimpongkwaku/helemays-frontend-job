@@ -1,0 +1,51 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start Live Server",
+			"type": "shell",
+			"command": "python",
+			"args": [
+				"-m",
+				"http.server",
+				"5500",
+				"--bind",
+				"127.0.0.1"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Start Storefront Server",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"-e",
+				"const http=require('http'),fs=require('fs'),path=require('path'),root=process.cwd();http.createServer((req,res)=>{let p;try{p=decodeURIComponent(new URL(req.url,'http://localhost').pathname)}catch{res.writeHead(400).end();return}if(p==='/')p='/index.html';const f=path.resolve(root,'.'+p);if(!f.startsWith(root+path.sep)){res.writeHead(403).end();return}fs.stat(f,(e,s)=>{if(e||!s.isFile()){res.writeHead(404).end('Not found');return}const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml','.woff2':'font/woff2'};res.writeHead(200,{'Content-Type':types[path.extname(f)]||'application/octet-stream'});fs.createReadStream(f).pipe(res)})}).listen(5500,'127.0.0.1')"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Start Storefront Server Node",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"-e",
+				"const http=require(\"http\"),fs=require(\"fs\"),path=require(\"path\"),root=process.cwd();http.createServer((req,res)=>{let p;try{p=decodeURIComponent(new URL(req.url,\"http://localhost\").pathname)}catch{res.writeHead(400).end();return}if(p===\"/\")p=\"/index.html\";const f=path.resolve(root,\".\"+p);if(!f.startsWith(root+path.sep)){res.writeHead(403).end();return}fs.stat(f,(e,s)=>{if(e||!s.isFile()){res.writeHead(404).end(\"Not found\");return}const types={\".html\":\"text/html; charset=utf-8\",\".css\":\"text/css; charset=utf-8\",\".js\":\"text/javascript; charset=utf-8\",\".png\":\"image/png\",\".jpg\":\"image/jpeg\",\".jpeg\":\"image/jpeg\",\".webp\":\"image/webp\",\".svg\":\"image/svg+xml\",\".woff2\":\"font/woff2\"};res.writeHead(200,{\"Content-Type\":types[path.extname(f)]||\"application/octet-stream\"});fs.createReadStream(f).pipe(res)})}).listen(5500,\"127.0.0.1\")"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Serve storefront on 5500",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"C:\\Users\\acer\\.copilot\\session-state\\51f687cb-bf8d-4f70-8750-96eee5231314\\files\\live-server.js"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}

@@ -248,6 +248,7 @@
     function translateTextNode(node) {
         if (!node.nodeValue || !node.parentElement || node.parentElement.closest("script, style, noscript, code, pre, textarea, .store-language-switcher, [data-no-translate]")) return;
         const current = node.nodeValue;
+        if (current.length > 10000) return;
         const source = textOriginals.get(node) ?? englishSource(current);
         textOriginals.set(node, source);
         const leading = current.match(/^\s*/)?.[0] || "";

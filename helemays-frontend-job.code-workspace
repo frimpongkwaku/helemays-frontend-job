@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../frontend"
+		},
+		{
+			"path": "../shoe-backend"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "helemays-frontend-job"
+	}
+}

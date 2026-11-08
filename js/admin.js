@@ -6,7 +6,7 @@
     const localAdminFrontend = ["", "localhost", "127.0.0.1"].includes(window.location.hostname);
     const adminApiBaseUrl = window.HELEMAYS_API_BASE || (localAdminFrontend
         ? "http://localhost:5000/api"
-        : "https://storebackend-production-f58c.up.railway.app/api");
+        : "https://helen-backend.onrender.com/api");
 
     const seedProducts = [
         { id: "shoe001", name: "Classic Leather sandals", category: "Sandals", price: 450, description: "Handcrafted leather derby shoe made for timeless everyday elegance.", images: ["./images/sandals2.png", "./images/derby-side.png", "./images/derby-top.png", "./images/derby-back.png"], colors: ["Black", "Brown"], sizes: [{ size: 40, stock: 5 }, { size: 41, stock: 7 }, { size: 42, stock: 0 }, { size: 43, stock: 3 }, { size: 44, stock: 2 }], featured: true, active: true },
@@ -203,11 +203,12 @@
             const customer = order.customer || {};
             const itemCount = (order.items || []).reduce((sum, item) => sum + Number(item.qty || 0), 0);
             const statusClass = String(order.status || "New").toLowerCase();
-            return `<tr><td><strong class="order-number">${escapeHtml(order.invoice || order.id)}</strong></td><td><strong class="order-customer">${escapeHtml(customer.name || "Guest")}</strong><small class="order-phone">${escapeHtml(customer.phone || "")}</small></td><td>${itemCount} item${itemCount === 1 ? "" : "s"}</td><td><span class="payment-tag">${escapeHtml(order.payment || "Not specified")}</span></td><td class="price-cell">${money(order.total)}</td><td><select class="order-status-select status-${escapeHtml(statusClass)}" data-order-status="${escapeHtml(order.id)}" aria-label="Update order status">${["New", "Confirmed", "Preparing", "Completed", "Cancelled"].map(value => `<option${order.status === value ? " selected" : ""}>${value}</option>`).join("")}</select></td><td>${new Date(order.createdAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</td></tr>`;
+            const paymentLabel = [order.payment || "Not specified", order.paymentStatus].filter(Boolean).join(" · ");
+            return `<tr><td><strong class="order-number">${escapeHtml(order.invoice || order.id)}</strong></td><td><strong class="order-customer">${escapeHtml(customer.name || "Guest")}</strong><small class="order-phone">${escapeHtml(customer.phone || "")}</small></td><td>${itemCount} item${itemCount === 1 ? "" : "s"}</td><td><span class="payment-tag">${escapeHtml(paymentLabel)}</span></td><td class="price-cell">${money(order.total)}</td><td><select class="order-status-select status-${escapeHtml(statusClass)}" data-order-status="${escapeHtml(order.id)}" aria-label="Update order status">${["New", "Confirmed", "Preparing", "Completed", "Cancelled"].map(value => `<option${order.status === value ? " selected" : ""}>${value}</option>`).join("")}</select></td><td>${new Date(order.createdAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</td></tr>`;
         }).join("");
         document.getElementById("orderRows").innerHTML = rows;
         document.getElementById("ordersEmpty").hidden = visible.length > 0;
-        document.getElementById("recentOrderRows").innerHTML = sortedOrders.slice(0, 5).map(order => `<tr><td><strong class="order-number">${escapeHtml(order.invoice || order.id)}</strong></td><td>${escapeHtml(order.customer?.name || "Guest")}</td><td>${escapeHtml(order.payment || "Not specified")}</td><td class="price-cell">${money(order.total)}</td><td><span class="status-pill status-${escapeHtml(String(order.status || "New").toLowerCase())}">${escapeHtml(order.status || "New")}</span></td></tr>`).join("");
+        document.getElementById("recentOrderRows").innerHTML = sortedOrders.slice(0, 5).map(order => `<tr><td><strong class="order-number">${escapeHtml(order.invoice || order.id)}</strong></td><td>${escapeHtml(order.customer?.name || "Guest")}</td><td>${escapeHtml([order.payment || "Not specified", order.paymentStatus].filter(Boolean).join(" · "))}</td><td class="price-cell">${money(order.total)}</td><td><span class="status-pill status-${escapeHtml(String(order.status || "New").toLowerCase())}">${escapeHtml(order.status || "New")}</span></td></tr>`).join("");
         document.getElementById("recentOrdersEmpty").hidden = orders.length > 0;
         document.getElementById("orderNavCount").textContent = orders.length;
     }
@@ -532,6 +533,73 @@
             resendButton.hidden = error.code !== "EMAIL_NOT_VERIFIED";
         } finally {
             submit.disabled = false;
+        }
+    });
+    const resetPanel = document.getElementById("adminPasswordReset");
+    const resetFields = document.getElementById("adminResetFields");
+    const resetMessage = document.getElementById("adminResetMessage");
+    const requestResetButton = document.getElementById("adminRequestResetCode");
+    document.getElementById("adminForgotPassword").addEventListener("click", () => {
+        resetPanel.hidden = false;
+        resetFields.hidden = true;
+        resetMessage.textContent = "";
+        document.getElementById("adminEmail").focus();
+    });
+    document.getElementById("adminCancelPasswordReset").addEventListener("click", () => {
+        resetPanel.hidden = true;
+        resetFields.hidden = true;
+        resetMessage.textContent = "";
+        document.getElementById("adminResetCode").value = "";
+        document.getElementById("adminNewPassword").value = "";
+    });
+    requestResetButton.addEventListener("click", async () => {
+        const emailInput = document.getElementById("adminEmail");
+        if (!emailInput.reportValidity()) return;
+        requestResetButton.disabled = true;
+        resetMessage.textContent = "Requesting a reset code...";
+        try {
+            const result = await apiRequest("/users/forgot-password", {
+                method: "POST",
+                body: JSON.stringify({ email: emailInput.value.trim().toLowerCase() })
+            });
+            resetFields.hidden = false;
+            resetMessage.textContent = result.message || "If an account matches that email, a reset code will be sent.";
+        } catch (error) {
+            resetMessage.textContent = error.message;
+        } finally {
+            requestResetButton.disabled = false;
+        }
+    });
+    document.getElementById("adminSaveNewPassword").addEventListener("click", async () => {
+        const emailInput = document.getElementById("adminEmail");
+        const code = document.getElementById("adminResetCode").value.trim();
+        const password = document.getElementById("adminNewPassword").value;
+        if (!emailInput.reportValidity()) return;
+        if (!/^[0-9]{6}$/.test(code)) {
+            resetMessage.textContent = "Enter the six-digit code from your email.";
+            return;
+        }
+        if (password.length < 10 || new TextEncoder().encode(password).length > 72) {
+            resetMessage.textContent = "Use a password of at least 10 characters and no more than 72 UTF-8 bytes.";
+            return;
+        }
+
+        const updateButton = document.getElementById("adminSaveNewPassword");
+        updateButton.disabled = true;
+        resetMessage.textContent = "Updating password...";
+        try {
+            const result = await apiRequest("/users/reset-password", {
+                method: "POST",
+                body: JSON.stringify({ email: emailInput.value.trim().toLowerCase(), code, password })
+            });
+            resetMessage.textContent = result.message || "Password updated. You can now sign in.";
+            resetFields.hidden = true;
+            document.getElementById("adminResetCode").value = "";
+            document.getElementById("adminNewPassword").value = "";
+        } catch (error) {
+            resetMessage.textContent = error.message;
+        } finally {
+            updateButton.disabled = false;
         }
     });
     document.getElementById("adminResendVerification").addEventListener("click", async event => {

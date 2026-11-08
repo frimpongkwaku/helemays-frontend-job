@@ -1,6 +1,7 @@
-const storeApiBaseUrl =
-  window.HELEMAYS_API_BASE ||
-  "https://shoe-store-backend-rra0.onrender.com/api";
+const localStoreFrontend = ["", "localhost", "127.0.0.1"].includes(window.location.hostname);
+const storeApiBaseUrl = window.HELEMAYS_API_BASE || (localStoreFrontend
+  ? "http://localhost:5000/api"
+  : "https://helen-backend.onrender.com/api");
 
 // the first apperearing user modal and greeting handler
 // connecting socket to my front end server
@@ -30,7 +31,7 @@ const localChatThreadId = previousLocalThreadId || localStorage.getItem("helemay
 localStorage.setItem("helemays.chatSession.v1", localChatThreadId);
 
 const socket = typeof io === "function"
-  ? io("https://storebackend-production-f58c.up.railway.app", {
+  ? io("https://helen-backend.onrender.com", {
       transports: ["polling", "websocket"],
       reconnection: true,
       reconnectionAttempts: 10,
@@ -124,7 +125,7 @@ async function loadMessages() {
   const chatBox = document.getElementById("userChatBox");
   if (chatBox) chatBox.innerHTML = "";
   try {
-    const response = await fetch(`https://storebackend-production-f58c.up.railway.app/api/messages/${orderId}`);
+    const response = await fetch(`https://helen-backend.onrender.com/api/messages/${orderId}`);
     const result = await response.json();
     if (!result.success) return;
     result.data.forEach(message => {
@@ -981,7 +982,7 @@ function renderSearch() {
     const image =
       product.images && product.images[0]
         ? product.images[0]
-        : "./images/shoe-placeholder.png";
+        : "./images/shoes.png";
 
     searchRow.insertAdjacentHTML(
       "beforeend",
@@ -1094,7 +1095,7 @@ function renderCheckoutSummary() {
           <div class="checkout-order-item-image">
 
             <img
-              src="${item.image || "./images/shoe-placeholder.png"}"
+              src="${item.image || "./images/shoes.png"}"
               alt="${item.name}"
             >
 
@@ -1200,6 +1201,7 @@ function selectFulfillment(type) {
       "active",
       !isDelivery
     );
+    pickupBtn.setAttribute("aria-pressed", String(!isDelivery));
 
     const icon =
       pickupBtn.querySelector(
@@ -1224,6 +1226,7 @@ function selectFulfillment(type) {
       "active",
       isDelivery
     );
+    deliveryBtn.setAttribute("aria-pressed", String(isDelivery));
 
     const icon =
       deliveryBtn.querySelector(
@@ -1294,11 +1297,13 @@ if (deliveryBtn) {
 const codBtn =
   document.getElementById("codBtn");
 
-const momoBtn =
-  document.getElementById("momoBtn");
+const paystackBtn =
+  document.getElementById("paystackBtn");
 
 const paymentMethod =
   document.getElementById("paymentMethod");
+const paystackPaymentNote =
+  document.getElementById("paystackPaymentNote");
 
 
 function selectPayment(method) {
@@ -1309,29 +1314,42 @@ function selectPayment(method) {
   paymentMethod.value = method;
 
 
-  const isMomo =
-    method === "Mobile Money";
+  const isPaystack =
+    method === "Paystack";
 
 
   if (codBtn) {
 
     codBtn.classList.toggle(
       "active",
-      !isMomo
+      !isPaystack
     );
-    codBtn.setAttribute("aria-pressed", String(!isMomo));
+    codBtn.setAttribute("aria-pressed", String(!isPaystack));
 
   }
 
 
-  if (momoBtn) {
+  if (paystackBtn) {
 
-    momoBtn.classList.toggle(
+    paystackBtn.classList.toggle(
       "active",
-      isMomo
+      isPaystack
     );
-    momoBtn.setAttribute("aria-pressed", String(isMomo));
+    paystackBtn.setAttribute("aria-pressed", String(isPaystack));
 
+  }
+
+  if (paystackPaymentNote) {
+    paystackPaymentNote.hidden = !isPaystack;
+  }
+
+  if (!isPaystack) {
+    showPaymentFeedback("");
+  }
+
+  const actionLabel = document.querySelector("#buyBtn span");
+  if (actionLabel) {
+    actionLabel.textContent = isPaystack ? "Pay securely with Paystack" : "Place order";
   }
 
 }
@@ -1341,17 +1359,17 @@ if (codBtn) {
 
   codBtn.addEventListener(
     "click",
-    () => selectPayment("Cash on Delivery")
+    () => selectPayment("Pay on delivery")
   );
 
 }
 
 
-if (momoBtn) {
+if (paystackBtn) {
 
-  momoBtn.addEventListener(
+  paystackBtn.addEventListener(
     "click",
-    () => selectPayment("Mobile Money")
+    () => selectPayment("Paystack")
   );
 
 }
@@ -1513,7 +1531,7 @@ function buildConfirmation() {
             <div class="confirmation-item-image">
 
               <img
-                src="${item.image || "./images/shoe-placeholder.png"}"
+                src="${item.image || "./images/shoes.png"}"
                 alt="${item.name}"
               >
 
@@ -1709,6 +1727,7 @@ function resetCheckoutFlow() {
 
   confirmationScreen.style.display =
     "none";
+   showPaymentFeedback("");
 
 
   checkoutScreen.style.display =
@@ -1879,7 +1898,7 @@ if (buyBtn) {
 
         const response =
           await fetch(
-            "https://storebackend-production-f58c.up.railway.app/api/orders",
+            "https://helen-backend.onrender.com/api/orders",
             {
               method: "POST",
 
@@ -2017,6 +2036,93 @@ window.addEventListener("storage", event => {
   if (event.key === "helemays.trackedOrders.v1") updatePendingOrderCount();
 });
 
+const paymentFeedback = document.getElementById("paymentFeedback");
+
+function showPaymentFeedback(message, state = "info") {
+  if (!paymentFeedback) return;
+  paymentFeedback.textContent = message;
+  paymentFeedback.dataset.state = state;
+  paymentFeedback.hidden = !message;
+}
+
+async function postPaymentRequest(path, payload) {
+  const response = await fetch(`${storeApiBaseUrl}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+    signal: AbortSignal.timeout(60000)
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const error = new Error(result.message || "The payment request could not be completed.");
+    error.code = result.code;
+    error.productId = result.productId;
+    error.currentPrice = result.currentPrice;
+    throw error;
+  }
+  return result;
+}
+
+async function openPaystackCheckout({ invoice, customer, delivery, note, items, trackingToken }) {
+  if (typeof window.PaystackPop !== "function") {
+    throw new Error("Secure payment could not load. Refresh the page or choose pay on delivery.");
+  }
+
+  const initialized = await postPaymentRequest("/payments/paystack/initialize", {
+    invoice,
+    customer,
+    delivery,
+    note,
+    items,
+    trackingToken
+  });
+
+  const reference = initialized.reference;
+  if (typeof reference !== "string" || !reference) {
+    throw new Error("Paystack did not return a payment reference. Please try again.");
+  }
+  localStorage.setItem(`helemays.paystackReference.${invoice}`, reference);
+
+  const verifyPayment = () => postPaymentRequest("/payments/paystack/verify", {
+    reference,
+    trackingToken
+  });
+
+  if (initialized.alreadyPaid) {
+    showPaymentFeedback("Payment received. Confirming your order…");
+    const verified = await verifyPayment();
+    localStorage.removeItem(`helemays.paystackReference.${invoice}`);
+    return verified;
+  }
+
+  if (typeof initialized.accessCode !== "string" || !initialized.accessCode) {
+    throw new Error("Paystack did not return a secure payment session. Please try again.");
+  }
+
+  showPaymentFeedback("Complete your payment in the secure Paystack window.");
+  const popup = new window.PaystackPop();
+  return new Promise((resolve, reject) => {
+    popup.resumeTransaction(initialized.accessCode, {
+      onSuccess: async transaction => {
+        if (transaction?.reference && transaction.reference !== reference) {
+          reject(new Error("The returned payment reference did not match this order."));
+          return;
+        }
+        try {
+          showPaymentFeedback("Payment received. Verifying securely…");
+          const verified = await verifyPayment();
+          localStorage.removeItem(`helemays.paystackReference.${invoice}`);
+          resolve(verified);
+        } catch (error) {
+          reject(error);
+        }
+      },
+      onCancel: () => reject(new Error("Payment was cancelled. You have not been charged.")),
+      onError: error => reject(new Error(error?.message || "Paystack could not complete the payment."))
+    });
+  });
+}
+
 const buyBtn = document.getElementById("buyBtn");
 
 if (buyBtn) {
@@ -2086,37 +2192,54 @@ if (buyBtn) {
     buyBtn.disabled = true;
     const buyButtonLabel = buyBtn.querySelector("span");
     const originalLabel = buyButtonLabel?.textContent;
-    if (buyButtonLabel) buyButtonLabel.textContent = "Sending order...";
+    if (buyButtonLabel) buyButtonLabel.textContent = payment === "Paystack" ? "Opening secure payment…" : "Sending order…";
+    if (payment === "Paystack") showPaymentFeedback("Preparing your secure Paystack checkout…");
     let orderResult = {};
     try {
-      const response = await fetch(`${storeApiBaseUrl}/orders`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      if (payment === "Paystack") {
+        orderResult = await openPaystackCheckout({
           invoice,
           customer: localOrder.customer,
           delivery,
-          payment,
           note,
           items: localOrder.items,
           trackingToken
-        }),
-        signal: AbortSignal.timeout(60000)
-      });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        const error = new Error(result.message || "The order could not be sent to the store.");
-        error.code = result.code;
-        error.productId = result.productId;
-        error.currentPrice = result.currentPrice;
-        throw error;
+        });
+      } else {
+        const response = await fetch(`${storeApiBaseUrl}/orders`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            invoice,
+            customer: localOrder.customer,
+            delivery,
+            payment,
+            note,
+            items: localOrder.items,
+            trackingToken
+          }),
+          signal: AbortSignal.timeout(60000)
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          const error = new Error(result.message || "The order could not be sent to the store.");
+          error.code = result.code;
+          error.productId = result.productId;
+          error.currentPrice = result.currentPrice;
+          throw error;
+        }
+        orderResult = result;
       }
-      if (!result.order) throw new Error("The server did not return the saved order. Retry using the same invoice.");
-      orderResult = result;
-      Object.assign(localOrder, result.order);
+      if (!orderResult.order) throw new Error("The server did not return the saved order. Retry using the same invoice.");
+      Object.assign(localOrder, orderResult.order);
     } catch (error) {
+      if (payment === "Paystack") {
+        showPaymentFeedback(error.message || "Payment could not be completed. Please retry.", "error");
+      }
       if (error.name === "TimeoutError" || error.name === "AbortError") {
-        alert(`The store is taking longer than expected. Your order may still be processing. Wait a moment, then retry; invoice ${invoice} will be reused.`);
+        const message = `The store is taking longer than expected. Wait a moment, then retry; invoice ${invoice} will be reused.`;
+        if (payment === "Paystack") showPaymentFeedback(message, "error");
+        else alert(message);
       } else if (error.code === "PRICE_CHANGED" && Number.isFinite(Number(error.currentPrice))) {
         const changedItems = cart.filter(item => String(item.productId || item.id) === String(error.productId));
         if (changedItems.length) {
@@ -2125,9 +2248,11 @@ if (buyBtn) {
           });
           renderCart();
         }
-        alert(`${error.message} The cart now shows the current catalog price. Review the total and place the order again to confirm.`);
+        const message = `${error.message} The cart now shows the current catalog price. Review the total and place the order again to confirm.`;
+        if (payment === "Paystack") showPaymentFeedback(message, "error");
+        else alert(message);
       } else {
-        alert(`${error.message} Check your connection and try again.`);
+        if (payment !== "Paystack") alert(`${error.message} Check your connection and try again.`);
       }
       buyBtn.disabled = false;
       if (buyButtonLabel) buyButtonLabel.textContent = originalLabel;
@@ -2486,7 +2611,7 @@ function render(category = "All") {
         const mainImage =
             item.images && item.images[0]
               ? item.images[0]
-              : "./images/shoe-placeholder.png";
+              : "./images/shoes.png";
 
         const badge =
             item.featured
@@ -2591,6 +2716,10 @@ if (!product) {
   return;
 }
 
+const availableColors = Array.isArray(product.colors)
+  ? product.colors.map(color => String(color).trim()).filter(Boolean)
+  : [];
+
 // ========================================
 // PRODUCT DETAILS STATE
 // ========================================
@@ -2598,7 +2727,7 @@ if (!product) {
 window.productDetailsState = {
   product: product,
   selectedSize: null,
-  selectedColor: product.colors && product.colors.length ? null : "Default",
+  selectedColor: availableColors.length ? null : "No color option",
   quantity: 1
 };
 
@@ -2626,7 +2755,7 @@ console.log("Opening product:", product);
   const productImages =
     product.images && product.images.length
       ? product.images
-      : ["./images/shoe-placeholder.png"];
+      : ["./images/shoes.png"];
 
   // 5. Set the first image as the main image
   mainImage.src = productImages[0];
@@ -2693,14 +2822,15 @@ colorOptions.innerHTML = "";
 selectedColorText.textContent = "Select a color";
 
 // Check if this product has colors
-if (product.colors && product.colors.length > 0) {
+if (availableColors.length > 0) {
 
-  product.colors.forEach(color => {
+  availableColors.forEach(color => {
 
     const colorButton = document.createElement("button");
 
     colorButton.type = "button";
     colorButton.className = "product-color-option";
+    colorButton.setAttribute("aria-pressed", "false");
 
     colorButton.textContent = color;
 
@@ -2712,10 +2842,12 @@ if (product.colors && product.colors.length > 0) {
         .querySelectorAll(".product-color-option")
         .forEach(button => {
           button.classList.remove("active");
+          button.setAttribute("aria-pressed", "false");
         });
 
       // Activate selected color
       colorButton.classList.add("active");
+      colorButton.setAttribute("aria-pressed", "true");
 
       // Update selected color text
       selectedColorText.textContent = color;
@@ -2731,14 +2863,14 @@ if (product.colors && product.colors.length > 0) {
 } else {
 
   // Product has no color options
-  selectedColorText.textContent = "Default";
-  window.productDetailsState.selectedColor = "Default";
+  selectedColorText.textContent = "No color options";
+  window.productDetailsState.selectedColor = "No color option";
 
   const defaultColor = document.createElement("span");
 
   defaultColor.className = "product-color-unavailable";
 
-  defaultColor.textContent = "Standard";
+  defaultColor.textContent = "No color options available";
 
   colorOptions.appendChild(defaultColor);
 }
@@ -2834,7 +2966,7 @@ let productQuantity = 1;
 window.productDetailsState = {
   product: product,
   selectedSize: null,
-  selectedColor: product.colors && product.colors.length ? null : "Default",
+  selectedColor: availableColors.length ? null : "No color option",
   quantity: 1
 };
 
@@ -2958,18 +3090,21 @@ productAddToCart.addEventListener("click", () => {
   }
 
   const { product, selectedSize, selectedColor, quantity } = state;
+  const availableColors = Array.isArray(product.colors)
+    ? product.colors.map(color => String(color).trim()).filter(Boolean)
+    : [];
   const sizeAlert = document.getElementById("productSizeAlert");
   const colorAlert = document.getElementById("productColorAlert");
 
   sizeAlert.hidden = Boolean(selectedSize) || !product.sizes?.length;
-  colorAlert.hidden = Boolean(selectedColor) || !product.colors?.length;
+  colorAlert.hidden = !availableColors.length || availableColors.includes(selectedColor);
 
   // Size is required
   if (!selectedSize && product.sizes?.length) {
     return;
   }
 
-  if (!selectedColor && product.colors?.length) {
+  if (availableColors.length && !availableColors.includes(selectedColor)) {
     return;
   }
 
@@ -2994,10 +3129,10 @@ productAddToCart.addEventListener("click", () => {
     name: product.name,
     image: product.images && product.images[0]
       ? product.images[0]
-      : "./images/shoe-placeholder.png",
+      : "./images/shoes.png",
     price: product.price,
     size: sizeItem.size,
-    color: selectedColor || "Default",
+    color: availableColors.length ? selectedColor : "No color option",
     qty: quantity
   };
 
@@ -3286,7 +3421,7 @@ function applyLocalHeroBanners(hero) {
     const imageWrap = document.createElement("div");
     imageWrap.className = "shoe-hero-image";
     const image = document.createElement("img");
-    image.src = banner.image || "./images/shoe-placeholder.png";
+    image.src = banner.image || "./images/shoes.png";
     image.alt = banner.imageAlt || banner.title || "Featured collection";
     imageWrap.append(image);
     slide.append(content, imageWrap);
@@ -3451,7 +3586,7 @@ function renderFeaturedProducts() {
     badge.className = "featured-badge";
     badge.textContent = "FEATURED";
     const image = document.createElement("img");
-    image.src = product.images?.[0] || "./images/shoe-placeholder.png";
+    image.src = product.images?.[0] || "./images/shoes.png";
     image.alt = product.name;
     imageWrap.append(badge, image);
 
@@ -3556,7 +3691,7 @@ document.querySelector(".featured-next")?.addEventListener("click", () => {
 window.refreshStoreProducts = storedProducts => {
   products.splice(0, products.length, ...storedProducts);
   addProductCategoryFilters();
-  window.render("All");
+  window.render?.("All");
   renderFeaturedProducts();
 };
 
@@ -3574,7 +3709,7 @@ async function loadStoreProducts() {
       return {
         ...product,
         id: String(product._id || product.id),
-        image: product.image || images[0] || "./images/shoe-placeholder.png",
+        image: product.image || images[0] || "./images/shoes.png",
         images,
         active: product.available !== false,
         colors: Array.isArray(product.colors) ? product.colors : [],
@@ -3588,13 +3723,13 @@ async function loadStoreProducts() {
 
     storeCatalogReady = true;
     addProductCategoryFilters();
-    render("All");
+    window.render?.("All");
     renderFeaturedProducts();
   } catch (error) {
     storeCatalogReady = false;
     products.splice(0, products.length);
     console.error("Store products could not be loaded from the backend.", error);
-    render("All");
+    window.render?.("All");
     renderFeaturedProducts();
   }
 }

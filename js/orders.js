@@ -2,7 +2,7 @@
     const localFrontend = ["", "localhost", "127.0.0.1"].includes(window.location.hostname);
     const API_BASE = window.HELEMAYS_API_BASE || (localFrontend
         ? "http://localhost:5000/api"
-        : "https://storebackend-production-f58c.up.railway.app/api");
+        : "https://helen-backend.onrender.com/api");
     const orderList = document.getElementById("ordersList");
     const orderDetails = document.getElementById("orderDetails");
     const message = document.getElementById("ordersMessage");
@@ -102,6 +102,7 @@
                 <div><div class="order-item-name">${escapeHtml(item.name)}</div><div class="order-item-meta">Size ${escapeHtml(item.size || "N/A")} · ${escapeHtml(item.color || "N/A")} · Qty ${Number(item.qty || 1)}</div></div>
                 <span class="order-item-price">GH₵ ${(Number(item.price || 0) * Number(item.qty || 1)).toFixed(2)}</span>
             </div>`).join("");
+        const paymentLabel = [data.payment || "Not specified", data.paymentStatus].filter(Boolean).join(" · ");
 
         orderDetails.innerHTML = `
             <article class="order-detail">
@@ -112,7 +113,7 @@
                 ${isCancelled ? '<div class="alert alert-danger mt-3 mb-0 py-2 small">This order has been cancelled. Contact the store if you need help.</div>' : `<div class="progress-track" aria-label="Order progress">${steps}</div>`}
                 <div class="order-items">${items || '<p class="text-muted small mb-0">No item details available.</p>'}</div>
                 <div class="order-total"><span>Order total</span><strong>GH₵ ${Number(data.total || 0).toFixed(2)}</strong></div>
-                <div class="order-summary"><div class="summary-cell"><span>Delivery</span><strong>${escapeHtml(data.delivery || "Not specified")}</strong></div><div class="summary-cell"><span>Payment</span><strong>${escapeHtml(data.payment || "Not specified")}</strong></div></div>
+                <div class="order-summary"><div class="summary-cell"><span>Delivery</span><strong>${escapeHtml(data.delivery || "Not specified")}</strong></div><div class="summary-cell"><span>Payment</span><strong>${escapeHtml(paymentLabel)}</strong></div></div>
                 <section class="order-chat" aria-labelledby="orderChatTitle">
                     <div class="order-chat-heading"><div><span class="eyebrow">ORDER SUPPORT</span><h3 id="orderChatTitle">Message the store</h3></div><span class="chat-private"><i class="fa-solid fa-lock" aria-hidden="true"></i> Private</span></div>
                     <div class="order-chat-messages" id="orderChatMessages" aria-live="polite">${renderMessageRows(order)}</div>

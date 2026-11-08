@@ -20,7 +20,7 @@ const getOrderId = () =>
 // 🚀 SOCKET CONNECTION
 // ==========================
 const socket = typeof io === "function"
-  ? io("https://storebackend-production-f58c.up.railway.app", {
+  ? io("https://helen-backend.onrender.com", {
       transports: ["polling", "websocket"],
       reconnection: true,
       reconnectionAttempts: 10,
@@ -108,7 +108,7 @@ async function loadMessages() {
 
   try {
     const res = await fetch(
-      `https://storebackend-production-f58c.up.railway.app/api/messages/${orderId}`
+      `https://helen-backend.onrender.com/api/messages/${orderId}`
     );
 
     const result = await res.json();
@@ -1762,7 +1762,7 @@ if (buyBtn) {
 
         const response =
           await fetch(
-            "https://storebackend-production-f58c.up.railway.app/api/orders",
+            "https://helen-backend.onrender.com/api/orders",
             {
               method: "POST",
 

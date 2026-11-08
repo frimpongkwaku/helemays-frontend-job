@@ -1,7 +1,7 @@
 const localFrontend = ["", "localhost", "127.0.0.1"].includes(window.location.hostname);
 const API_BASE = window.HELEMAYS_API_BASE || (localFrontend
     ? "http://localhost:5000/api"
-    : "https://storebackend-production-f58c.up.railway.app/api");
+    : "https://helen-backend.onrender.com/api");
 const title = document.getElementById("verificationTitle");
 const message = document.getElementById("verificationMessage");
 const signInLink = document.getElementById("verificationLogin");

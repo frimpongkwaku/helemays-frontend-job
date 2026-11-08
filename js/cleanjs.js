@@ -29,7 +29,7 @@ const getOrderId = () => {
 // ============================================================
 
 const socket = io(
-  "https://storebackend-production-f58c.up.railway.app",
+  "https://helen-backend.onrender.com",
   {
     transports: ["websocket"],
     reconnection: true,
@@ -166,7 +166,7 @@ async function loadMessages() {
 
   try {
     const response = await fetch(
-      `https://storebackend-production-f58c.up.railway.app/api/messages/${orderId}`
+      `https://helen-backend.onrender.com/api/messages/${orderId}`
     );
 
     const result = await response.json();

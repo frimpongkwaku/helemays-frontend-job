@@ -25,6 +25,20 @@
             <p class="form-message" id="adminLoginMessage" role="status"></p>
             <button class="verification-resend" id="adminResendVerification" type="button" hidden>Resend verification email</button>
             <button class="primary-button wide" type="submit"><span>Sign in</span><i class="fa-solid fa-arrow-right"></i></button>
+            <button class="login-text-action" id="adminForgotPassword" type="button">Forgot password?</button>
+            <section class="admin-reset" id="adminPasswordReset" aria-label="Reset admin password" hidden>
+                <p class="muted">Request a six-digit code at your admin email address.</p>
+                <button class="secondary-button wide" id="adminRequestResetCode" type="button"><span>Send reset code</span><i class="fa-solid fa-envelope"></i></button>
+                <p class="form-message" id="adminResetMessage" role="status" aria-live="polite"></p>
+                <div id="adminResetFields" hidden>
+                    <label for="adminResetCode">6-digit email code</label>
+                    <input id="adminResetCode" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6">
+                    <label for="adminNewPassword">New password</label>
+                    <input id="adminNewPassword" type="password" autocomplete="new-password" minlength="10" maxlength="72">
+                    <button class="primary-button wide" id="adminSaveNewPassword" type="button"><span>Update password</span><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+                <button class="login-text-action" id="adminCancelPasswordReset" type="button">Back to sign in</button>
+            </section>
         </form>
     </main>
     <div class="admin-app" id="adminApp" hidden>
