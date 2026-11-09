@@ -1,7 +1,7 @@
 const localStoreFrontend = ["", "localhost", "127.0.0.1"].includes(window.location.hostname);
 const storeApiBaseUrl = window.HELEMAYS_API_BASE || (localStoreFrontend
   ? "http://localhost:5000/api"
-  : "https://helen-backend.onrender.com/api");
+  : "https://shoe-store-backend-rra0.onrender.com/api");
 
 // the first apperearing user modal and greeting handler
 // connecting socket to my front end server
@@ -31,7 +31,7 @@ const localChatThreadId = previousLocalThreadId || localStorage.getItem("helemay
 localStorage.setItem("helemays.chatSession.v1", localChatThreadId);
 
 const socket = typeof io === "function"
-  ? io("https://helen-backend.onrender.com", {
+  ? io("https://shoe-store-backend-rra0.onrender.com/api", {
       transports: ["polling", "websocket"],
       reconnection: true,
       reconnectionAttempts: 10,
