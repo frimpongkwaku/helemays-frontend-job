@@ -6,7 +6,7 @@
     const localAdminFrontend = ["", "localhost", "127.0.0.1"].includes(window.location.hostname);
     const adminApiBaseUrl = window.HELEMAYS_API_BASE || (localAdminFrontend
         ? "http://localhost:5000/api"
-        : "https://shoe-store-backend-rra0.onrender.com");
+        : "https://shoe-store-backend-rra0.onrender.com/api");
 
     const seedProducts = [
         { id: "shoe001", name: "Classic Leather sandals", category: "Sandals", price: 450, description: "Handcrafted leather derby shoe made for timeless everyday elegance.", images: ["./images/sandals2.png", "./images/derby-side.png", "./images/derby-top.png", "./images/derby-back.png"], colors: ["Black", "Brown"], sizes: [{ size: 40, stock: 5 }, { size: 41, stock: 7 }, { size: 42, stock: 0 }, { size: 43, stock: 3 }, { size: 44, stock: 2 }], featured: true, active: true },
