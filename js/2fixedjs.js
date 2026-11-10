@@ -20,7 +20,7 @@ const getOrderId = () =>
 // 🚀 SOCKET CONNECTION
 // ==========================
 const socket = typeof io === "function"
-  ? io("https://helen-backend.onrender.com", {
+  ? io("https://shoe-store-backend-rra0.onrender.com", {
       transports: ["polling", "websocket"],
       reconnection: true,
       reconnectionAttempts: 10,

@@ -29,7 +29,7 @@ const getOrderId = () => {
 // ============================================================
 
 const socket = io(
-  "https://helen-backend.onrender.com",
+  "https://shoe-store-backend-rra0.onrender.com",
   {
     transports: ["websocket"],
     reconnection: true,
