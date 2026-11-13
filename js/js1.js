@@ -2607,46 +2607,70 @@ function render(category = "All") {
         container.insertAdjacentHTML(
             "beforeend",
             `
-<div class="search-shoe-result"
-     onclick="openProductDetails('${product.id}')">
+            <article
+    class="shoe-product-card"
+    data-product-id="${item.id}"
+>
 
-    <div class="search-shoe-image">
-        <img
-            src="${image}"
-            alt="${product.name}"
-            loading="lazy"
-        >
-    </div>
+    <div class="shoe-product-image">
 
-    <div class="search-shoe-info">
-
-        <span class="search-shoe-category">
-            ${product.category || "Leather Footwear"}
-        </span>
-
-        <h4 class="search-shoe-name">
-            ${product.name}
-        </h4>
-
-        <p class="search-shoe-description">
-            ${product.description || "Quality handcrafted footwear designed for everyday style and comfort."}
-        </p>
-
-        <strong class="search-shoe-price">
-            GH₵ ${product.price}
-        </strong>
+        ${badge ? `
+            <span class="shoe-product-badge">
+                ${badge}
+            </span>
+        ` : ""}
 
         <button
+            class="shoe-wishlist"
             type="button"
-            class="search-shoe-button"
-            onclick="event.stopPropagation(); openProductDetails('${product.id}')"
+            aria-label="Add ${item.name} to wishlist"
+        >
+            <i class="fa-regular fa-heart"></i>
+        </button>
+
+        <img
+            src="${mainImage}"
+            alt="${item.name}"
+            loading="lazy"
+        />
+
+    </div>
+
+    <div class="shoe-product-info">
+
+        <span class="shoe-product-category">
+            ${item.category || "Leather Footwear"}
+        </span>
+
+        <h3 class="shoe-product-name">
+            ${item.name}
+        </h3>
+
+        <p class="shoe-product-description">
+            ${item.description || "Quality handcrafted footwear designed for style and comfort."}
+        </p>
+
+        <div class="shoe-product-price">
+
+            <strong>
+                GH₵ ${item.price}
+            </strong>
+
+        </div>
+
+        <button
+            class="shoe-product-button"
+            type="button"
+            onclick="openProductDetails('${item.id}')"
+            aria-label="View details for ${item.name}"
         >
             View Details
             <i class="fa-solid fa-arrow-right"></i>
         </button>
 
     </div>
-</div>
+
+</article>
             `
         );
 
