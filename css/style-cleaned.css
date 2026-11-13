@@ -354,7 +354,7 @@ html, body {
         border: 1px solid rgba(244, 211, 142, 0.6);
         border-radius: 50%;
         background: #f4d38e;
-        color: #183d2b;
+        color: #111111;
         font-size: 19px;
     }
 
@@ -364,7 +364,7 @@ html, body {
     }
 
     #nav-style .navbar-brand-copy small {
-        color: #dfc891;
+        color: #0a0a0a;
         font-size: 9px;
         font-weight: 700;
         letter-spacing: 1.8px;
@@ -380,8 +380,8 @@ html, body {
         align-items: center;
         justify-content: space-between;
         gap: 40px;
-        background: linear-gradient(105deg, #153b2a 0%, #1d4a34 68%, #28563d 100%);
-        box-shadow: 0 8px 24px rgba(19, 44, 31, 0.16) !important;
+        background: linear-gradient(105deg, #0f0f0f 0%, #1a1919 68%, #1f1c1c 100%);
+        box-shadow: 0 8px 24px rgba(19, 44, 31, 0.16) ;
     }
 
     #nav-style .navbar-brand {
@@ -390,7 +390,7 @@ html, body {
         gap: 12px;
         margin: 0;
         padding: 2px 0;
-        color: #fffdf5 !important;
+        color: #fdfcfc !important;
         font-size: 18px;
         line-height: 1.1;
         white-space: nowrap;
@@ -414,7 +414,7 @@ html, body {
     }
 
     .navbar-brand-copy small {
-        color: #dfc891;
+        color: #030303;
         font-size: 9px;
         font-weight: 700;
         letter-spacing: 1.8px;
@@ -442,7 +442,7 @@ html, body {
         border: 1px solid transparent;
         border-radius: 6px;
         background: transparent;
-        color: rgba(255, 253, 245, 0.88);
+        color: rgba(247, 244, 244, 0.88);
         font-size: 13px;
         font-weight: 600;
         text-decoration: none;
@@ -451,7 +451,7 @@ html, body {
     }
 
     #navul .nav-link i {
-        color: #e5c783;
+        color: #fffffe;
         font-size: 14px;
     }
 
@@ -780,8 +780,8 @@ display:none;
 }
 
 .footer {
-  background-color: #f8f9fa;
-  color: black;
+  background-color: #121213;
+  color: rgb(255, 255, 255);
   padding: 20px 0;
   text-align: center;
 
@@ -792,7 +792,7 @@ position: fixed;
 bottom: 20px;
 right: 20px;
 left:0;
-background-color: #a10795;
+background-color: #070707;
 color: white;
 padding: 10px 15px;
 width: 120px;
@@ -940,7 +940,7 @@ body .shoe-search-section.is-search-sticky .shoe-search-wrapper.active .shoe-sea
 position: fixed;
 bottom: 20px;
 right: 20px;
-background-color: #25D366;
+background-color: #04360f;
 color: white;
 padding: 10px 16px;
 border-radius: 30px;
@@ -1019,32 +1019,32 @@ font-size: 1.2rem;
         width: 100%;
         padding: 44px 0 18px;
         border-top: 1px solid #d8ded8;
-        background: linear-gradient(105deg, #fffefe 0%, #ffffff 68%, #ffffff 100%);
-        color: #0c0c0c;
+        background: linear-gradient(105deg, #0c0c0c 0%, #080808 68%, #0c0c0c 100%);
+        color: #fffcfc;
         font-size: 1rem;
 }
 .footer h5,
 .footer h6 {
-        color:rgb(7, 7, 7);
+        color:rgb(255, 253, 253);
 }
 .footer p,
 .footer .small {
-        color: #080808;
+        color: #f8f6f6;
 }
 .footer-divider {
         border: 0;
-        border-top: 1px solid #0c0c0c;
+        border-top: 1px solid #ffffff;
         opacity: 1;
 }
 .footer-link{
   display: block;
-        color: #0c0c0c;
+        color: #fffcfc;
   text-decoration: none;
     margin-bottom: 8px;
   transition: color 0.3s;
 }
 .footer-link:hover{
-    color:#1d6b41;
+    color:#e7d10b;
 }
 .social-icon{
   font-size: 1.2rem;
@@ -1052,7 +1052,7 @@ font-size: 1.2rem;
   transition: color 0.3s, transform 0.3s;
 }
 .social-icon:hover{
-    color:#1d6b41;
+    color:#e4ce07;
   transform: translateY(-2PX);
 }
 #nav{
@@ -14113,7 +14113,7 @@ position: relative;
     }
 }
   
-// CHECKOUT MODAL 
+/*CHECKOUT MODAL */
 
 /* ==========================================
    MODERN LUXURY CHECKOUT
@@ -15150,3 +15150,1264 @@ position: relative;
         animation: none !important;
     }
 }
+
+/* RESPONSIVE PRODUCT CARD */
+
+/* TABLETS AND MOBILE */
+@media (max-width: 600px) {
+
+  .search-shoe-result {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 12px;
+    padding: 10px;
+    width: 100%;
+  }
+
+  .search-shoe-image {
+    flex: 0 0 34%;
+    width: 34%;
+    height: auto;
+    min-height: 125px;
+    align-self: stretch;
+  }
+
+  .search-shoe-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .search-shoe-name {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .search-shoe-description {
+    font-size: 11px;
+    line-height: 1.45;
+    margin-bottom: 9px;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .search-shoe-bottom {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .search-shoe-price {
+    font-size: 16px;
+  }
+
+  .search-shoe-button {
+    padding: 9px 11px;
+    font-size: 10px;
+  }
+
+}
+
+/* SMALL PHONES */
+@media (max-width: 380px) {
+
+  .search-shoe-result {
+    gap: 9px;
+    padding: 8px;
+  }
+
+  .search-shoe-image {
+    flex-basis: 30%;
+    width: 30%;
+    min-height: 115px;
+  }
+
+  .search-shoe-category {
+    font-size: 8px;
+    letter-spacing: .6px;
+  }
+
+  .search-shoe-name {
+    font-size: 13px;
+  }
+
+  .search-shoe-description {
+    font-size: 10px;
+  }
+
+  .search-shoe-price {
+    font-size: 15px;
+  }
+
+  .search-shoe-button {
+    padding: 8px 9px;
+    font-size: 9px;
+  }
+
+}
+
+/* =========================================
+   PREMIUM STOREFRONT PRODUCT CARDS
+========================================= */
+
+.shoe-products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    align-items: stretch;
+}
+
+/* Main card */
+
+.shoe-product-card {
+    min-width: 0;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #eeeeeb;
+    border-radius: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.shoe-product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.09);
+}
+
+/* Image area */
+
+.shoe-product-image {
+    position: relative;
+    height: 260px;
+    overflow: hidden;
+    background: #f5f4f1;
+}
+
+.shoe-product-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    padding: 20px;
+    transition: transform 0.5s ease;
+}
+
+.shoe-product-card:hover .shoe-product-image img {
+    transform: scale(1.06);
+}
+
+/* Badge */
+
+.shoe-product-badge {
+    position: absolute;
+    z-index: 2;
+    top: 16px;
+    left: 16px;
+    padding: 7px 11px;
+    border-radius: 4px;
+    background: #ffffff;
+    color: #242424;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* Wishlist */
+
+.shoe-wishlist {
+    position: absolute;
+    z-index: 3;
+    top: 14px;
+    right: 14px;
+    width: 37px;
+    height: 37px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-radius: 50%;
+    background: #ffffff;
+    color: #242424;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.shoe-wishlist:hover {
+    background: #171717;
+    color: #ffffff;
+}
+
+/* Quick view */
+
+.shoe-image-view {
+    position: absolute;
+    left: 50%;
+    bottom: 14px;
+    transform: translate(-50%, 10px);
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 5px;
+    background: #ffffff;
+    color: #171717;
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.shoe-product-card:hover .shoe-image-view {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* Product information */
+
+.shoe-product-info {
+    padding: 19px 19px 20px;
+}
+
+.shoe-product-category {
+    display: block;
+    margin-bottom: 8px;
+    color: #88857f;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+}
+
+.shoe-product-name {
+    margin: 0 0 9px;
+    color: #191919;
+    font-size: 17px;
+    line-height: 1.4;
+    font-weight: 700;
+}
+
+.shoe-product-description {
+    display: -webkit-box;
+    min-height: 39px;
+    margin: 0 0 18px;
+    overflow: hidden;
+    color: #777777;
+    font-size: 12px;
+    line-height: 1.65;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+/* Price and button row */
+
+.shoe-product-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 15px;
+    border-top: 1px solid #eeeeeb;
+}
+
+.shoe-product-price {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.shoe-product-price span {
+    color: #999999;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.shoe-product-price strong {
+    color: #171717;
+    font-size: 19px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* Add to bag button */
+
+.shoe-add-bag-btn {
+    min-height: 43px;
+    padding: 0 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border: 1px solid #171717;
+    border-radius: 5px;
+    background: #171717;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.shoe-add-bag-btn:hover {
+    background: #ffffff;
+    color: #171717;
+}
+
+.shoe-add-bag-btn i {
+    font-size: 13px;
+}
+
+/* Tablet */
+
+@media (max-width: 992px) {
+    .shoe-products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .shoe-product-image {
+        height: 230px;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 576px) {
+    .shoe-products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .shoe-product-card {
+        border-radius: 11px;
+    }
+
+    .shoe-product-image {
+        height: 155px;
+    }
+
+    .shoe-product-image img {
+        padding: 10px;
+    }
+
+    .shoe-product-info {
+        padding: 12px 10px 13px;
+    }
+
+    .shoe-product-category {
+        margin-bottom: 5px;
+        font-size: 8px;
+        letter-spacing: 0.8px;
+    }
+
+    .shoe-product-name {
+        margin-bottom: 6px;
+        font-size: 13px;
+        line-height: 1.35;
+    }
+
+    .shoe-product-description {
+        min-height: 32px;
+        margin-bottom: 12px;
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .shoe-product-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+        padding-top: 11px;
+    }
+
+    .shoe-product-price {
+        gap: 2px;
+    }
+
+    .shoe-product-price strong {
+        font-size: 16px;
+    }
+
+    .shoe-add-bag-btn {
+        width: 100%;
+        min-height: 39px;
+        padding: 0 7px;
+        gap: 6px;
+        font-size: 10px;
+    }
+
+    /* Quick view is not needed on touch screens */
+    .shoe-image-view {
+        display: none;
+    }
+
+    .shoe-product-badge {
+        top: 9px;
+        left: 9px;
+        padding: 5px 7px;
+        font-size: 7px;
+    }
+
+    .shoe-wishlist {
+        top: 8px;
+        right: 8px;
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+    }
+}
+
+/* Very narrow phones */
+
+@media (max-width: 360px) {
+    .shoe-products-grid {
+        gap: 9px;
+    }
+
+    .shoe-product-image {
+        height: 135px;
+    }
+
+    .shoe-product-info {
+        padding: 10px 8px;
+    }
+
+    .shoe-product-name {
+        font-size: 12px;
+    }
+
+    .shoe-product-price strong {
+        font-size: 14px;
+    }
+}
+
+
+/* =========================================
+   PREMIUM STOREFRONT PRODUCT CARDS
+========================================= */
+
+.shoe-products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    align-items: stretch;
+}
+
+/* Main card */
+
+.shoe-product-card {
+    min-width: 0;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #eeeeeb;
+    border-radius: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.shoe-product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.09);
+}
+
+/* Image area */
+
+.shoe-product-image {
+    position: relative;
+    height: 260px;
+    overflow: hidden;
+    background: #f5f4f1;
+}
+
+.shoe-product-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    padding: 20px;
+    transition: transform 0.5s ease;
+}
+
+.shoe-product-card:hover .shoe-product-image img {
+    transform: scale(1.06);
+}
+
+/* Badge */
+
+.shoe-product-badge {
+    position: absolute;
+    z-index: 2;
+    top: 16px;
+    left: 16px;
+    padding: 7px 11px;
+    border-radius: 4px;
+    background: #ffffff;
+    color: #242424;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* Wishlist */
+
+.shoe-wishlist {
+    position: absolute;
+    z-index: 3;
+    top: 14px;
+    right: 14px;
+    width: 37px;
+    height: 37px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-radius: 50%;
+    background: #ffffff;
+    color: #242424;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.shoe-wishlist:hover {
+    background: #171717;
+    color: #ffffff;
+}
+
+/* Quick view */
+
+.shoe-image-view {
+    position: absolute;
+    left: 50%;
+    bottom: 14px;
+    transform: translate(-50%, 10px);
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 5px;
+    background: #ffffff;
+    color: #171717;
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.shoe-product-card:hover .shoe-image-view {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* Product information */
+
+.shoe-product-info {
+    padding: 19px 19px 20px;
+}
+
+.shoe-product-category {
+    display: block;
+    margin-bottom: 8px;
+    color: #88857f;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+}
+
+.shoe-product-name {
+    margin: 0 0 9px;
+    color: #191919;
+    font-size: 17px;
+    line-height: 1.4;
+    font-weight: 700;
+}
+
+.shoe-product-description {
+    display: -webkit-box;
+    min-height: 39px;
+    margin: 0 0 18px;
+    overflow: hidden;
+    color: #777777;
+    font-size: 12px;
+    line-height: 1.65;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+/* Price and button row */
+
+.shoe-product-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 15px;
+    border-top: 1px solid #eeeeeb;
+}
+
+.shoe-product-price {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.shoe-product-price span {
+    color: #999999;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.shoe-product-price strong {
+    color: #171717;
+    font-size: 19px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* Add to bag button */
+
+.shoe-add-bag-btn {
+    min-height: 43px;
+    padding: 0 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border: 1px solid #171717;
+    border-radius: 5px;
+    background: #171717;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.shoe-add-bag-btn:hover {
+    background: #ffffff;
+    color: #171717;
+}
+
+.shoe-add-bag-btn i {
+    font-size: 13px;
+}
+
+/* Tablet */
+
+@media (max-width: 992px) {
+    .shoe-products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .shoe-product-image {
+        height: 230px;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 576px) {
+    .shoe-products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .shoe-product-card {
+        border-radius: 11px;
+    }
+
+    .shoe-product-image {
+        height: 155px;
+    }
+
+    .shoe-product-image img {
+        padding: 10px;
+    }
+
+    .shoe-product-info {
+        padding: 12px 10px 13px;
+    }
+
+    .shoe-product-category {
+        margin-bottom: 5px;
+        font-size: 8px;
+        letter-spacing: 0.8px;
+    }
+
+    .shoe-product-name {
+        margin-bottom: 6px;
+        font-size: 13px;
+        line-height: 1.35;
+    }
+
+    .shoe-product-description {
+        min-height: 32px;
+        margin-bottom: 12px;
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .shoe-product-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+        padding-top: 11px;
+    }
+
+    .shoe-product-price {
+        gap: 2px;
+    }
+
+    .shoe-product-price strong {
+        font-size: 16px;
+    }
+
+    .shoe-add-bag-btn {
+        width: 100%;
+        min-height: 39px;
+        padding: 0 7px;
+        gap: 6px;
+        font-size: 10px;
+    }
+
+    /* Quick view is not needed on touch screens */
+    .shoe-image-view {
+        display: none;
+    }
+
+    .shoe-product-badge {
+        top: 9px;
+        left: 9px;
+        padding: 5px 7px;
+        font-size: 7px;
+    }
+
+    .shoe-wishlist {
+        top: 8px;
+        right: 8px;
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+    }
+}
+
+/* Very narrow phones */
+
+@media (max-width: 360px) {
+    .shoe-products-grid {
+        gap: 9px;
+    }
+
+    .shoe-product-image {
+        height: 135px;
+    }
+
+    .shoe-product-info {
+        padding: 10px 8px;
+    }
+
+    .shoe-product-name {
+        font-size: 12px;
+    }
+
+    .shoe-product-price strong {
+        font-size: 14px;
+    }
+}
+
+/* =====================================
+   PREMIUM PRODUCT COLLECTION
+===================================== */
+
+.shoe-products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    align-items: start;
+}
+
+/* Card wrapper */
+
+.shoe-product-item {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Product card */
+
+.shoe-product-card {
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #eae9e6;
+    border-radius: 13px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.shoe-product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.07);
+}
+
+/* Product image */
+
+.shoe-product-image {
+    position: relative;
+    height: 260px;
+    overflow: hidden;
+    background: #f5f4f1;
+    cursor: pointer;
+}
+
+.shoe-product-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    padding: 20px;
+    transition: transform 0.45s ease;
+}
+
+.shoe-product-card:hover .shoe-product-image img {
+    transform: scale(1.05);
+}
+
+/* Badge */
+
+.shoe-product-badge {
+    position: absolute;
+    z-index: 2;
+    top: 15px;
+    left: 15px;
+    padding: 7px 10px;
+    background: #ffffff;
+    color: #222222;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* Wishlist */
+
+.shoe-wishlist {
+    position: absolute;
+    z-index: 3;
+    top: 13px;
+    right: 13px;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #e9e9e9;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #222222;
+    cursor: pointer;
+}
+
+/* Product information */
+
+.shoe-product-info {
+    padding: 18px 18px 15px;
+}
+
+.shoe-product-category {
+    display: block;
+    margin-bottom: 7px;
+    color: #8b8882;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.shoe-product-name {
+    margin: 0 0 13px;
+    color: #191919;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+/* Price */
+
+.shoe-product-price {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid #eeeeeb;
+}
+
+.shoe-product-price span {
+    color: #888888;
+    font-size: 11px;
+}
+
+.shoe-product-price strong {
+    color: #171717;
+    font-size: 19px;
+    font-weight: 800;
+}
+
+/* Description section */
+
+.shoe-product-description-section {
+    padding: 15px 18px 18px;
+    background: #faf9f7;
+    border-top: 1px solid #f0efec;
+}
+
+.description-heading {
+    display: block;
+    margin-bottom: 8px;
+    color: #77736c;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+.shoe-product-description {
+    margin: 0;
+    color: #66635e;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+/* Add to cart button BELOW the card */
+
+.shoe-add-cart-btn {
+    width: 100%;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid #171717;
+    border-radius: 6px;
+    background: #171717;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.shoe-add-cart-btn:hover {
+    background: #ffffff;
+    color: #171717;
+}
+
+.shoe-add-cart-btn i {
+    font-size: 14px;
+}
+
+/* TABLET */
+
+@media (max-width: 992px) {
+    .shoe-products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .shoe-product-image {
+        height: 230px;
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 576px) {
+    .shoe-products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 13px;
+    }
+
+    .shoe-product-item {
+        gap: 9px;
+    }
+
+    .shoe-product-card {
+        border-radius: 10px;
+    }
+
+    .shoe-product-image {
+        height: 145px;
+    }
+
+    .shoe-product-image img {
+        padding: 9px;
+    }
+
+    .shoe-product-info {
+        padding: 12px 10px;
+    }
+
+    .shoe-product-category {
+        font-size: 8px;
+        margin-bottom: 5px;
+    }
+
+    .shoe-product-name {
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .shoe-product-price {
+        padding-top: 9px;
+    }
+
+    .shoe-product-price span {
+        font-size: 9px;
+    }
+
+    .shoe-product-price strong {
+        font-size: 15px;
+    }
+
+    .shoe-product-description-section {
+        padding: 11px 10px 13px;
+    }
+
+    .description-heading {
+        font-size: 8px;
+        margin-bottom: 6px;
+    }
+
+    .shoe-product-description {
+        font-size: 10px;
+        line-height: 1.6;
+    }
+
+    .shoe-add-cart-btn {
+        min-height: 42px;
+        gap: 7px;
+        font-size: 10px;
+    }
+
+    .shoe-product-badge {
+        top: 8px;
+        left: 8px;
+        padding: 5px 7px;
+        font-size: 7px;
+    }
+
+    .shoe-wishlist {
+        top: 7px;
+        right: 7px;
+        width: 29px;
+        height: 29px;
+        font-size: 11px;
+    }
+}
+
+/* SMALL PHONES */
+
+@media (max-width: 360px) {
+    .shoe-products-grid {
+        gap: 9px;
+    }
+
+    .shoe-product-image {
+        height: 125px;
+    }
+
+    .shoe-product-info {
+        padding: 10px 8px;
+    }
+
+    .shoe-product-description-section {
+        padding: 10px 8px;
+    }
+
+    .shoe-product-name {
+        font-size: 12px;
+    }
+
+    .shoe-product-description {
+        font-size: 9px;
+    }
+
+    .shoe-add-cart-btn {
+        font-size: 9px;
+    }
+}
+
+/* PRODUCT CARD GRID */
+.search-shoe-results {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    width: 100%;
+}
+
+/* PRODUCT CARD */
+.search-shoe-result {
+    background: #ffffff;
+    border: 1px solid #eeeeeb;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-shoe-result:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(35, 25, 18, 0.09);
+}
+
+/* PRODUCT IMAGE */
+.search-shoe-image {
+    width: 100%;
+    aspect-ratio: 5 / 4;
+    background: #f8f7f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 14px;
+}
+
+.search-shoe-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+}
+
+.search-shoe-result:hover .search-shoe-image img {
+    transform: scale(1.05);
+}
+
+/* PRODUCT INFORMATION */
+.search-shoe-info {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* CATEGORY */
+.search-shoe-category {
+    color: #92745c;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 8px;
+}
+
+/* PRODUCT NAME */
+.search-shoe-name {
+    color: #211b17;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.35;
+    margin: 0 0 8px;
+}
+
+/* DESCRIPTION */
+.search-shoe-description {
+    color: #77716b;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0 0 14px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    min-height: 42px;
+}
+
+/* PRICE */
+.search-shoe-price {
+    color: #211b17;
+    font-size: 19px;
+    font-weight: 800;
+    margin-bottom: 16px;
+}
+
+/* VIEW DETAILS BUTTON */
+.search-shoe-button {
+    width: 100%;
+    min-height: 48px;
+    border: none;
+    border-radius: 9px;
+    background: #30231c;
+    color: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+
+    transition: background 0.25s ease;
+}
+
+.search-shoe-button:hover {
+    background: #76543b;
+}
+
+.search-shoe-button i {
+    font-size: 12px;
+    transition: transform 0.25s ease;
+}
+
+.search-shoe-button:hover i {
+    transform: translateX(4px);
+}
+
+/* TABLET */
+@media (max-width: 900px) {
+    .search-shoe-results {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+    .search-shoe-results {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .search-shoe-info {
+        padding: 12px;
+    }
+
+    .search-shoe-name {
+        font-size: 14px;
+    }
+
+    .search-shoe-description {
+        font-size: 11px;
+        line-height: 1.5;
+        min-height: 33px;
+    }
+
+    .search-shoe-price {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .search-shoe-button {
+        min-height: 42px;
+        font-size: 11px;
+        gap: 6px;
+    }
+
+    .search-shoe-category {
+        font-size: 9px;
+    }
+}
+

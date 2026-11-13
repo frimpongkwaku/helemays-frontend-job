@@ -1,6 +1,6 @@
 :root {
     color-scheme: light;
-    --info-green: #204832;
+    --info-green: #050505;
     --info-muted: #657168;
     --info-line: #dce3dc;
     --info-paper: #ffffff;
@@ -13,7 +13,7 @@ body {
     min-height: 100vh;
     margin: 0;
     background: var(--info-canvas);
-    color: #26332a;
+    color: #030303;
     font-family: "DM Sans", sans-serif;
 }
 a { color: var(--info-green); }

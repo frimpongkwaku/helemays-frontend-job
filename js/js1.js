@@ -1090,38 +1090,24 @@ function renderCheckoutSummary() {
     itemsContainer.insertAdjacentHTML(
       "beforeend",
       `
-        <div class="checkout-order-item">
-
-          <div class="checkout-order-item-image">
-
-            <img
-              src="${item.image || "./images/shoes.png"}"
-              alt="${item.name}"
-            >
-
-          </div>
-
-
-          <div class="checkout-order-item-info">
-
-            <div class="checkout-order-item-name">
-              ${item.name}
+        <div class="empty-products">
+                <div class="empty-products-icon">
+                    <i class="fa-solid fa-shoe-prints"></i>
+                </div>
+                <h3>No shoes in this collection</h3>
+                <p>
+                    We don't have any shoes available in this category yet.
+                    Check another collection or browse all shoes.
+                </p>
+                <button
+                    type="button"
+                    class="empty-products-btn"
+                    onclick="render('All')"
+                >
+                    View All Shoes
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
             </div>
-
-            <div class="checkout-order-item-meta">
-              ${item.color || "Default"}
-              · Size ${item.size || "—"}
-              · ×${item.qty}
-            </div>
-
-          </div>
-
-
-          <div class="checkout-order-item-price">
-            GH₵ ${itemTotal.toFixed(2)}
-          </div>
-
-        </div>
       `
     );
 
@@ -2621,80 +2607,46 @@ function render(category = "All") {
         container.insertAdjacentHTML(
             "beforeend",
             `
-            <article
-                class="shoe-product-card"
-                data-product-id="${item.id}"
-            >
+<div class="search-shoe-result"
+     onclick="openProductDetails('${product.id}')">
 
-                <div class="shoe-product-image">
+    <div class="search-shoe-image">
+        <img
+            src="${image}"
+            alt="${product.name}"
+            loading="lazy"
+        >
+    </div>
 
-                    ${badge ? `
-                        <span class="shoe-product-badge">
-                            ${badge}
-                        </span>
-                    ` : ""}
+    <div class="search-shoe-info">
 
-                    <button
-                        class="shoe-wishlist"
-                        type="button"
-                        aria-label="Add ${item.name} to wishlist"
-                    >
-                        <i class="fa-regular fa-heart"></i>
-                    </button>
+        <span class="search-shoe-category">
+            ${product.category || "Leather Footwear"}
+        </span>
 
-                    <img
-                        src="${mainImage}"
-                        alt="${item.name}"
-                        loading="lazy"
-                    />
+        <h4 class="search-shoe-name">
+            ${product.name}
+        </h4>
 
-                    <button
-                        class="shoe-image-view"
-                        type="button"
-                        onclick="openProductDetails('${item.id}')"
-                    >
-                        View Details
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </button>
+        <p class="search-shoe-description">
+            ${product.description || "Quality handcrafted footwear designed for everyday style and comfort."}
+        </p>
 
-                </div>
+        <strong class="search-shoe-price">
+            GH₵ ${product.price}
+        </strong>
 
-                <div class="shoe-product-info">
+        <button
+            type="button"
+            class="search-shoe-button"
+            onclick="event.stopPropagation(); openProductDetails('${product.id}')"
+        >
+            View Details
+            <i class="fa-solid fa-arrow-right"></i>
+        </button>
 
-                    <span class="shoe-product-category">
-                        ${item.category}
-                    </span>
-
-                    <h3 class="shoe-product-name">
-                        ${item.name}
-                    </h3>
-
-                    <div class="shoe-product-bottom">
-
-                        <div class="shoe-product-price">
-
-                            <span>Price</span>
-
-                            <strong>
-                                GH₵ ${item.price}
-                            </strong>
-
-                        </div>
-
-                        <button
-                            class="shoe-product-arrow"
-                            type="button"
-                            onclick="openProductDetails('${item.id}')"
-                            aria-label="View ${item.name}"
-                        >
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </article>
+    </div>
+</div>
             `
         );
 
